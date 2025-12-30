@@ -1,3 +1,6 @@
 [submodule "module/zenity"]
 	path = module/zenity
 	url = https://gitlab.gnome.org/GNOME/zenity.git
+[submodule "module/Gtk4-tutorial"]
+	path = module/Gtk4-tutorial
+	url = https://github.com/ToshioCP/Gtk4-tutorial.git
