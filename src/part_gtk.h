@@ -3,62 +3,36 @@
 #include <gtk/gtk.h>
 
 
-
     static void
-FsvGtkActivateChickClose(GtkButton *UgButton,
-        GtkWindow *UgWindow)
-{
-    gtk_window_destroy(UgWindow);
-    g_print("Clicked.\n");
-}
-
-    static void
-FsvGtkActivateChickBox(GtkButton *UgButton)
-{
-    const char *AccStr;
-
-    AccStr = gtk_button_get_label(UgButton);
-
-    if (g_strcmp0(AccStr, "Hello.") == 0) {
-        gtk_button_set_label(UgButton, "Bye.");
-    }
-    else {
-        gtk_button_set_label(UgButton, "Hello.");
-    }
-}
-
-    static void
-FsvGtkActivate(GApplication *UgApplication,
-        gpointer *UgUserData
-        )
+FsvGtkActivate(GApplication *UgApplication)
 {
     GtkWidget *UgWindow;
-    GtkWidget *UgBox;
-    GtkWidget *UgButton1;
-    GtkWidget *UgButton2;
+    GtkWidget *UgScrolled;
+    GtkWidget *UgTextview;
+    GtkTextBuffer *UgTextbuffer;
+    gchar *UgTextchar;
+
+    UgTextchar = 
+        "Text"
+        "debug"
+        ;
 
     UgWindow = gtk_application_window_new(GTK_APPLICATION(UgApplication));
     gtk_window_set_title(GTK_WINDOW(UgWindow), "MenShen");
     gtk_window_set_default_size(GTK_WINDOW(UgWindow), 960, 540);
 
-    UgBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_box_set_homogeneous(GTK_BOX(UgBox), TRUE);
-    gtk_window_set_child(GTK_WINDOW(UgWindow), UgBox);
+    UgScrolled = gtk_scrolled_window_new ();
+    gtk_window_set_child (GTK_WINDOW (UgWindow), UgScrolled);
 
-    UgButton1 = gtk_button_new_with_label("Close");
-    g_signal_connect(UgButton1, "clicked",
-            G_CALLBACK(FsvGtkActivateChickClose), UgWindow);
+    UgTextview = gtk_text_view_new();
+    UgTextbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(UgTextview));
+    gtk_text_buffer_set_text(UgTextbuffer, UgTextchar, -1);
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(UgTextview),
+            GTK_WRAP_WORD_CHAR);
 
-    UgButton2 = gtk_button_new_with_label("Close");
-    g_signal_connect(UgButton2, "clicked",
-            G_CALLBACK(FsvGtkActivateChickBox), NULL);
-
-    gtk_box_append(GTK_BOX(UgBox), UgButton1);
-    gtk_box_append(GTK_BOX(UgBox), UgButton2);
+    gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (UgScrolled), UgTextview);
 
     gtk_window_present(GTK_WINDOW(UgWindow));
-
-    g_print("GtkApplication is activated.\n");
 }
 
 
