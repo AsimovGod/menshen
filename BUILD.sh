@@ -71,6 +71,7 @@ case "${VsCase}" in
                         --cflags
                         --libs
                         "gtk4"
+                        "libadwaita-1"
                 )
 
                 IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"
@@ -78,6 +79,7 @@ case "${VsCase}" in
                 declare -a "AsCmdGcc"
                 AsCmdGcc=(
                         gcc
+                        -g
                         "./src/main.c"
                         -o
                         "./build/bin/menshen"
@@ -88,7 +90,15 @@ case "${VsCase}" in
                 ;;
 
         "exec")
-                "./build/bin/menshen" "${@}"
+                declare -a "AsCmdGdb"
+                AsCmdGdb=(
+                        gdb
+                        -q
+                        "./build/bin/menshen"
+                        "${@}"
+                )
+
+                "${AsCmdGdb[@]}"
                 ;;
 
         "build-exec")
