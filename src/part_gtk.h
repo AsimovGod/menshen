@@ -1,39 +1,40 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
-#include <adwaita.h>
+
+
 
 
     static void
 FsvGtkActivate(GtkApplication *UgApplication)
 {
-    GtkWidget *UgWindow = adw_window_new();
-    gtk_window_set_application(GTK_WINDOW(UgWindow), UgApplication);
-    gtk_window_set_decorated(GTK_WINDOW(UgWindow), FALSE);
+    GtkWidget *UgWindow;
+    GtkWidget *UgHeaderbar;
+    GtkWidget *UgControl;
+    GtkWidget *UgCenterbox;
+    GtkWidget *UgEntry;
+
+
+    UgWindow = gtk_application_window_new(UgApplication);
     gtk_window_set_title(GTK_WINDOW(UgWindow), "MenShen");
     gtk_window_set_default_size(GTK_WINDOW(UgWindow), 960, 540);
 
-    GtkWidget *UaToolbar = adw_toolbar_view_new();
-    adw_window_set_content(ADW_WINDOW(UgWindow), UaToolbar);
+    UgHeaderbar = gtk_header_bar_new();
+    gtk_window_set_titlebar(GTK_WINDOW(UgWindow), UgHeaderbar);
 
-    GtkWidget *UaHeaderbar = adw_header_bar_new();
-    adw_toolbar_view_add_top_bar(ADW_TOOLBAR_VIEW(UaToolbar),
-            GTK_WIDGET(UaHeaderbar));
-
-    GtkWidget *UgControl = gtk_window_controls_new(GTK_PACK_END);
+    UgControl = gtk_window_controls_new(GTK_PACK_END);
     gtk_window_controls_set_decoration_layout(GTK_WINDOW_CONTROLS(UgControl),
-            "minimize,maximize,close");
-    adw_header_bar_pack_end(ADW_HEADER_BAR(UaHeaderbar), UgControl);
+            "minimize,maximize");
+    gtk_header_bar_pack_end(GTK_HEADER_BAR(UgHeaderbar), UgControl);
 
-    GtkWidget *UgCenterbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    UgCenterbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_widget_set_valign(UgCenterbox, GTK_ALIGN_CENTER);
     gtk_widget_set_halign(UgCenterbox, GTK_ALIGN_CENTER);
 
-    GtkWidget *UgEntry = gtk_entry_new();
+    UgEntry = gtk_entry_new();
     gtk_editable_set_text(GTK_EDITABLE(UgEntry), "Hello World.");
-
     gtk_box_append(GTK_BOX(UgCenterbox), UgEntry);
-    adw_toolbar_view_set_content(ADW_TOOLBAR_VIEW(UaToolbar), UgCenterbox);
+    gtk_window_set_child(GTK_WINDOW(UgWindow), UgCenterbox);
 
     gtk_window_present(GTK_WINDOW(UgWindow));
 }
@@ -42,20 +43,20 @@ FsvGtkActivate(GtkApplication *UgApplication)
     int
 FiGtk(int ViArgsGtk, char *AcArgsGtk[])
 {
-    AdwApplication *UgApplication;
+    int ViStatGtk;
 
-    int ViStat;
+    GtkApplication *UgApplication;
 
-    UgApplication = adw_application_new("com.AsimovGod.menshen",
+    UgApplication = gtk_application_new("com.AsimovGod.menshen",
             G_APPLICATION_DEFAULT_FLAGS);
 
     g_signal_connect(UgApplication, "activate",
             G_CALLBACK(FsvGtkActivate), NULL);
 
-    ViStat = g_application_run(G_APPLICATION(UgApplication),
+    ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
             ViArgsGtk, AcArgsGtk);
 
     g_object_unref(UgApplication);
 
-    return ViStat;
+    return ViStatGtk;
 }
