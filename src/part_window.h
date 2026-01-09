@@ -5,8 +5,9 @@
 
 
 
-    static void
-FsvGtkActivate(GtkApplication *UgApplication)
+    void
+FvGtkActivate(GtkApplication *UgApplication,
+        char *AcArgsGtkActivate[])
 {
     GtkWidget *UgWindow;
     GtkWidget *UgHeaderbar;
@@ -32,31 +33,10 @@ FsvGtkActivate(GtkApplication *UgApplication)
     gtk_widget_set_halign(UgCenterbox, GTK_ALIGN_CENTER);
 
     UgEntry = gtk_entry_new();
-    gtk_editable_set_text(GTK_EDITABLE(UgEntry), "Hello World.");
+    gtk_editable_set_text(GTK_EDITABLE(UgEntry), AcArgsGtkActivate[1]);
     gtk_box_append(GTK_BOX(UgCenterbox), UgEntry);
     gtk_window_set_child(GTK_WINDOW(UgWindow), UgCenterbox);
 
     gtk_window_present(GTK_WINDOW(UgWindow));
 }
 
-
-    int
-FiGtk(int ViArgsGtk, char *AcArgsGtk[])
-{
-    int ViStatGtk;
-
-    GtkApplication *UgApplication;
-
-    UgApplication = gtk_application_new("com.AsimovGod.menshen",
-            G_APPLICATION_DEFAULT_FLAGS);
-
-    g_signal_connect(UgApplication, "activate",
-            G_CALLBACK(FsvGtkActivate), NULL);
-
-    ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
-            ViArgsGtk, AcArgsGtk);
-
-    g_object_unref(UgApplication);
-
-    return ViStatGtk;
-}

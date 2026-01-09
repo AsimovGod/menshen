@@ -2,83 +2,34 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
-#include <argtable2.h>
 
+#include "part_window.h"
 #include "part_show.h"
-#include "part_gtk.h"
+#include "part_option.h"
+
 
 
 
     int
 main(int ViArgs, char *AcArgs[])
 {
-    int ViLoop;
-    int ViArgtStat;
-    int ViExitMain;
-    int ViArgMinGtk;
-    int ViArgGtk;
-    char **AcArgGtk;
+    int ViStatGtk;
 
-    struct arg_lit *SuArgtVersion;
-    struct arg_lit *SuArgtHelp;
-    struct arg_lit *SuArgtWindow;
-    struct arg_str *SuArgtUrl;
-    struct arg_str *SuArgtNull;
-    struct arg_end *SuArgtEnd;
+    GtkApplication *UgApplication;
 
-    void *TvArgtable[] = {
-        SuArgtVersion   =   arg_lit0("v",   "version",
-                "Version"),
-        SuArgtHelp      =   arg_lit0("h",   "help",
-                "Help"),
-        SuArgtWindow    =   arg_lit0("w",   "window",
-                "Window"),
-        SuArgtUrl       =   arg_str0("u",   "url",
-                "<string>",     "Url"),
-        SuArgtNull      =   arg_strn(NULL,  NULL,
-                NULL,     0,      ViArgs,     "NULL"),
-        SuArgtEnd       =   arg_end(20)
-    };
+    UgApplication = gtk_application_new("com.AsimovGod.menshen",
+            G_APPLICATION_HANDLES_COMMAND_LINE);
 
-    ViExitMain = EXIT_SUCCESS;
-    ViArgtStat = arg_parse(ViArgs, AcArgs, TvArgtable);
+    g_application_add_main_option_entries(G_APPLICATION(UgApplication),
+            UgOptionentry);
 
-    ViArgMinGtk = ViArgs;
-    ViArgGtk = 0;
-    AcArgGtk = malloc(ViArgs * sizeof(char *));
-    AcArgGtk[0] = AcArgs[0];
+    g_signal_connect(UgApplication, "command-line",
+            G_CALLBACK(FiOption), NULL);
 
-    if (SuArgtVersion->count >0) {
-        printf("Version");
-        return ViExitMain;
-    }
+    ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
+            ViArgs, AcArgs);
 
-    if (SuArgtUrl->count > 0) {
-        printf("Url: %s\n", SuArgtUrl->sval[0]);
-    }
+    g_object_unref(UgApplication);
 
-    if (SuArgtHelp->count >0){
-        AcArgGtk[1] = "--help";
-        ViArgMinGtk = 2;
-    }
-    else if (SuArgtWindow->count >0) {
-        ViArgMinGtk = 1;
-    }
-
-    ViArgGtk = ViArgMinGtk;
-
-    for (ViLoop = 0; ViLoop < SuArgtNull->count; ViLoop++) {
-        AcArgGtk[ViArgGtk] = strdup(SuArgtNull->sval[ViLoop]);
-        ViArgGtk++;
-    }
-
-    if (ViArgGtk > 0) {
-        ViExitMain = FiGtk(ViArgGtk, AcArgGtk);
-    }
-
-    for (ViLoop = ViArgMinGtk; ViLoop < SuArgtNull->count; ViLoop++) {
-        free(AcArgGtk[ViLoop]);
-    }
-
-    return ViExitMain;
+    return ViStatGtk;
 }
