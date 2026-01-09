@@ -6,15 +6,13 @@
 
 
     void
-FvGtkActivate(GtkApplication *UgApplication,
-        char *AcArgsGtkActivate[])
+FvGtkActivate(GtkApplication *UgApplication, char **AcArgsGtkActivate)
 {
     GtkWidget *UgWindow;
     GtkWidget *UgHeaderbar;
     GtkWidget *UgControl;
     GtkWidget *UgCenterbox;
     GtkWidget *UgEntry;
-
 
     UgWindow = gtk_application_window_new(UgApplication);
     gtk_window_set_title(GTK_WINDOW(UgWindow), "MenShen");

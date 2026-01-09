@@ -11,11 +11,13 @@
 
 
     int
-main(int ViArgs, char *AcArgs[])
+main(int ViArgs, char **AcArgs)
 {
     int ViStatGtk;
 
     GtkApplication *UgApplication;
+
+    ViStatGtk = FiOptionGlib(ViArgs, AcArgs);
 
     UgApplication = gtk_application_new("com.AsimovGod.menshen",
             G_APPLICATION_HANDLES_COMMAND_LINE);
@@ -24,7 +26,7 @@ main(int ViArgs, char *AcArgs[])
             UgOptionentry);
 
     g_signal_connect(UgApplication, "command-line",
-            G_CALLBACK(FiOption), NULL);
+            G_CALLBACK(FiOptionGtk), NULL);
 
     ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
             ViArgs, AcArgs);
