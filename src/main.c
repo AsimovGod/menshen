@@ -2,20 +2,22 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <adwaita.h>
 
+#include "part_file.h"
+#include "part_url.h"
 #include "part_window.h"
-#include "part_show.h"
 #include "part_option.h"
 
 
 
 
     int
-main(int ViArgs, char **AcArgs)
+main(int ViArgs, char** AcArgs)
 {
     int ViStatGtk;
 
-    GtkApplication *UgApplication;
+    GtkApplication* UgApplication;
 
     ViStatGtk = FiOptionGlib(ViArgs, AcArgs);
 
@@ -25,8 +27,10 @@ main(int ViArgs, char **AcArgs)
     g_application_add_main_option_entries(G_APPLICATION(UgApplication),
             UgOptionentry);
 
-    g_signal_connect(UgApplication, "command-line",
-            G_CALLBACK(FiOptionGtk), NULL);
+    g_signal_connect(UgApplication,
+            "command-line", G_CALLBACK(FiOptionGtk), NULL);
+
+    adw_init();
 
     ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
             ViArgs, AcArgs);

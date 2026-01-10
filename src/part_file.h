@@ -6,11 +6,11 @@
 
 
     void
-FvShow(char *AcArgShow)
+FvFileRead(char* AcArgShow)
 {
     char VcFileShow[2048];
 
-    FILE *UpFileShow;
+    FILE* UpFileShow;
 
     UpFileShow = fopen(AcArgShow, "r");
 
@@ -21,10 +21,7 @@ FvShow(char *AcArgShow)
         exit(EXIT_FAILURE);
     }
 
-    while (fgets(VcFileShow,
-                sizeof(VcFileShow),
-                UpFileShow))
-    {
+    while (fgets(VcFileShow, sizeof(VcFileShow), UpFileShow)) {
         printf("%s", VcFileShow);
     }
 

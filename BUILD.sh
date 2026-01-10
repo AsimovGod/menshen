@@ -71,6 +71,7 @@ case "${VsCase}" in
                         --cflags
                         --libs
                         "gtk4"
+                        "libadwaita-1"
                         "argtable2"
                 )
 

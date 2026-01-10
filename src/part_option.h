@@ -7,52 +7,74 @@
 
 gboolean UgOptVersion = FALSE;
 gboolean UgOptWindow = FALSE;
+gchar* UgOptMode = NULL;
+gchar* UgOptStyle = NULL;
 
 GOptionEntry UgOptionentry[] = {
     {"version", 'v',    0,  G_OPTION_ARG_NONE,      &UgOptVersion,
         "Version",  NULL},
-    {"window",  'w',    0,  G_OPTION_ARG_NONE,      &UgOptWindow,
-        "Window",   NULL},
+    {"mode",    'm',    0,  G_OPTION_ARG_STRING,    &UgOptMode,
+        "Mode",     NULL},
+    {"style",   's',    0,  G_OPTION_ARG_STRING,    &UgOptStyle,
+        "Style",    NULL},
     {NULL}
 };
 
 
     int
-FiOptionGlib(int ViArgsOptionglib, char **AcArgsOptionglib)
+FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 {
-    gchar **AgArgsOptionglib;
-    GOptionContext *UgOptioncontext;
+    static gint ViOptArgs;
+    static gchar** AcOptArgs;
 
-    AgArgsOptionglib = g_strdupv((gchar **)AcArgsOptionglib);
+    GOptionContext* UgOptioncontext;
+
+    ViOptArgs = ViArgsOptionglib;
+    AcOptArgs = g_strdupv((gchar**)AcArgsOptionglib);
     UgOptioncontext = g_option_context_new(NULL);
 
     g_option_context_set_help_enabled(UgOptioncontext, FALSE);
     g_option_context_add_main_entries(UgOptioncontext, UgOptionentry, NULL);
-    g_option_context_parse_strv(UgOptioncontext, &AgArgsOptionglib, NULL);
-    g_strfreev(AgArgsOptionglib);
+    g_option_context_parse(UgOptioncontext, &ViOptArgs, &AcOptArgs, NULL);
 
     if (UgOptVersion) {
-        printf("\nVersion\n");
+        printf("\n0.0.1\n");
+
         exit(EXIT_SUCCESS);
     }
+
+    if (UgOptMode
+            && g_strcmp0(UgOptMode, "0") == 0
+            || g_strcmp0(UgOptMode, "term") == 0)
+    {
+        for (int ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
+            FiUrlPrint(AcOptArgs[ViLoop]);
+        }
+
+        exit(EXIT_SUCCESS);
+    }
+
+    g_strfreev(AcOptArgs);
 
     return EXIT_SUCCESS;
 }
 
 
     int
-FiOptionGtk(GApplication *UgApplication,
-        GApplicationCommandLine *UgCommandline)
+FiOptionGtk(GApplication* UgApplication,
+        GApplicationCommandLine* UgCommandline)
 {
-    int ViOptArgs;
-    char **AcOptArgs;
+    static gint ViOptArgs;
+    static gchar** AcOptArgs;
 
     AcOptArgs = g_application_command_line_get_arguments(UgCommandline,
             &ViOptArgs);
 
-    if (UgOptWindow && ViOptArgs > 1) {
-        FvGtkActivate(GTK_APPLICATION(UgApplication),
-                AcOptArgs);
+    if (UgOptMode
+            && g_strcmp0(UgOptMode, "1") == 0
+            || g_strcmp0(UgOptMode, "window") == 0)
+    {
+        FvGtkActivate(GTK_APPLICATION(UgApplication), AcOptArgs);
     }
 
     return EXIT_SUCCESS;

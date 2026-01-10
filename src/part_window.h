@@ -6,31 +6,32 @@
 
 
     void
-FvGtkActivate(GtkApplication *UgApplication, char **AcArgsGtkActivate)
+FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
 {
-    GtkWidget *UgWindow;
-    GtkWidget *UgHeaderbar;
-    GtkWidget *UgControl;
-    GtkWidget *UgCenterbox;
-    GtkWidget *UgEntry;
+    GtkWidget* UgWindow;
+    GtkWidget* UgHeaderbar;
+    GtkWidget* UgControl;
+    GtkWidget* UgCenterbox;
+    GtkWidget* UgEntry;
 
     UgWindow = gtk_application_window_new(UgApplication);
     gtk_window_set_title(GTK_WINDOW(UgWindow), "MenShen");
     gtk_window_set_default_size(GTK_WINDOW(UgWindow), 960, 540);
 
     UgHeaderbar = gtk_header_bar_new();
-    gtk_window_set_titlebar(GTK_WINDOW(UgWindow), UgHeaderbar);
-
     UgControl = gtk_window_controls_new(GTK_PACK_END);
+
+    gtk_window_set_titlebar(GTK_WINDOW(UgWindow), UgHeaderbar);
     gtk_window_controls_set_decoration_layout(GTK_WINDOW_CONTROLS(UgControl),
             "minimize,maximize");
     gtk_header_bar_pack_end(GTK_HEADER_BAR(UgHeaderbar), UgControl);
 
     UgCenterbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    UgEntry = gtk_entry_new();
+
     gtk_widget_set_valign(UgCenterbox, GTK_ALIGN_CENTER);
     gtk_widget_set_halign(UgCenterbox, GTK_ALIGN_CENTER);
 
-    UgEntry = gtk_entry_new();
     gtk_editable_set_text(GTK_EDITABLE(UgEntry), AcArgsGtkActivate[1]);
     gtk_box_append(GTK_BOX(UgCenterbox), UgEntry);
     gtk_window_set_child(GTK_WINDOW(UgWindow), UgCenterbox);
