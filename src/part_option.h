@@ -7,7 +7,7 @@
 
 gboolean UgOptVersion = FALSE;
 gboolean UgOptWindow = FALSE;
-gchar* UgOptMode = NULL;
+gchar* UgOptMode = "1";
 gchar* UgOptStyle = NULL;
 
 GOptionEntry UgOptionentry[] = {
@@ -24,8 +24,8 @@ GOptionEntry UgOptionentry[] = {
     int
 FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 {
-    static gint ViOptArgs;
-    static gchar** AcOptArgs;
+    gint ViOptArgs;
+    gchar** AcOptArgs;
 
     GOptionContext* UgOptioncontext;
 
@@ -48,7 +48,7 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
             || g_strcmp0(UgOptMode, "term") == 0)
     {
         for (int ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
-            FiUrlPrint(AcOptArgs[ViLoop]);
+            FiUriPrint(AcOptArgs[ViLoop]);
         }
 
         exit(EXIT_SUCCESS);
@@ -64,8 +64,8 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 FiOptionGtk(GApplication* UgApplication,
         GApplicationCommandLine* UgCommandline)
 {
-    static gint ViOptArgs;
-    static gchar** AcOptArgs;
+    gint ViOptArgs;
+    gchar** AcOptArgs;
 
     AcOptArgs = g_application_command_line_get_arguments(UgCommandline,
             &ViOptArgs);

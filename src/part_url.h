@@ -7,6 +7,7 @@
 
 
 typedef struct {
+    gchar* uri;
     gchar* scheme;
     gchar* host;
     gint port;
@@ -16,37 +17,83 @@ typedef struct {
 } TgGuriParse;
 
 
-TgGuriParse*
-FtGuriParse(const gchar* UgUriImport) {
-    GUri* UgUriExport;
 
+    TgGuriParse*
+FtGuriParse(const gchar* VcUriExport)
+{
+    const gchar* VcGuriParse;
+    gint ViGuriParsePort;
+    GUri* UgUriExport;
     TgGuriParse* UtGuriParse;
 
-    UgUriExport = g_uri_parse(UgUriImport, G_URI_FLAGS_NONE, NULL);
+    UgUriExport = g_uri_parse(VcUriExport, G_URI_FLAGS_NONE, NULL);
 
-    if (!UgUriExport) {
+    if (UgUriExport) {
+        UtGuriParse = g_new0(TgGuriParse, 1);
+        UtGuriParse->uri = g_strdup(VcUriExport);
+    }
+    else {
         return NULL;
     }
 
-    UtGuriParse = g_new0(TgGuriParse, 1);
-    UtGuriParse->scheme = g_strdup(g_uri_get_scheme(UgUriExport));
-    UtGuriParse->host = g_strdup(g_uri_get_host(UgUriExport));
-    UtGuriParse->port = g_uri_get_port(UgUriExport);
-    UtGuriParse->path = g_strdup(g_uri_get_path(UgUriExport));
-    UtGuriParse->query = g_strdup(g_uri_get_query(UgUriExport));
-    UtGuriParse->fragment = g_strdup(g_uri_get_fragment(UgUriExport));
+    VcGuriParse = g_uri_get_scheme(UgUriExport);
+    UtGuriParse->scheme = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    VcGuriParse = g_uri_get_host(UgUriExport);
+    UtGuriParse->host = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    ViGuriParsePort = g_uri_get_port(UgUriExport) ;
+    UtGuriParse->port = ViGuriParsePort ? ViGuriParsePort : -1;
+
+    VcGuriParse = g_uri_get_path(UgUriExport);
+    UtGuriParse->path = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    VcGuriParse = g_uri_get_query(UgUriExport);
+    UtGuriParse->query = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+
+    VcGuriParse = g_uri_get_fragment(UgUriExport);
+    UtGuriParse->fragment = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
 
     g_uri_unref(UgUriExport);
     return UtGuriParse;
 }
 
 
-int
-FiGuriFree(TgGuriParse* UtGuriFree) {
+    char*
+FcGuriBuild(TgGuriParse* UtGuriBuild)
+{
+    gchar* VcUriExport;
+    GUri* UgUriExport;
+
+    UgUriExport = g_uri_build(G_URI_FLAGS_NONE,
+            UtGuriBuild->scheme ? UtGuriBuild->scheme : g_strdup(""),
+            NULL,
+            UtGuriBuild->host ? UtGuriBuild->host : g_strdup(""),
+            UtGuriBuild->port ? UtGuriBuild->port : -1,
+            UtGuriBuild->path ? UtGuriBuild->path : g_strdup(""),
+            UtGuriBuild->query ? UtGuriBuild->query : NULL,
+            UtGuriBuild->fragment ? UtGuriBuild->fragment : NULL);
+
+    VcUriExport = g_uri_to_string(UgUriExport);
+
+    g_uri_unref(UgUriExport);
+
+    return VcUriExport;
+}
+
+
+    void
+FvGuriFree(gpointer UpGuriFree)
+{
+    TgGuriParse* UtGuriFree;
+
+    UtGuriFree = UpGuriFree;
+
     if (!UtGuriFree) {
-        return EXIT_FAILURE;
+        return;
     }
 
+    g_free(UtGuriFree->uri);
     g_free(UtGuriFree->scheme);
     g_free(UtGuriFree->host);
     g_free(UtGuriFree->path);
@@ -56,26 +103,27 @@ FiGuriFree(TgGuriParse* UtGuriFree) {
 }
 
 
-int
-FiUrlPrint(char* VcUrlPrint) {
-    TgGuriParse* UtUrlPrint;
+    int
+FiUriPrint(char* VcUriPrint)
+{
+    TgGuriParse* UtUriPrint;
 
-    UtUrlPrint = FtGuriParse(VcUrlPrint);
+    UtUriPrint = FtGuriParse(VcUriPrint);
 
-    if (!UtUrlPrint) {
+    if (!UtUriPrint) {
         return EXIT_FAILURE;
     }
 
     printf("\n");
-    printf("url         %s\n", VcUrlPrint);
-    printf("scheme      %s\n", UtUrlPrint->scheme);
-    printf("host        %s\n", UtUrlPrint->host);
-    printf("port        %d\n", UtUrlPrint->port);
-    printf("path        %s\n", UtUrlPrint->path);
-    printf("query       %s\n", UtUrlPrint->query);
-    printf("fragment    %s\n", UtUrlPrint->fragment);
+    printf("uri         %s\n", UtUriPrint->uri);
+    printf("scheme      %s\n", UtUriPrint->scheme);
+    printf("host        %s\n", UtUriPrint->host);
+    printf("port        %d\n", UtUriPrint->port);
+    printf("path        %s\n", UtUriPrint->path);
+    printf("query       %s\n", UtUriPrint->query);
+    printf("fragment    %s\n", UtUriPrint->fragment);
 
-    FiGuriFree(UtUrlPrint);
+    FvGuriFree(UtUriPrint);
 
     return EXIT_SUCCESS;
 }

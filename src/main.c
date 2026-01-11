@@ -15,11 +15,18 @@
     int
 main(int ViArgs, char** AcArgs)
 {
-    int ViStatGtk;
+    int ViExit;
 
     GtkApplication* UgApplication;
 
-    ViStatGtk = FiOptionGlib(ViArgs, AcArgs);
+    ViExit = FiOptionGlib(ViArgs, AcArgs);
+
+    if (UgOptMode
+            && g_strcmp0(UgOptMode, "1") == 0
+            || g_strcmp0(UgOptMode, "window") == 0)
+    {
+        adw_init();
+    }
 
     UgApplication = gtk_application_new("com.AsimovGod.menshen",
             G_APPLICATION_HANDLES_COMMAND_LINE);
@@ -30,12 +37,10 @@ main(int ViArgs, char** AcArgs)
     g_signal_connect(UgApplication,
             "command-line", G_CALLBACK(FiOptionGtk), NULL);
 
-    adw_init();
-
-    ViStatGtk = g_application_run(G_APPLICATION(UgApplication),
+    ViExit = g_application_run(G_APPLICATION(UgApplication),
             ViArgs, AcArgs);
 
     g_object_unref(UgApplication);
 
-    return ViStatGtk;
+    return ViExit;
 }
