@@ -5,7 +5,8 @@
 #include <adwaita.h>
 
 #include "part_file.h"
-#include "part_url.h"
+#include "part_guri.h"
+#include "part_uribox.h"
 #include "part_window.h"
 #include "part_option.h"
 
@@ -35,7 +36,7 @@ main(int ViArgs, char** AcArgs)
             UgOptionentry);
 
     g_signal_connect(UgApplication,
-            "command-line", G_CALLBACK(FiOptionGtk), NULL);
+            "command-line", G_CALLBACK(GiOptionGtk), NULL);
 
     ViExit = g_application_run(G_APPLICATION(UgApplication),
             ViArgs, AcArgs);

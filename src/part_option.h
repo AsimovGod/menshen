@@ -61,7 +61,7 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 
 
     int
-FiOptionGtk(GApplication* UgApplication,
+GiOptionGtk(GApplication* UgApplication,
         GApplicationCommandLine* UgCommandline)
 {
     gint ViOptArgs;

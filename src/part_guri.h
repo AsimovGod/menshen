@@ -7,56 +7,16 @@
 
 
 typedef struct {
-    gchar* uri;
+    gchar* string;
     gchar* scheme;
     gchar* host;
     gint port;
     gchar* path;
     gchar* query;
     gchar* fragment;
+    gchar* uri;
 } TgGuriParse;
 
-
-
-    TgGuriParse*
-FtGuriParse(const gchar* VcUriExport)
-{
-    const gchar* VcGuriParse;
-    gint ViGuriParsePort;
-    GUri* UgUriExport;
-    TgGuriParse* UtGuriParse;
-
-    UgUriExport = g_uri_parse(VcUriExport, G_URI_FLAGS_NONE, NULL);
-
-    if (UgUriExport) {
-        UtGuriParse = g_new0(TgGuriParse, 1);
-        UtGuriParse->uri = g_strdup(VcUriExport);
-    }
-    else {
-        return NULL;
-    }
-
-    VcGuriParse = g_uri_get_scheme(UgUriExport);
-    UtGuriParse->scheme = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
-
-    VcGuriParse = g_uri_get_host(UgUriExport);
-    UtGuriParse->host = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
-
-    ViGuriParsePort = g_uri_get_port(UgUriExport) ;
-    UtGuriParse->port = ViGuriParsePort ? ViGuriParsePort : -1;
-
-    VcGuriParse = g_uri_get_path(UgUriExport);
-    UtGuriParse->path = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
-
-    VcGuriParse = g_uri_get_query(UgUriExport);
-    UtGuriParse->query = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
-
-    VcGuriParse = g_uri_get_fragment(UgUriExport);
-    UtGuriParse->fragment = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
-
-    g_uri_unref(UgUriExport);
-    return UtGuriParse;
-}
 
 
     char*
@@ -82,6 +42,50 @@ FcGuriBuild(TgGuriParse* UtGuriBuild)
 }
 
 
+    TgGuriParse*
+FtGuriParse(const gchar* VcUriExport)
+{
+    const gchar* VcGuriParse;
+    gint ViGuriParsePort;
+    GUri* UgUriExport;
+    TgGuriParse* UtGuriParse;
+
+    UgUriExport = g_uri_parse(VcUriExport, G_URI_FLAGS_NONE, NULL);
+
+    if (UgUriExport) {
+        UtGuriParse = g_new0(TgGuriParse, 1);
+        UtGuriParse->string = g_strdup(VcUriExport);
+    }
+    else {
+        return NULL;
+    }
+
+    VcGuriParse = g_uri_get_scheme(UgUriExport);
+    UtGuriParse->scheme = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    VcGuriParse = g_uri_get_host(UgUriExport);
+    UtGuriParse->host = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    ViGuriParsePort = g_uri_get_port(UgUriExport) ;
+    UtGuriParse->port = ViGuriParsePort ? ViGuriParsePort : -1;
+
+    VcGuriParse = g_uri_get_path(UgUriExport);
+    UtGuriParse->path = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
+
+    VcGuriParse = g_uri_get_query(UgUriExport);
+    UtGuriParse->query = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+
+    VcGuriParse = g_uri_get_fragment(UgUriExport);
+    UtGuriParse->fragment = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+
+    VcGuriParse = FcGuriBuild(UtGuriParse);
+    UtGuriParse->uri = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+
+    g_uri_unref(UgUriExport);
+    return UtGuriParse;
+}
+
+
     void
 FvGuriFree(gpointer UpGuriFree)
 {
@@ -89,16 +93,15 @@ FvGuriFree(gpointer UpGuriFree)
 
     UtGuriFree = UpGuriFree;
 
-    if (!UtGuriFree) {
-        return;
-    }
+    if (!UtGuriFree) return;
 
-    g_free(UtGuriFree->uri);
+    g_free(UtGuriFree->string);
     g_free(UtGuriFree->scheme);
     g_free(UtGuriFree->host);
     g_free(UtGuriFree->path);
     g_free(UtGuriFree->query);
     g_free(UtGuriFree->fragment);
+    g_free(UtGuriFree->uri);
     g_free(UtGuriFree);
 }
 
@@ -127,3 +130,4 @@ FiUriPrint(char* VcUriPrint)
 
     return EXIT_SUCCESS;
 }
+
