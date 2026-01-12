@@ -11,6 +11,7 @@ FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     GtkWidget* UgWindow;
     GtkWidget* UgHeaderbar;
     GtkWidget* UgControl;
+
     GtkWidget* UgBoxMain;
     GtkWidget* UgBoxMainUp;
     GtkWidget* UgBoxMainDown;
