@@ -36,7 +36,7 @@ main(int ViArgs, char** AcArgs)
             UgOptionentry);
 
     g_signal_connect(UgApplication,
-            "command-line", G_CALLBACK(GiOptionGtk), NULL);
+            "command-line", G_CALLBACK(FiOptionGtk), NULL);
 
     ViExit = g_application_run(G_APPLICATION(UgApplication),
             ViArgs, AcArgs);

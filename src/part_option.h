@@ -24,6 +24,7 @@ GOptionEntry UgOptionentry[] = {
     int
 FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 {
+    int ViLoop;
     gint ViOptArgs;
     gchar** AcOptArgs;
 
@@ -47,8 +48,8 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
             && g_strcmp0(UgOptMode, "0") == 0
             || g_strcmp0(UgOptMode, "term") == 0)
     {
-        for (int ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
-            FiUriPrint(AcOptArgs[ViLoop]);
+        for (ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
+            FvUriPrint(AcOptArgs[ViLoop]);
         }
 
         exit(EXIT_SUCCESS);
@@ -61,7 +62,7 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 
 
     int
-GiOptionGtk(GApplication* UgApplication,
+FiOptionGtk(GApplication* UgApplication,
         GApplicationCommandLine* UgCommandline)
 {
     gint ViOptArgs;

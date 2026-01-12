@@ -34,7 +34,7 @@ FcGuriBuild(TgGuriParse* UtGuriBuild)
             UtGuriBuild->query ? UtGuriBuild->query : NULL,
             UtGuriBuild->fragment ? UtGuriBuild->fragment : NULL);
 
-    VcUriExport = g_uri_to_string(UgUriExport);
+    VcUriExport = g_uri_to_string(UgUriExport ? UgUriExport : NULL);
 
     g_uri_unref(UgUriExport);
 
@@ -52,13 +52,10 @@ FtGuriParse(const gchar* VcUriExport)
 
     UgUriExport = g_uri_parse(VcUriExport, G_URI_FLAGS_NONE, NULL);
 
-    if (UgUriExport) {
-        UtGuriParse = g_new0(TgGuriParse, 1);
-        UtGuriParse->string = g_strdup(VcUriExport);
-    }
-    else {
-        return NULL;
-    }
+    if (! UgUriExport) return NULL;
+
+    UtGuriParse = g_new0(TgGuriParse, 1);
+    UtGuriParse->string = g_strdup(VcUriExport);
 
     VcGuriParse = g_uri_get_scheme(UgUriExport);
     UtGuriParse->scheme = VcGuriParse ? g_strdup(VcGuriParse) : g_strdup("");
@@ -82,6 +79,7 @@ FtGuriParse(const gchar* VcUriExport)
     UtGuriParse->uri = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
 
     g_uri_unref(UgUriExport);
+
     return UtGuriParse;
 }
 
@@ -93,7 +91,7 @@ FvGuriFree(gpointer UpGuriFree)
 
     UtGuriFree = UpGuriFree;
 
-    if (!UtGuriFree) return;
+    if (! UtGuriFree) return;
 
     g_free(UtGuriFree->string);
     g_free(UtGuriFree->scheme);
@@ -106,16 +104,14 @@ FvGuriFree(gpointer UpGuriFree)
 }
 
 
-    int
-FiUriPrint(char* VcUriPrint)
+    void
+FvUriPrint(char* VcUriPrint)
 {
     TgGuriParse* UtUriPrint;
 
     UtUriPrint = FtGuriParse(VcUriPrint);
 
-    if (!UtUriPrint) {
-        return EXIT_FAILURE;
-    }
+    if (! UtUriPrint) return;
 
     printf("\n");
     printf("uri         %s\n", UtUriPrint->uri);
@@ -127,7 +123,5 @@ FiUriPrint(char* VcUriPrint)
     printf("fragment    %s\n", UtUriPrint->fragment);
 
     FvGuriFree(UtUriPrint);
-
-    return EXIT_SUCCESS;
 }
 
