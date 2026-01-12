@@ -6,178 +6,138 @@
 
 
 typedef struct {
-    GtkWidget* string;
+    GtkWidget* uri;
     GtkWidget* scheme;
     GtkWidget* host;
     GtkWidget* port;
     GtkWidget* path;
     GtkWidget* query;
     GtkWidget* fragment;
-    GtkWidget* uri;
 } TgGuriWidget;
 
 
 
-void FvGtkUriBuild(GtkEditable* UgEditable, gpointer GuUserdata);
-void FvGtkUriParse(GtkEditable* UgEditable, gpointer GuUserdata);
-
-
     void
-FvGtkUriBoolean(TgGuriWidget* UtUriWidget, gboolean UbChangeBoolean)
+FvGtkUpdatingSet(GtkWidget* UgUriEntry, gboolean UbGetBoolean)
 {
-    if (UbChangeBoolean) {
-        gtk_widget_set_sensitive(UtUriWidget->string, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->scheme, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->host, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->port, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->path, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->query, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->fragment, TRUE);
-        gtk_widget_set_sensitive(UtUriWidget->uri, TRUE);
+    g_object_set_data(G_OBJECT(UgUriEntry),
+            "updating", GINT_TO_POINTER(UbGetBoolean));
+}
 
-        g_signal_handlers_unblock_by_func(UtUriWidget->scheme,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->host,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->port,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->path,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->query,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->fragment,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_unblock_by_func(UtUriWidget->uri,
-                G_CALLBACK(FvGtkUriParse), UtUriWidget);
-    }
-    else {
-        gtk_widget_set_sensitive(UtUriWidget->string, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->scheme, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->host, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->port, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->path, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->query, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->fragment, FALSE);
-        gtk_widget_set_sensitive(UtUriWidget->uri, FALSE);
 
-        g_signal_handlers_block_by_func(UtUriWidget->scheme,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->host,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->port,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->path,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->query,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->fragment,
-                G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-        g_signal_handlers_block_by_func(UtUriWidget->uri,
-                G_CALLBACK(FvGtkUriParse), UtUriWidget);
-    }
+    gboolean
+FbUpdatingGet(GtkWidget* UgUriEntry)
+{
+    gboolean VbReturn;
+    gpointer UpObjectGet;
+
+    UpObjectGet = g_object_get_data(G_OBJECT(UgUriEntry), "updating");
+    VbReturn = UpObjectGet ? GPOINTER_TO_INT(UpObjectGet) : FALSE;
+
+    return VbReturn;
 }
 
 
     void
-FvGtkUriChange(TgGuriWidget* UtUriWidget,TgGuriParse* UtUriParse)
+FvGtkChangedParse(GtkEditable* UgEditable, gpointer GuUserdata)
 {
-    if (!UtUriWidget) return;
+    const gchar* VcEdittext;
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->uri),
-            UtUriParse && UtUriParse->uri
-            ? UtUriParse->uri : g_strdup(""));
+    TgGuriWidget* UtUriEntry;
+    TgGuriParse* UtUriParse;
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->scheme),
+    UtUriEntry = GuUserdata;
+    UtUriParse = NULL;
+
+    if (!UtUriEntry || FbUpdatingGet(UtUriEntry->uri)) return;
+
+    VcEdittext = gtk_editable_get_text(UgEditable);
+    UtUriParse = FtGuriParse(VcEdittext);
+
+    g_object_set_data_full(G_OBJECT(UtUriEntry->uri),
+            "parsed", UtUriParse, FvGuriFree);
+
+    FvGtkUpdatingSet(UtUriEntry->uri, TRUE);
+
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->scheme),
             UtUriParse && UtUriParse->scheme
             ? UtUriParse->scheme : g_strdup(""));
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->host),
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->host),
             UtUriParse && UtUriParse->host
             ? UtUriParse->host : g_strdup(""));
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->port),
-            g_strdup(""));
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->port), g_strdup(""));
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->path),
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->path),
             UtUriParse && UtUriParse->path
             ? UtUriParse->path : g_strdup(""));
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->query),
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->query),
             UtUriParse && UtUriParse->query
             ? UtUriParse->query : NULL);
 
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->fragment),
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->fragment),
             UtUriParse && UtUriParse->fragment
             ? UtUriParse->fragment : NULL);
+
+    FvGtkUpdatingSet(UtUriEntry->uri, FALSE);
 }
 
 
     void
-FvGtkUriParse(GtkEditable* UgEditable, gpointer GuUserdata)
+FvGtkChangedBuild(GtkEditable* UgEditable, gpointer GuUserdata)
 {
     const gchar* VcUriParse;
+    gchar* VcEdittext;
 
-    TgGuriWidget* UtUriWidget;
-    TgGuriParse* UtUriParse;
-
-    UtUriWidget = GuUserdata;
-
-    if (!UtUriWidget) return;
-
-    FvGtkUriBoolean(UtUriWidget, FALSE);
-
-    VcUriParse = gtk_editable_get_text(UgEditable);
-    UtUriParse = FtGuriParse(VcUriParse ? VcUriParse : g_strdup(""));
-
-    FvGtkUriChange(UtUriWidget, UtUriParse);
-
-    FvGtkUriBoolean(UtUriWidget, TRUE);
-}
-
-
-    void
-FvGtkUriBuild(GtkEditable* UgEditable, gpointer GuUserdata)
-{
-    const gchar* VcUriParse;
-
-    TgGuriWidget* UtUriWidget;
+    TgGuriWidget* UtUriEntry;
     TgGuriParse* UtUriBuild;
 
-    UtUriWidget = GuUserdata;
+    UtUriEntry = GuUserdata;
 
-    if (!UtUriWidget) return;
-
-    FvGtkUriBoolean(UtUriWidget, FALSE);
+    if (!UtUriEntry || FbUpdatingGet(UtUriEntry->uri)) return;
 
     UtUriBuild = g_new0(TgGuriParse, 1);
 
-    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriWidget->scheme));
+    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriEntry->scheme));
     UtUriBuild->scheme = VcUriParse && *VcUriParse
         ? g_strdup(VcUriParse) : g_strdup("");
 
-    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriWidget->host));
+    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriEntry->host));
     UtUriBuild->host = VcUriParse && *VcUriParse
         ? g_strdup(VcUriParse) : g_strdup("");
 
-    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriWidget->path));
+    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriEntry->path));
     UtUriBuild->path = VcUriParse && *VcUriParse
         ? g_strdup(VcUriParse) : g_strdup("");
 
-    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriWidget->query));
+    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriEntry->query));
     UtUriBuild->query = VcUriParse && *VcUriParse
         ? g_strdup(VcUriParse) : NULL;
 
-    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriWidget->fragment));
+    VcUriParse = gtk_editable_get_text(GTK_EDITABLE(UtUriEntry->fragment));
     UtUriBuild->fragment = VcUriParse && *VcUriParse
         ? g_strdup(VcUriParse) : NULL;
 
-    VcUriParse = FcGuriBuild(UtUriBuild);
-    UtUriBuild->uri = VcUriParse && *VcUriParse
-        ? g_strdup(VcUriParse) : g_strdup("");
+    VcEdittext = FcGuriBuild(UtUriBuild);
 
-    FvGtkUriChange(UtUriWidget, UtUriBuild);
+    if (VcEdittext) {
+        g_object_set_data_full(G_OBJECT(UtUriEntry->uri),
+                "parsed", UtUriBuild, FvGuriFree);
+    }
+    else {
+        FvGuriFree(UtUriBuild);
+    }
 
-    FvGtkUriBoolean(UtUriWidget, TRUE);
+    UtUriBuild = NULL;
+
+    FvGtkUpdatingSet(UtUriEntry->uri, TRUE);
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->uri),
+            VcEdittext ? VcEdittext : NULL);
+    FvGtkUpdatingSet(UtUriEntry->uri, FALSE);
+
+    g_free(VcEdittext);
 }
 
 
@@ -187,55 +147,60 @@ FvGtkUri(GtkWidget* UgBoxMainUp, GtkWidget* UgBoxMainDown, char* VcGtkUri)
     GtkWidget* UgBoxUriBuild;
     GtkWidget* UgBoxUriParse;
     TgGuriParse* UtUriParse;
-    TgGuriWidget* UtUriWidget;
+    TgGuriWidget* UtUriEntry;
 
-    UtUriWidget = g_new0(TgGuriWidget, 1);
+    UtUriEntry = g_new0(TgGuriWidget, 1);
 
     UgBoxUriBuild = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_append(GTK_BOX(UgBoxMainUp), UgBoxUriBuild);
 
-    UtUriWidget->uri = gtk_entry_new();
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->uri), VcGtkUri);
-    gtk_editable_set_width_chars(GTK_EDITABLE(UtUriWidget->uri),
+    UtUriEntry->uri = gtk_entry_new();
+    gtk_editable_set_text(GTK_EDITABLE(UtUriEntry->uri), VcGtkUri);
+    gtk_editable_set_width_chars(GTK_EDITABLE(UtUriEntry->uri),
             strlen(VcGtkUri));
-    gtk_box_append(GTK_BOX(UgBoxUriBuild), UtUriWidget->uri);
+    gtk_box_append(GTK_BOX(UgBoxUriBuild), UtUriEntry->uri);
 
     UgBoxUriParse = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_append(GTK_BOX(UgBoxMainDown), UgBoxUriParse);
 
-    UtUriWidget->scheme = gtk_entry_new();
-    UtUriWidget->host = gtk_entry_new();
-    UtUriWidget->port = gtk_entry_new();
-    UtUriWidget->path = gtk_entry_new();
-    UtUriWidget->query = gtk_entry_new();
-    UtUriWidget->fragment = gtk_entry_new();
+    UtUriEntry->scheme = gtk_entry_new();
+    UtUriEntry->host = gtk_entry_new();
+    UtUriEntry->port = gtk_entry_new();
+    UtUriEntry->path = gtk_entry_new();
+    UtUriEntry->query = gtk_entry_new();
+    UtUriEntry->fragment = gtk_entry_new();
 
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->scheme);
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->host);
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->port);
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->path);
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->query);
-    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriWidget->fragment);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->scheme);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->host);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->port);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->path);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->query);
+    gtk_box_append(GTK_BOX(UgBoxUriParse), UtUriEntry->fragment);
 
     UtUriParse = FtGuriParse(gtk_editable_get_text(
-                GTK_EDITABLE(UtUriWidget->uri)));
+                GTK_EDITABLE(UtUriEntry->uri)));
 
-    g_signal_connect(UtUriWidget->uri,
-            "changed", G_CALLBACK(FvGtkUriParse), UtUriWidget);
+    g_object_set_data_full(G_OBJECT(UtUriEntry->uri),
+            "parsed", UtUriParse, FvGuriFree);
 
-    g_signal_connect(UtUriWidget->scheme,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-    g_signal_connect(UtUriWidget->host,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-    g_signal_connect(UtUriWidget->port,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-    g_signal_connect(UtUriWidget->path,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-    g_signal_connect(UtUriWidget->query,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
-    g_signal_connect(UtUriWidget->fragment,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtUriWidget);
+    FvGtkUpdatingSet(UtUriEntry->uri, FALSE);
 
-    FvGtkUriParse(GTK_EDITABLE(UtUriWidget->uri), UtUriWidget);
+    g_signal_connect(UtUriEntry->uri,
+            "changed", G_CALLBACK(FvGtkChangedParse), UtUriEntry);
+
+    g_signal_connect(UtUriEntry->scheme,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+    g_signal_connect(UtUriEntry->host,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+    g_signal_connect(UtUriEntry->port,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+    g_signal_connect(UtUriEntry->path,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+    g_signal_connect(UtUriEntry->query,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+    g_signal_connect(UtUriEntry->fragment,
+            "changed", G_CALLBACK(FvGtkChangedBuild), UtUriEntry);
+
+    FvGtkChangedParse(GTK_EDITABLE(UtUriEntry->uri), UtUriEntry);
 }
 
