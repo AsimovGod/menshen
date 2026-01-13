@@ -7,7 +7,7 @@
 
 gboolean UgOptVersion = FALSE;
 gboolean UgOptWindow = FALSE;
-gchar* UgOptMode = "1";
+gchar* UgOptMode = NULL;
 gchar* UgOptStyle = NULL;
 
 GOptionEntry UgOptionentry[] = {

@@ -29,7 +29,7 @@ main(int ViArgs, char** AcArgs)
         adw_init();
     }
 
-    UgApplication = gtk_application_new("com.AsimovGod.menshen",
+    UgApplication = gtk_application_new(NULL,
             G_APPLICATION_HANDLES_COMMAND_LINE);
 
     g_application_add_main_option_entries(G_APPLICATION(UgApplication),

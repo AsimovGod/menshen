@@ -99,6 +99,8 @@ case "${VsCase}" in
                         "${@}"
                 )
 
+                declare -x GTK_A11Y="none"
+
                 "${AsCmdGdb[@]}"
                 ;;
 
@@ -108,6 +110,8 @@ case "${VsCase}" in
                 ;;
 
         "run")
+                declare -x GTK_A11Y="none"
+
                 "./build/bin/menshen" "${@}"
                 ;;
 
