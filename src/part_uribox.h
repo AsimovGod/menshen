@@ -103,7 +103,7 @@ FvGtkUriParse(GtkEditable* UgEditable, gpointer GuUserdata)
             UtUriParse && UtUriParse->host ? UtUriParse->host : "");
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(UtUriWidget->port),
-            UtUriParse->port ? UtUriParse->port : -1);
+            UtUriParse && UtUriParse->port ? UtUriParse->port : -1);
 
     gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->path),
             UtUriParse && UtUriParse->path ? UtUriParse->path : "");
