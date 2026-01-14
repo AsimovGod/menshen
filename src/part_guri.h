@@ -7,15 +7,15 @@
 
 
 typedef struct {
-    gchar* string;
-    gchar* scheme;
-    gchar* userinfo;
-    gchar* host;
-    gint port;
-    gchar* path;
-    gchar* query;
-    gchar* fragment;
-    gchar* uri;
+    char* string;
+    char* scheme;
+    char* userinfo;
+    char* host;
+    int port;
+    char* path;
+    char* query;
+    char* fragment;
+    char* uri;
 } TgGuriParse;
 
 
@@ -23,8 +23,8 @@ typedef struct {
     char*
 FcGuriBuild(TgGuriParse* UtGuriParse)
 {
-    gchar* VcUriExport;
-    gchar* VcGuriParsePath;
+    char* VcUriExport;
+    char* VcGuriParsePath;
     GUri* UgUriExport;
 
     UgUriExport = NULL;
@@ -58,9 +58,9 @@ FcGuriBuild(TgGuriParse* UtGuriParse)
 
 
     TgGuriParse*
-FtGuriParse(const gchar* VcUriExport)
+FtGuriParse(const char* VcUriExport)
 {
-    const gchar* VcGuriParse;
+    const char* VcGuriParse;
     GUri* UgUriExport;
     TgGuriParse* UtGuriParse;
 
@@ -134,6 +134,7 @@ FvUriPrint(char* VcUriPrint)
     printf("\n");
     printf("uri         %s\n", UtUriPrint->uri);
     printf("scheme      %s\n", UtUriPrint->scheme);
+    printf("userinfo    %s\n", UtUriPrint->userinfo);
     printf("host        %s\n", UtUriPrint->host);
     printf("port        %d\n", UtUriPrint->port);
     printf("path        %s\n", UtUriPrint->path);

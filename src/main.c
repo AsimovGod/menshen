@@ -19,6 +19,8 @@ main(int ViArgs, char** AcArgs)
     int ViExit;
 
     GtkApplication* UgApplication;
+    AdwStyleManager* UaStylemanager;
+    GtkSettings* UgSettings;
 
     ViExit = FiOptionGlib(ViArgs, AcArgs);
 
@@ -27,6 +29,11 @@ main(int ViArgs, char** AcArgs)
             || g_strcmp0(UgOptMode, "window") == 0)
     {
         adw_init();
+
+        UaStylemanager = adw_style_manager_get_default();
+
+        adw_style_manager_set_color_scheme(UaStylemanager,
+                ADW_COLOR_SCHEME_PREFER_DARK);
     }
 
     UgApplication = gtk_application_new(NULL,
