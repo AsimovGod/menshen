@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <gtk/gtk.h>
 
 
 
@@ -10,6 +11,9 @@ FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     GtkWidget* UgWindow;
     GtkWidget* UgHeaderbar;
     GtkWidget* UgControl;
+    GtkWidget* UgBoxMain;
+    GtkWidget* UgBoxMainUp;
+    GtkWidget* UgBoxMainDown;
 
     UgWindow = gtk_application_window_new(UgApplication);
     gtk_window_set_title(GTK_WINDOW(UgWindow), "MenShen");
@@ -23,24 +27,22 @@ FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
             "minimize,maximize");
     gtk_header_bar_pack_end(GTK_HEADER_BAR(UgHeaderbar), UgControl);
 
-    UtGtkContainer->main = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
-    gtk_widget_set_valign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_widget_set_halign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_window_set_child(GTK_WINDOW(UgWindow), UtGtkContainer->main);
+    UgBoxMain = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
+    gtk_widget_set_valign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_window_set_child(GTK_WINDOW(UgWindow), UgBoxMain);
 
-    UtGtkContainer->mainUp = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_widget_set_valign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_widget_set_halign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_paned_set_start_child(GTK_PANED(UtGtkContainer->main),
-            UtGtkContainer->mainUp);
+    UgBoxMainUp = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_widget_set_valign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(UgBoxMain), UgBoxMainUp);
 
-    UtGtkContainer->mainDown = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_widget_set_valign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_widget_set_halign(UtGtkContainer->main, GTK_ALIGN_FILL);
-    gtk_paned_set_start_child(GTK_PANED(UtGtkContainer->main),
-            UtGtkContainer->mainDown);
+    UgBoxMainDown = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_widget_set_valign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(UgBoxMain, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(UgBoxMain), UgBoxMainDown);
 
-    FvGtkUri(AcArgsGtkActivate[1]);
+    FvGtkUri(UgBoxMainUp, UgBoxMainDown, AcArgsGtkActivate[1]);
 
     gtk_window_present(GTK_WINDOW(UgWindow));
     gtk_window_set_focus(GTK_WINDOW(UgWindow), NULL);

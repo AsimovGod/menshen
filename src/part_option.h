@@ -1,20 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
 
 
+
+
+gboolean UgOptVersion = FALSE;
+gboolean UgOptWindow = FALSE;
+gchar* UgOptMode = NULL;
+gchar* UgOptStyle = NULL;
+
+GOptionEntry UgOptionentry[] = {
+    {"version", 'v',    0,  G_OPTION_ARG_NONE,      &UgOptVersion,
+        "Version",  NULL},
+    {"mode",    'm',    0,  G_OPTION_ARG_STRING,    &UgOptMode,
+        "Mode",     NULL},
+    {"style",   's',    0,  G_OPTION_ARG_STRING,    &UgOptStyle,
+        "Style",    NULL},
+    {NULL}
+};
 
 
     int
 FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 {
     int ViLoop;
-    int ViOptArgs;
-    char** AcOptArgs;
+    gint ViOptArgs;
+    gchar** AcOptArgs;
 
     GOptionContext* UgOptioncontext;
 
     ViOptArgs = ViArgsOptionglib;
-    AcOptArgs = g_strdupv((char**)AcArgsOptionglib);
+    AcOptArgs = g_strdupv((gchar**)AcArgsOptionglib);
     UgOptioncontext = g_option_context_new(NULL);
 
     g_option_context_set_help_enabled(UgOptioncontext, FALSE);
@@ -48,8 +65,8 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 FiOptionGtk(GApplication* UgApplication,
         GApplicationCommandLine* UgCommandline)
 {
-    int ViOptArgs;
-    char** AcOptArgs;
+    gint ViOptArgs;
+    gchar** AcOptArgs;
 
     AcOptArgs = g_application_command_line_get_arguments(UgCommandline,
             &ViOptArgs);

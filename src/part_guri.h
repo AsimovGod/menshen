@@ -1,14 +1,30 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
 
+
+
+
+typedef struct {
+    gchar* string;
+    gchar* scheme;
+    gchar* userinfo;
+    gchar* host;
+    gint port;
+    gchar* path;
+    gchar* query;
+    gchar* fragment;
+    gchar* uri;
+} TgGuriParse;
 
 
 
     char*
 FcGuriBuild(TgGuriParse* UtGuriParse)
 {
-    char* VcUriExport;
-    char* VcGuriParsePath;
+    gchar* VcUriExport;
+    gchar* VcGuriParsePath;
     GUri* UgUriExport;
 
     UgUriExport = NULL;
@@ -42,9 +58,9 @@ FcGuriBuild(TgGuriParse* UtGuriParse)
 
 
     TgGuriParse*
-FtGuriParse(const char* VcUriExport)
+FtGuriParse(const gchar* VcUriExport)
 {
-    const char* VcGuriParse;
+    const gchar* VcGuriParse;
     GUri* UgUriExport;
     TgGuriParse* UtGuriParse;
 
@@ -86,7 +102,7 @@ FtGuriParse(const char* VcUriExport)
 
 
     void
-FvGuriFree(void* UpGuriFree)
+FvGuriFree(gpointer UpGuriFree)
 {
     TgGuriParse* UtGuriFree;
 
