@@ -89,45 +89,46 @@ FvGtkUriParse(GtkEditable* UgEditable, void* GuUserdata)
 
 
     void
-FvGtkUriEntry(TgGtkContainer* UtGtkContainer, TgGtkUri* UtGtkUri)
+FvGtkUriEntryClear(GtkEntry* UgUriEntry,
+        GtkEntryIconPosition UgUriPos,
+        GdkEvent* UgUriEvent,
+        void* GuUriUserdata)
 {
-    UtGtkUri->entry->scheme = gtk_entry_new();
-    UtGtkUri->entry->userinfo = gtk_entry_new();
-    UtGtkUri->entry->host = gtk_entry_new();
-    UtGtkUri->entry->path = gtk_entry_new();
-    UtGtkUri->entry->query = gtk_entry_new();
-    UtGtkUri->entry->fragment = gtk_entry_new();
-    UtGtkUri->entry->uri = gtk_entry_new();
+    if (UgUriPos == GTK_ENTRY_ICON_SECONDARY) {
+        gtk_editable_delete_text(GTK_EDITABLE(UgUriEntry), 0, -1);
+    }
+}
 
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->scheme);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->userinfo);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->host);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->path);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->query);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->entry->fragment);
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriBuild),
-            UtGtkUri->entry->uri);
 
-    g_signal_connect(UtGtkUri->entry->uri,
-            "changed", G_CALLBACK(FvGtkUriParse), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->scheme,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->userinfo,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->host,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->path,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->query,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
-    g_signal_connect(UtGtkUri->entry->fragment,
-            "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
+    void
+FvGtkUriEntry(TgGtkUri* UtGtkUri, GtkWidget* UgUriParent,
+        GtkWidget** UgUriEntry, int ViUriRow, const char* VcUriLabel)
+{
+    *UgUriEntry = gtk_entry_new();
+
+    gtk_widget_set_hexpand(*UgUriEntry, TRUE);
+    gtk_widget_set_margin_end(*UgUriEntry, 16);
+
+    gtk_entry_set_icon_from_icon_name(GTK_ENTRY(*UgUriEntry),
+            GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
+
+    g_signal_connect(*UgUriEntry,
+            "icon-press", G_CALLBACK(FvGtkUriEntryClear), NULL);
+
+    if (*UgUriEntry == UtGtkUri->entry->uri) {
+        g_signal_connect(*UgUriEntry,
+                "changed", G_CALLBACK(FvGtkUriParse), UtGtkUri);
+    }
+    else {
+        g_signal_connect(*UgUriEntry,
+                "changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
+    }
+
+    gtk_grid_attach(GTK_GRID(UgUriParent),
+            *UgUriEntry, 1, ViUriRow, 2, 1);
+
+    gtk_grid_attach(GTK_GRID(UgUriParent),
+            gtk_label_new(VcUriLabel), 0, ViUriRow, 1, 1);
 }
 
 
@@ -136,18 +137,38 @@ FvGtkUriSpin(TgGtkContainer* UtGtkContainer, TgGtkUri* UtGtkUri)
 {
     UtGtkUri->spin->port = gtk_spin_button_new_with_range(-1, 65535, 1);
 
-    gtk_box_append(GTK_BOX(UtGtkContainer->box->uriParse),
-            UtGtkUri->spin->port);
+    gtk_widget_set_hexpand(UtGtkUri->spin->port, TRUE);
+    gtk_widget_set_margin_end(UtGtkUri->spin->port, 16);
 
     g_signal_connect(UtGtkUri->spin->port,
             "value-changed", G_CALLBACK(FvGtkUriBuild), UtGtkUri);
+
+    gtk_grid_attach(GTK_GRID(UtGtkContainer->grid->uriParse),
+            UtGtkUri->spin->port, 1, 3, 1, 1);
+
+    gtk_grid_attach(GTK_GRID(UtGtkContainer->grid->uriParse),
+            gtk_label_new("Port:"), 0, 3, 1, 1);
 }
 
 
     void
 FvGtkUriWidget(TgGtkContainer* UtGtkContainer, TgGtkUri* UtGtkUri)
 {
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriBuild,
+            &UtGtkUri->entry->uri, 0, "URI:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->scheme, 0, "Scheme:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->host, 1, "Host:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->userinfo, 2, "Userinfo:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->path, 4, "Path:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->query, 5, "Query:");
+    FvGtkUriEntry(UtGtkUri, UtGtkContainer->grid->uriParse,
+            &UtGtkUri->entry->fragment, 6, "Fragment:");
+
     FvGtkUriSpin(UtGtkContainer, UtGtkUri);
-    FvGtkUriEntry(UtGtkContainer, UtGtkUri);
 }
 

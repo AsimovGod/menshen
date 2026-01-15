@@ -23,35 +23,13 @@ typedef struct {
 } TgGuriEntry;
 
 typedef struct {
-    GtkWidget* uri;
-    GtkWidget* scheme;
-    GtkWidget* userinfo;
-    GtkWidget* host;
-    GtkWidget* path;
-    GtkWidget* query;
-    GtkWidget* fragment;
-} TgGuriTextview;
-
-typedef struct {
     GtkWidget* port;
 } TgGuriSpin;
 
 typedef struct {
-    GtkWidget* uri;
-    GtkWidget* scheme;
-    GtkWidget* userinfo;
-    GtkWidget* host;
-    GtkWidget* path;
-    GtkWidget* query;
-    GtkWidget* fragment;
-} TgGuriStack;
-
-typedef struct {
     TgGuriParse* parse;
     TgGuriEntry* entry;
-    TgGuriTextview* textview;
     TgGuriSpin* spin;
-    TgGuriStack* stack;
 } TgGtkUri;
 
 typedef struct {
@@ -68,11 +46,17 @@ typedef struct {
 typedef struct {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
+} TgGtkGrid;
+
+typedef struct {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
 } TgGtkScroll;
 
 typedef struct {
     GtkWidget* window;
     TgGtkPaned* paned;
     TgGtkBox* box;
+    TgGtkGrid* grid;
     TgGtkScroll* scroll;
 } TgGtkContainer;
