@@ -1,47 +1,34 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <gtk/gtk.h>
 
-
-
-
-typedef struct {
-    gchar* string;
-    gchar* scheme;
-    gchar* userinfo;
-    gchar* host;
-    gint port;
-    gchar* path;
-    gchar* query;
-    gchar* fragment;
-    gchar* uri;
-} TgGuriParse;
 
 
 
     char*
 FcGuriBuild(TgGuriParse* UtGuriParse)
 {
-    gchar* VcUriExport;
-    gchar* VcGuriParsePath;
+    char* VcUriExport;
+    char* VcGuriParsePath;
     GUri* UgUriExport;
 
     UgUriExport = NULL;
     VcGuriParsePath = g_strdup("");
 
-    if (UtGuriParse->scheme) {
+    if (UtGuriParse->scheme && *UtGuriParse->scheme) {
         VcGuriParsePath = UtGuriParse->path && *UtGuriParse->path
             ? g_strconcat("/", UtGuriParse->path, NULL) : g_strdup("");
 
         UgUriExport = g_uri_build(G_URI_FLAGS_NONE,
                 UtGuriParse->scheme,
-                UtGuriParse->userinfo ? UtGuriParse->userinfo : NULL,
-                UtGuriParse->host ? UtGuriParse->host : NULL,
+                UtGuriParse->userinfo && *UtGuriParse->userinfo
+                ? UtGuriParse->userinfo : NULL,
+                UtGuriParse->host && *UtGuriParse->host
+                ? UtGuriParse->host : NULL,
                 UtGuriParse->port ? UtGuriParse->port : -1,
                 VcGuriParsePath,
-                UtGuriParse->query ? UtGuriParse->query : NULL,
-                UtGuriParse->fragment ? UtGuriParse->fragment : NULL);
+                UtGuriParse->query && *UtGuriParse->query
+                ? UtGuriParse->query : NULL,
+                UtGuriParse->fragment && *UtGuriParse->fragment
+                ? UtGuriParse->fragment : NULL);
 
         VcUriExport = g_uri_to_string(UgUriExport ? UgUriExport : NULL);
     }
@@ -58,9 +45,9 @@ FcGuriBuild(TgGuriParse* UtGuriParse)
 
 
     TgGuriParse*
-FtGuriParse(const gchar* VcUriExport)
+FtGuriParse(const char* VcUriExport)
 {
-    const gchar* VcGuriParse;
+    const char* VcGuriParse;
     GUri* UgUriExport;
     TgGuriParse* UtGuriParse;
 
