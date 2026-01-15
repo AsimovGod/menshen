@@ -6,10 +6,14 @@
     void
 FvGtkUri(TgGtkContainer* UtGtkContainer, char* VcGtkUri)
 {
-    TgGuriWidget* UtUriWidget;
+    TgGtkUri* UtGtkUri;
 
-    UtUriWidget = g_new0(TgGuriWidget, 1);
-    UtUriWidget->parse = g_new0(TgGuriParse, 1);
+    UtGtkUri = g_new0(TgGtkUri, 1);
+    UtGtkUri->entry = g_new0(TgGuriEntry, 1);
+    UtGtkUri->textview = g_new0(TgGuriTextview, 1);
+    UtGtkUri->stack = g_new0(TgGuriStack, 1);
+    UtGtkUri->spin = g_new0(TgGuriSpin, 1);
+    UtGtkUri->parse = g_new0(TgGuriParse, 1);
 
     UtGtkContainer->scroll->uriBuild = gtk_scrolled_window_new();
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
@@ -39,16 +43,25 @@ FvGtkUri(TgGtkContainer* UtGtkContainer, char* VcGtkUri)
                 UtGtkContainer->scroll->uriParse),
             UtGtkContainer->box->uriParse);
 
-    FvGtkUriWidget(UtGtkContainer, UtUriWidget);
+    FvGtkUriWidget(UtGtkContainer, UtGtkUri);
 
-    UtUriWidget->parse = FtGuriParse(VcGtkUri ? VcGtkUri : "");
-    gtk_editable_set_text(GTK_EDITABLE(UtUriWidget->uri),
-            UtUriWidget->parse->uri);
-    FvGtkUriParse(GTK_EDITABLE(UtUriWidget->uri), UtUriWidget);
+    UtGtkUri->parse = FtGuriParse(VcGtkUri ? VcGtkUri : "");
+    gtk_editable_set_text(GTK_EDITABLE(UtGtkUri->entry->uri),
+            UtGtkUri->parse->uri);
+    FvGtkUriParse(GTK_EDITABLE(UtGtkUri->entry->uri), UtGtkUri);
 
     g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
-            "UtUriWidget->parse",
-            UtUriWidget->parse, (GDestroyNotify)FvGuriFree);
+            "UtGtkUri->parse", UtGtkUri->parse, (GDestroyNotify)FvGuriFree);
+    g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
+            "UtGtkUri->entry", UtGtkUri->entry, (GDestroyNotify)g_free);
+    g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
+            "UtGtkUri->textview", UtGtkUri->textview, (GDestroyNotify)g_free);
+    g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
+            "UtGtkUri->spin", UtGtkUri->spin, (GDestroyNotify)g_free);
+    g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
+            "UtGtkUri->stack", UtGtkUri->stack, (GDestroyNotify)g_free);
+    g_object_set_data_full(G_OBJECT(UtGtkContainer->window),
+            "UtGtkUri", UtGtkUri, (GDestroyNotify)g_free);
 }
 
 
