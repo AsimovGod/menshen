@@ -7,7 +7,10 @@
 #include "main.h"
 #include "part_file.h"
 #include "part_guri.h"
-#include "part_uribox.h"
+#include "part_uri_change.h"
+#include "part_uri_clipboard.h"
+#include "part_uri_widget.h"
+#include "part_uri.h"
 #include "part_window.h"
 #include "part_option.h"
 
