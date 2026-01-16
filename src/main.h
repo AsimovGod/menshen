@@ -1,3 +1,50 @@
+#include <stdio.h>
+
+
+
+
+typedef struct {
+    GtkWidget* main;
+    char* Tmain;
+    int Hmain;
+    int Wmain;
+} TgGtkWindow;
+
+typedef struct {
+    GtkWidget* main;
+} TgGtkHeaderbar;
+
+typedef struct {
+    GtkWidget* main;
+} TgGtkControl;
+
+typedef struct {
+    GtkWidget* main;
+    double Rmain;
+    GtkWidget* mainLeft;
+    double RmainLeft;
+    GtkWidget* mainRight;
+    double RmainRight;
+} TgGtkPaned;
+
+typedef struct {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+} TgGtkGrid;
+
+typedef struct {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+} TgGtkScroll;
+
+typedef struct {
+    TgGtkWindow* window;
+    TgGtkHeaderbar* headerbar;
+    TgGtkControl* control;
+    TgGtkPaned* paned;
+    TgGtkGrid* grid;
+    TgGtkScroll* scroll;
+} TgGtkLayout;
 
 
 typedef struct {
@@ -20,43 +67,15 @@ typedef struct {
     GtkWidget* path;
     GtkWidget* query;
     GtkWidget* fragment;
-} TgGuriEntry;
+} TgGtkUriEntry;
 
 typedef struct {
     GtkWidget* port;
-} TgGuriSpin;
+} TgGtkUriSpin;
 
 typedef struct {
     TgGuriParse* parse;
-    TgGuriEntry* entry;
-    TgGuriSpin* spin;
+    TgGtkUriEntry* entry;
+    TgGtkUriSpin* spin;
 } TgGtkUri;
 
-typedef struct {
-    GtkWidget* main;
-    GtkWidget* mainUp;
-    GtkWidget* mainDown;
-} TgGtkPaned;
-
-typedef struct {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-} TgGtkBox;
-
-typedef struct {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-} TgGtkGrid;
-
-typedef struct {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-} TgGtkScroll;
-
-typedef struct {
-    GtkWidget* window;
-    TgGtkPaned* paned;
-    TgGtkBox* box;
-    TgGtkGrid* grid;
-    TgGtkScroll* scroll;
-} TgGtkContainer;
