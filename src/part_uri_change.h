@@ -18,7 +18,7 @@ FcGtkUriEntryGet(GtkWidget* UgEntry)
 
 
     void
-FgGtkUriEntrySet(GtkWidget* UgEntry, char* VcUriEntry)
+FvGtkUriEntrySet(GtkWidget* UgEntry, char* VcUriEntry)
 {
     gtk_editable_set_text(GTK_EDITABLE(UgEntry), VcUriEntry ? VcUriEntry : "");
 }
@@ -75,12 +75,12 @@ FvGtkUriEntryParse(GtkEditable* UgEditable, void* GuUserdata)
     UtUriParse = FtGuriParse(VcText ? VcText : NULL);
     UtGtkUri->parse = UtUriParse ? UtUriParse : g_new0(TgGuriParse, 1);
 
-    FgGtkUriEntrySet(UtGtkUri->entry->scheme, UtGtkUri->parse->scheme);
-    FgGtkUriEntrySet(UtGtkUri->entry->userinfo, UtGtkUri->parse->userinfo);
-    FgGtkUriEntrySet(UtGtkUri->entry->host, UtGtkUri->parse->host);
-    FgGtkUriEntrySet(UtGtkUri->entry->path, UtGtkUri->parse->path);
-    FgGtkUriEntrySet(UtGtkUri->entry->query, UtGtkUri->parse->query);
-    FgGtkUriEntrySet(UtGtkUri->entry->fragment, UtGtkUri->parse->fragment);
+    FvGtkUriEntrySet(UtGtkUri->entry->scheme, UtGtkUri->parse->scheme);
+    FvGtkUriEntrySet(UtGtkUri->entry->userinfo, UtGtkUri->parse->userinfo);
+    FvGtkUriEntrySet(UtGtkUri->entry->host, UtGtkUri->parse->host);
+    FvGtkUriEntrySet(UtGtkUri->entry->path, UtGtkUri->parse->path);
+    FvGtkUriEntrySet(UtGtkUri->entry->query, UtGtkUri->parse->query);
+    FvGtkUriEntrySet(UtGtkUri->entry->fragment, UtGtkUri->parse->fragment);
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(UtGtkUri->spin->port),
             UtGtkUri->parse->port ? UtGtkUri->parse->port : -1);
