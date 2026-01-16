@@ -92,12 +92,71 @@ FvGtkUriParse(GtkEditable* UgEditable, void* GuUserdata)
 
 
     void
-FvGtkWidgetClear(GtkEntry* UgUriEntry,
-        GtkEntryIconPosition UgUriPos, GdkEvent* UgUriEvent,
+FvGtkWidgetClear(GtkEntry* UgEntry,
+        GtkEntryIconPosition UgPos, GdkEvent* UgEvent,
         void* GuUriUserdata)
 {
-    if (UgUriPos == GTK_ENTRY_ICON_SECONDARY) {
-        gtk_editable_delete_text(GTK_EDITABLE(UgUriEntry), 0, -1);
+    if (UgPos == GTK_ENTRY_ICON_SECONDARY) {
+        gtk_editable_delete_text(GTK_EDITABLE(UgEntry), 0, -1);
+    }
+}
+
+
+    void
+FvGtkUriWidgetCopy(GtkButton *UgButton, void* GuUserdata)
+{
+    GtkEntry* UgEntry;
+    GdkClipboard* UgClipboard;
+    const char* VcUriText;
+
+    UgEntry = GuUserdata;
+    VcUriText = gtk_editable_get_text(GTK_EDITABLE(UgEntry));
+
+    if (VcUriText) {
+        UgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(UgEntry));
+        gdk_clipboard_set_text(UgClipboard, VcUriText);
+    }
+}
+
+
+    void
+FvGtkWidgetPasteReceived(GObject* UgObject,
+        GAsyncResult* UgResult,
+        void* GuUserdata)
+{
+    GtkEntry* UgEntry;
+    GdkClipboard* UgClipboard;
+    const GValue* UgValue;
+    const char* VcUriText;
+
+    UgEntry = GTK_ENTRY(GuUserdata);
+    UgClipboard = GDK_CLIPBOARD(UgObject);
+    UgValue = gdk_clipboard_read_value_finish(UgClipboard, UgResult, NULL);
+
+    if (! UgValue) return;
+    if (! G_VALUE_HOLDS_STRING(UgValue)) return;
+
+    VcUriText = g_value_get_string(UgValue);
+
+    if (! VcUriText) return;
+
+    gtk_editable_set_text(GTK_EDITABLE(UgEntry), VcUriText);
+}
+
+
+    void
+FvGtkWidgetPaste(GtkButton *UgButton, void* GuUserdata)
+{
+    GtkEntry* UgEntry;
+    GdkClipboard* UgClipboard;
+
+    UgEntry = GTK_ENTRY(GuUserdata);
+    UgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(UgEntry));
+
+    if (UgClipboard) {
+        gdk_clipboard_read_value_async(UgClipboard,
+                G_TYPE_STRING, G_PRIORITY_DEFAULT, NULL,
+                FvGtkWidgetPasteReceived, UgEntry);
     }
 }
 
@@ -107,6 +166,8 @@ FgGtkUriWidget(TgGtkUri* UtGtkUri, const char* VcUriType,
         GtkWidget* UgUriParent, int ViUriRow, const char* VcUriLabel)
 {
     GtkWidget* UgUriWidget;
+    GtkWidget* UgUriButtonCopy;
+    GtkWidget* UgUriButtonPaste;
 
     if (strcmp(VcUriType, "buttonPort") == 0) {
         UgUriWidget = gtk_spin_button_new_with_range(-1, 65535, 1);
@@ -138,14 +199,30 @@ FgGtkUriWidget(TgGtkUri* UtGtkUri, const char* VcUriType,
     else return NULL;
 
     gtk_widget_set_hexpand(UgUriWidget, TRUE);
-    gtk_widget_set_margin_start(UgUriWidget, 16);
-    gtk_widget_set_margin_end(UgUriWidget, 16);
+    gtk_widget_set_margin_start(UgUriWidget, 2);
+    gtk_widget_set_margin_end(UgUriWidget, 2);
+
+    UgUriButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
+    gtk_widget_set_tooltip_text(UgUriButtonCopy, "Copy");
+    g_signal_connect(UgUriButtonCopy,
+            "clicked", G_CALLBACK(FvGtkUriWidgetCopy), UgUriWidget);
+
+    UgUriButtonPaste = gtk_button_new_from_icon_name("edit-paste-symbolic");
+    gtk_widget_set_tooltip_text(UgUriButtonPaste, "Paste");
+    g_signal_connect(UgUriButtonPaste,
+            "clicked", G_CALLBACK(FvGtkWidgetPaste), UgUriWidget);
+
+    gtk_grid_attach(GTK_GRID(UgUriParent),
+            gtk_label_new(VcUriLabel), 0, ViUriRow, 1, 1);
 
     gtk_grid_attach(GTK_GRID(UgUriParent),
             UgUriWidget, 1, ViUriRow, 2, 1);
 
     gtk_grid_attach(GTK_GRID(UgUriParent),
-            gtk_label_new(VcUriLabel), 0, ViUriRow, 1, 1);
+            UgUriButtonCopy, 3, ViUriRow, 1, 1);
+
+    gtk_grid_attach(GTK_GRID(UgUriParent),
+            UgUriButtonPaste, 4, ViUriRow, 1, 1);
 
     return UgUriWidget;
 }
