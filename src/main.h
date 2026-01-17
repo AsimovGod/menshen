@@ -1,61 +1,61 @@
-#include <stdio.h>
+// main.h
 
 
 
-typedef struct {
+typedef struct SuOption {
     bool version;
     bool help;
     char* mode;
     GOptionEntry* option;
     int optionN;
-} TgOption;
+} SuOption;
 
 
-typedef struct {
+typedef struct SuGtkWindow {
     GtkWidget* main;
     char* mainT;
     int mainH;
     int mainW;
-} TgGtkWindow;
+} SuGtkWindow;
 
-typedef struct {
+typedef struct SuGtkHeaderbar {
     GtkWidget* main;
-} TgGtkHeaderbar;
+} SuGtkHeaderbar;
 
-typedef struct {
+typedef struct SuGtkControl {
     GtkWidget* main;
-} TgGtkControl;
+} SuGtkControl;
 
-typedef struct {
+typedef struct SuGtkPaned {
     GtkWidget* main;
     double mainR;
     GtkWidget* mainLeft;
     double mainLeftR;
     GtkWidget* mainRight;
     double mainRightR;
-} TgGtkPaned;
+} SuGtkPaned;
 
-typedef struct {
+typedef struct SuGtkGrid {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
-} TgGtkGrid;
+} SuGtkGrid;
 
-typedef struct {
+typedef struct SuGtkScroll {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
-} TgGtkScroll;
+} SuGtkScroll;
 
-typedef struct {
-    TgGtkWindow* window;
-    TgGtkHeaderbar* headerbar;
-    TgGtkControl* control;
-    TgGtkPaned* paned;
-    TgGtkGrid* grid;
-    TgGtkScroll* scroll;
-} TgGtkLayout;
+typedef struct SuGtkLayout {
+    SuGtkWindow* window;
+    SuGtkHeaderbar* headerbar;
+    SuGtkControl* control;
+    SuGtkPaned* paned;
+    SuGtkGrid* grid;
+    SuGtkScroll* scroll;
+} SuGtkLayout;
 
 
-typedef struct {
+typedef struct SuGuriParse {
     char* string;
     char* scheme;
     char* userinfo;
@@ -65,9 +65,9 @@ typedef struct {
     char* query;
     char* fragment;
     char* uri;
-} TgGuriParse;
+} SuGuriParse;
 
-typedef struct {
+typedef struct SuGtkUriEntry {
     GtkWidget* uri;
     GtkWidget* scheme;
     GtkWidget* userinfo;
@@ -75,16 +75,16 @@ typedef struct {
     GtkWidget* path;
     GtkWidget* query;
     GtkWidget* fragment;
-} TgGtkUriEntry;
+} SuGtkUriEntry;
 
-typedef struct {
+typedef struct SuGtkUriSpin {
     GtkWidget* port;
-} TgGtkUriSpin;
+} SuGtkUriSpin;
 
-typedef struct {
-    TgGuriParse* parse;
-    TgGtkUriEntry* entry;
-    TgGtkUriSpin* spin;
+typedef struct SuGtkUri {
+    SuGuriParse* parse;
+    SuGtkUriEntry* entry;
+    SuGtkUriSpin* spin;
     bool boolean;
-} TgGtkUri;
+} SuGtkUri;
 

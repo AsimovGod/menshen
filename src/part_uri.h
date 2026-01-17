@@ -1,104 +1,103 @@
-#include <stdio.h>
-
+// part_uri.h
 
 
 
     void
-FvGtkUriWidget(TgGtkLayout* UtGtkLayout, TgGtkUri* UtGtkUri)
+FvGtkUriWidget(SuGtkLayout* PsGtkLayout, SuGtkUri* PsGtkUri)
 {
-    UtGtkUri->entry->uri = FgGtkUriEntry(UtGtkUri, "build",
-            UtGtkLayout->grid->uriBuild, 0, "URI");
-    UtGtkUri->entry->scheme = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 0, "Scheme");
-    UtGtkUri->entry->host = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 1, "Host");
-    UtGtkUri->entry->userinfo = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 2, "Userinfo");
-    UtGtkUri->spin->port = FgGtkUriSpin(UtGtkUri, "buttonPort",
-            UtGtkLayout->grid->uriParse, 3, "Port");
-    UtGtkUri->entry->path = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 4, "Path");
-    UtGtkUri->entry->query = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 5, "Query");
-    UtGtkUri->entry->fragment = FgGtkUriEntry(UtGtkUri, "parse",
-            UtGtkLayout->grid->uriParse, 6, "Fragment");
+    PsGtkUri->entry->uri = FgGtkUriEntry(PsGtkUri, "build",
+            PsGtkLayout->grid->uriBuild, 0, "URI");
+    PsGtkUri->entry->scheme = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 0, "Scheme");
+    PsGtkUri->entry->host = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 1, "Host");
+    PsGtkUri->entry->userinfo = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 2, "Userinfo");
+    PsGtkUri->spin->port = FgGtkUriSpin(PsGtkUri, "buttonPort",
+            PsGtkLayout->grid->uriParse, 3, "Port");
+    PsGtkUri->entry->path = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 4, "Path");
+    PsGtkUri->entry->query = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 5, "Query");
+    PsGtkUri->entry->fragment = FgGtkUriEntry(PsGtkUri, "parse",
+            PsGtkLayout->grid->uriParse, 6, "Fragment");
 }
 
 
     void
 FvGtkUriFree(void* PvFree)
 {
-    TgGtkUri* UtGtkUri;
+    SuGtkUri* PsGtkUri;
 
-    UtGtkUri = PvFree;
+    PsGtkUri = PvFree;
 
-    if (! UtGtkUri) return;
+    if (! PsGtkUri) return;
 
-    g_free(UtGtkUri->parse);
-    g_free(UtGtkUri->entry);
-    g_free(UtGtkUri->spin);
-    g_free(UtGtkUri);
+    g_free(PsGtkUri->parse);
+    g_free(PsGtkUri->entry);
+    g_free(PsGtkUri->spin);
+    g_free(PsGtkUri);
 }
 
 
     void
-FvGtkUri(TgGtkLayout* UtGtkLayout, char* VcUri)
+FvGtkUri(SuGtkLayout* PsGtkLayout, char* VcUri)
 {
-    TgGtkUri* UtGtkUri;
+    SuGtkUri* PsGtkUri;
 
-    UtGtkUri = g_new0(TgGtkUri, 1);
-    UtGtkUri->entry = g_new0(TgGtkUriEntry, 1);
-    UtGtkUri->spin = g_new0(TgGtkUriSpin, 1);
-    UtGtkUri->parse = g_new0(TgGuriParse, 1);
+    PsGtkUri = g_new0(SuGtkUri, 1);
+    PsGtkUri->entry = g_new0(SuGtkUriEntry, 1);
+    PsGtkUri->spin = g_new0(SuGtkUriSpin, 1);
+    PsGtkUri->parse = g_new0(SuGuriParse, 1);
 
-    UtGtkLayout->scroll->uriBuild = gtk_scrolled_window_new();
-    UtGtkLayout->scroll->uriParse = gtk_scrolled_window_new();
-    UtGtkLayout->grid->uriBuild = gtk_grid_new();
-    UtGtkLayout->grid->uriParse = gtk_grid_new();
+    PsGtkLayout->scroll->uriBuild = gtk_scrolled_window_new();
+    PsGtkLayout->scroll->uriParse = gtk_scrolled_window_new();
+    PsGtkLayout->grid->uriBuild = gtk_grid_new();
+    PsGtkLayout->grid->uriParse = gtk_grid_new();
 
-    g_object_set_data_full(G_OBJECT(UtGtkLayout->window->main),
-            "UtGtkUri", UtGtkUri, (GDestroyNotify)FvGtkUriFree);
+    g_object_set_data_full(G_OBJECT(PsGtkLayout->window->main),
+            "PsGtkUri", PsGtkUri, (GDestroyNotify)FvGtkUriFree);
 
-    gtk_paned_set_start_child(GTK_PANED(UtGtkLayout->paned->mainLeft),
-            UtGtkLayout->scroll->uriBuild);
-    gtk_paned_set_end_child(GTK_PANED(UtGtkLayout->paned->mainLeft),
-            UtGtkLayout->scroll->uriParse);
+    gtk_paned_set_start_child(GTK_PANED(PsGtkLayout->paned->mainLeft),
+            PsGtkLayout->scroll->uriBuild);
+    gtk_paned_set_end_child(GTK_PANED(PsGtkLayout->paned->mainLeft),
+            PsGtkLayout->scroll->uriParse);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
-                UtGtkLayout->scroll->uriBuild), UtGtkLayout->grid->uriBuild);
+                PsGtkLayout->scroll->uriBuild), PsGtkLayout->grid->uriBuild);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
-                UtGtkLayout->scroll->uriParse), UtGtkLayout->grid->uriParse);
+                PsGtkLayout->scroll->uriParse), PsGtkLayout->grid->uriParse);
 
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
-                UtGtkLayout->scroll->uriBuild),
+                PsGtkLayout->scroll->uriBuild),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
-                UtGtkLayout->scroll->uriParse),
+                PsGtkLayout->scroll->uriParse),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-    gtk_widget_set_vexpand(UtGtkLayout->grid->uriBuild, TRUE);
-    gtk_widget_set_hexpand(UtGtkLayout->grid->uriBuild, TRUE);
-    gtk_widget_set_vexpand(UtGtkLayout->grid->uriParse, TRUE);
-    gtk_widget_set_hexpand(UtGtkLayout->grid->uriParse, TRUE);
+    gtk_widget_set_vexpand(PsGtkLayout->grid->uriBuild, TRUE);
+    gtk_widget_set_hexpand(PsGtkLayout->grid->uriBuild, TRUE);
+    gtk_widget_set_vexpand(PsGtkLayout->grid->uriParse, TRUE);
+    gtk_widget_set_hexpand(PsGtkLayout->grid->uriParse, TRUE);
 
-    gtk_widget_set_valign(UtGtkLayout->grid->uriBuild, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(UtGtkLayout->grid->uriBuild, GTK_ALIGN_FILL);
-    gtk_widget_set_valign(UtGtkLayout->grid->uriParse, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(UtGtkLayout->grid->uriParse, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(PsGtkLayout->grid->uriBuild, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(PsGtkLayout->grid->uriBuild, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(PsGtkLayout->grid->uriParse, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(PsGtkLayout->grid->uriParse, GTK_ALIGN_FILL);
 
-    gtk_grid_set_row_homogeneous(GTK_GRID(UtGtkLayout->grid->uriBuild), TRUE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(UtGtkLayout->grid->uriBuild), FALSE);
-    gtk_grid_set_row_homogeneous(GTK_GRID(UtGtkLayout->grid->uriParse), TRUE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(UtGtkLayout->grid->uriParse), FALSE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(PsGtkLayout->grid->uriBuild), TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(PsGtkLayout->grid->uriBuild), FALSE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(PsGtkLayout->grid->uriParse), TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(PsGtkLayout->grid->uriParse), FALSE);
 
-    gtk_grid_set_row_spacing(GTK_GRID(UtGtkLayout->grid->uriBuild), 4);
-    gtk_grid_set_column_spacing(GTK_GRID(UtGtkLayout->grid->uriBuild), 4);
-    gtk_grid_set_row_spacing(GTK_GRID(UtGtkLayout->grid->uriParse), 4);
-    gtk_grid_set_column_spacing(GTK_GRID(UtGtkLayout->grid->uriParse), 4);
+    gtk_grid_set_row_spacing(GTK_GRID(PsGtkLayout->grid->uriBuild), 4);
+    gtk_grid_set_column_spacing(GTK_GRID(PsGtkLayout->grid->uriBuild), 4);
+    gtk_grid_set_row_spacing(GTK_GRID(PsGtkLayout->grid->uriParse), 4);
+    gtk_grid_set_column_spacing(GTK_GRID(PsGtkLayout->grid->uriParse), 4);
 
-    FvGtkUriWidget(UtGtkLayout, UtGtkUri);
+    FvGtkUriWidget(PsGtkLayout, PsGtkUri);
 
-    gtk_editable_set_text(GTK_EDITABLE(UtGtkUri->entry->uri),
+    gtk_editable_set_text(GTK_EDITABLE(PsGtkUri->entry->uri),
             VcUri ? VcUri : "");
-    FvGtkUriEntryParse(GTK_EDITABLE(UtGtkUri->entry->uri), UtGtkUri);
+    FvGtkUriEntryParse(GTK_EDITABLE(PsGtkUri->entry->uri), PsGtkUri);
 }
 

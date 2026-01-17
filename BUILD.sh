@@ -81,6 +81,7 @@ case "${VsCase}" in
                 AsCmdGcc=(
                         gcc
                         -g
+                        -O0
                         "./src/main.c"
                         -o
                         "./build/bin/menshen"
@@ -107,6 +108,25 @@ case "${VsCase}" in
         "build-gdb")
                 'FrBuildSh' "build"
                 'FrBuildSh' "gdb" "${@}"
+                ;;
+
+        "valgrind")
+                declare -a "AsCmdValgrind"
+                AsCmdValgrind=(
+                        valgrind
+                        --tool=memcheck
+                        --leak-check=full
+                        --show-leak-kinds=all
+                        --num-callers=20
+                        "./build/bin/menshen"
+                )
+
+                "${AsCmdValgrind[@]}"
+                ;;
+
+        "build-valgrind")
+                'FrBuildSh' "build"
+                'FrBuildSh' "valgrind" "${@}"
                 ;;
 
         "run")

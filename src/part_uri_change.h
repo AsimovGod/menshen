@@ -1,5 +1,4 @@
-#include <stdio.h>
-
+// part_uri_change.h
 
 
 
@@ -25,39 +24,39 @@ FvGtkUriEntryBuild(GtkEditable* UgEditable, void* PvUserdata)
 {
     int ViPort;
     char* VcText;
-    TgGtkUri* UtGtkUri;
+    SuGtkUri* PsGtkUri;
 
-    UtGtkUri = PvUserdata;
+    PsGtkUri = PvUserdata;
 
-    if (! UtGtkUri->entry || UtGtkUri->boolean) return;
+    if (! PsGtkUri->entry || PsGtkUri->boolean) return;
 
-    UtGtkUri->boolean = TRUE;
+    PsGtkUri->boolean = TRUE;
 
-    if (UtGtkUri->parse->scheme) g_free(UtGtkUri->parse->scheme);
-    if (UtGtkUri->parse->userinfo) g_free(UtGtkUri->parse->userinfo);
-    if (UtGtkUri->parse->host) g_free(UtGtkUri->parse->host);
-    if (UtGtkUri->parse->path) g_free(UtGtkUri->parse->path);
-    if (UtGtkUri->parse->query) g_free(UtGtkUri->parse->query);
-    if (UtGtkUri->parse->fragment) g_free(UtGtkUri->parse->fragment);
+    if (PsGtkUri->parse->scheme) g_free(PsGtkUri->parse->scheme);
+    if (PsGtkUri->parse->userinfo) g_free(PsGtkUri->parse->userinfo);
+    if (PsGtkUri->parse->host) g_free(PsGtkUri->parse->host);
+    if (PsGtkUri->parse->path) g_free(PsGtkUri->parse->path);
+    if (PsGtkUri->parse->query) g_free(PsGtkUri->parse->query);
+    if (PsGtkUri->parse->fragment) g_free(PsGtkUri->parse->fragment);
 
-    UtGtkUri->parse->scheme = FcGtkUriEntryGet(UtGtkUri->entry->scheme);
-    UtGtkUri->parse->userinfo = FcGtkUriEntryGet(UtGtkUri->entry->userinfo);
-    UtGtkUri->parse->host = FcGtkUriEntryGet(UtGtkUri->entry->host);
-    UtGtkUri->parse->path = FcGtkUriEntryGet(UtGtkUri->entry->path);
-    UtGtkUri->parse->query = FcGtkUriEntryGet(UtGtkUri->entry->query);
-    UtGtkUri->parse->fragment = FcGtkUriEntryGet(UtGtkUri->entry->fragment);
+    PsGtkUri->parse->scheme = FcGtkUriEntryGet(PsGtkUri->entry->scheme);
+    PsGtkUri->parse->userinfo = FcGtkUriEntryGet(PsGtkUri->entry->userinfo);
+    PsGtkUri->parse->host = FcGtkUriEntryGet(PsGtkUri->entry->host);
+    PsGtkUri->parse->path = FcGtkUriEntryGet(PsGtkUri->entry->path);
+    PsGtkUri->parse->query = FcGtkUriEntryGet(PsGtkUri->entry->query);
+    PsGtkUri->parse->fragment = FcGtkUriEntryGet(PsGtkUri->entry->fragment);
 
     ViPort = (int)gtk_spin_button_get_value(
-            GTK_SPIN_BUTTON(UtGtkUri->spin->port));
-    UtGtkUri->parse->port = ViPort ? ViPort : -1;
+            GTK_SPIN_BUTTON(PsGtkUri->spin->port));
+    PsGtkUri->parse->port = ViPort ? ViPort : -1;
 
-    VcText = FcGuriBuild(UtGtkUri->parse);
-    gtk_editable_set_text(GTK_EDITABLE(UtGtkUri->entry->uri),
+    VcText = FcGuriBuild(PsGtkUri->parse);
+    gtk_editable_set_text(GTK_EDITABLE(PsGtkUri->entry->uri),
             VcText ? VcText : "");
 
     if (VcText) g_free(VcText);
 
-    UtGtkUri->boolean = FALSE;
+    PsGtkUri->boolean = FALSE;
 }
 
 
@@ -65,31 +64,31 @@ FvGtkUriEntryBuild(GtkEditable* UgEditable, void* PvUserdata)
 FvGtkUriEntryParse(GtkEditable* UgEditable, void* PvUserdata)
 {
     const char* VcText;
-    TgGuriParse* UtUriParse;
-    TgGtkUri* UtGtkUri;
+    SuGuriParse* PsUriParse;
+    SuGtkUri* PsGtkUri;
 
-    UtGtkUri = PvUserdata;
+    PsGtkUri = PvUserdata;
 
-    if (! UtGtkUri->entry || UtGtkUri->boolean) return;
+    if (! PsGtkUri->entry || PsGtkUri->boolean) return;
 
-    UtGtkUri->boolean = TRUE;
+    PsGtkUri->boolean = TRUE;
 
-    if (UtGtkUri->parse) g_free(UtGtkUri->parse);
+    if (PsGtkUri->parse) g_free(PsGtkUri->parse);
 
     VcText = gtk_editable_get_text(UgEditable);
-    UtUriParse = FtGuriParse(VcText ? VcText : NULL);
-    UtGtkUri->parse = UtUriParse ? UtUriParse : g_new0(TgGuriParse, 1);
+    PsUriParse = FtGuriParse(VcText ? VcText : NULL);
+    PsGtkUri->parse = PsUriParse ? PsUriParse : g_new0(SuGuriParse, 1);
 
-    FvGtkUriEntrySet(UtGtkUri->entry->scheme, UtGtkUri->parse->scheme);
-    FvGtkUriEntrySet(UtGtkUri->entry->userinfo, UtGtkUri->parse->userinfo);
-    FvGtkUriEntrySet(UtGtkUri->entry->host, UtGtkUri->parse->host);
-    FvGtkUriEntrySet(UtGtkUri->entry->path, UtGtkUri->parse->path);
-    FvGtkUriEntrySet(UtGtkUri->entry->query, UtGtkUri->parse->query);
-    FvGtkUriEntrySet(UtGtkUri->entry->fragment, UtGtkUri->parse->fragment);
+    FvGtkUriEntrySet(PsGtkUri->entry->scheme, PsGtkUri->parse->scheme);
+    FvGtkUriEntrySet(PsGtkUri->entry->userinfo, PsGtkUri->parse->userinfo);
+    FvGtkUriEntrySet(PsGtkUri->entry->host, PsGtkUri->parse->host);
+    FvGtkUriEntrySet(PsGtkUri->entry->path, PsGtkUri->parse->path);
+    FvGtkUriEntrySet(PsGtkUri->entry->query, PsGtkUri->parse->query);
+    FvGtkUriEntrySet(PsGtkUri->entry->fragment, PsGtkUri->parse->fragment);
 
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(UtGtkUri->spin->port),
-            UtGtkUri->parse->port ? UtGtkUri->parse->port : -1);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(PsGtkUri->spin->port),
+            PsGtkUri->parse->port ? PsGtkUri->parse->port : -1);
 
-    UtGtkUri->boolean = FALSE;
+    PsGtkUri->boolean = FALSE;
 }
 

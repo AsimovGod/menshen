@@ -1,58 +1,55 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <gtk/gtk.h>
+// part_option.h
 
 
 
-
-    TgOption*
+    SuOption*
 FgOptionInit()
 {
     int ViOption;
-    TgOption* UtOption;
+    SuOption* PsOption;
 
     ViOption = 0;
-    UtOption = g_new0(TgOption, 1);
-    UtOption->optionN = 3;
-    UtOption->option = g_new0(GOptionEntry, UtOption->optionN +1);
+    PsOption = g_new0(SuOption, 1);
+    PsOption->optionN = 3;
+    PsOption->option = g_new0(GOptionEntry, PsOption->optionN +1);
 
-    UtOption->version = FALSE;
-    UtOption->option[ViOption].long_name = "version";
-    UtOption->option[ViOption].short_name = 'v';
-    UtOption->option[ViOption].arg = G_OPTION_ARG_NONE;
-    UtOption->option[ViOption].arg_data = &UtOption->version;
-    UtOption->option[ViOption].description = "Version";
+    PsOption->version = FALSE;
+    PsOption->option[ViOption].long_name = "version";
+    PsOption->option[ViOption].short_name = 'v';
+    PsOption->option[ViOption].arg = G_OPTION_ARG_NONE;
+    PsOption->option[ViOption].arg_data = &PsOption->version;
+    PsOption->option[ViOption].description = "Version";
     ViOption = ViOption + 1;
 
-    UtOption->mode = NULL;
-    UtOption->option[ViOption].long_name = "mode";
-    UtOption->option[ViOption].short_name = 'm';
-    UtOption->option[ViOption].arg = G_OPTION_ARG_STRING;
-    UtOption->option[ViOption].arg_data = &UtOption->mode;
-    UtOption->option[ViOption].description = "Mode";
+    PsOption->mode = NULL;
+    PsOption->option[ViOption].long_name = "mode";
+    PsOption->option[ViOption].short_name = 'm';
+    PsOption->option[ViOption].arg = G_OPTION_ARG_STRING;
+    PsOption->option[ViOption].arg_data = &PsOption->mode;
+    PsOption->option[ViOption].description = "Mode";
     ViOption = ViOption + 1;
 
-    return UtOption;
+    return PsOption;
 }
 
 
     void
 FvOptionFree(void* PvFree)
 {
-    TgOption* UtOption;
+    SuOption* PsOption;
 
-    UtOption = PvFree;
+    PsOption = PvFree;
 
-    if (! UtOption) return;
+    if (! PsOption) return;
 
-    g_free(UtOption->mode);
-    g_free(UtOption->option);
-    g_free(UtOption);
+    g_free(PsOption->mode);
+    g_free(PsOption->option);
+    g_free(PsOption);
 }
 
 
     int
-FiOptionGlib(int ViArgs, char** AcArgs, TgOption* UtOption)
+FiOptionGlib(int ViArgs, char** AcArgs, SuOption* PsOption)
 {
     int ViLoop;
     int ViArgument;
@@ -65,17 +62,17 @@ FiOptionGlib(int ViArgs, char** AcArgs, TgOption* UtOption)
     UgOptioncontext = g_option_context_new(NULL);
 
     g_option_context_set_help_enabled(UgOptioncontext, FALSE);
-    g_option_context_add_main_entries(UgOptioncontext, UtOption->option, NULL);
+    g_option_context_add_main_entries(UgOptioncontext, PsOption->option, NULL);
     g_option_context_parse(UgOptioncontext, &ViArgument, &AcArgument, NULL);
 
-    if (UtOption->version) {
+    if (PsOption->version) {
         printf("\n0.0.1\n");
 
-        FvOptionFree(UtOption);
+        FvOptionFree(PsOption);
         exit(EXIT_SUCCESS);
     }
 
-    if (UtOption->mode && g_strcmp0(UtOption->mode, "0") == 0)
+    if (PsOption->mode && g_strcmp0(PsOption->mode, "0") == 0)
     {
         for (ViLoop = 1; ViLoop < ViArgument; ViLoop++) {
             FvUriPrint(AcArgument[ViLoop]);
@@ -97,14 +94,14 @@ FiOptionGtk(GApplication* UgApplication,
 {
     int ViArgument;
     char** AcArgument;
-    TgOption* UtOption;
+    SuOption* PsOption;
 
-    UtOption = PvUserdata;
+    PsOption = PvUserdata;
 
     AcArgument = g_application_command_line_get_arguments(UgCommandline,
             &ViArgument);
 
-    if (UtOption->mode && g_strcmp0(UtOption->mode, "1") == 0)
+    if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0)
     {
         FvGtkActivate(GTK_APPLICATION(UgApplication), AcArgument);
     }

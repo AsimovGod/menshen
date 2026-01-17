@@ -1,5 +1,4 @@
-#include <stdio.h>
-
+// part_uri_widget.h
 
 
 
@@ -14,7 +13,7 @@ FvGtkUriEntryClear(GtkEntry* UgEntry, GtkEntryIconPosition UgPosition,
 
 
     GtkWidget*
-FgGtkUriEntry(TgGtkUri* UtGtkUri, const char* VcType, GtkWidget* UgParent,
+FgGtkUriEntry(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
         int ViRow, char* VcLabel)
 {
     GtkWidget* UgEntry;
@@ -43,12 +42,12 @@ FgGtkUriEntry(TgGtkUri* UtGtkUri, const char* VcType, GtkWidget* UgParent,
     if (strcmp(VcType, "build") == 0)
     {
         g_signal_connect(UgEntry,
-                "changed", G_CALLBACK(FvGtkUriEntryParse), UtGtkUri);
+                "changed", G_CALLBACK(FvGtkUriEntryParse), PsGtkUri);
     }
     else if (strcmp(VcType, "parse") == 0)
     {
         g_signal_connect(UgEntry,
-                "changed", G_CALLBACK(FvGtkUriEntryBuild), UtGtkUri);
+                "changed", G_CALLBACK(FvGtkUriEntryBuild), PsGtkUri);
     }
 
     g_signal_connect(UgEntry,
@@ -81,7 +80,7 @@ FgGtkUriEntry(TgGtkUri* UtGtkUri, const char* VcType, GtkWidget* UgParent,
 
 
     GtkWidget*
-FgGtkUriSpin(TgGtkUri* UtGtkUri, const char* VcType, GtkWidget* UgParent,
+FgGtkUriSpin(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
         int ViRow, char* VcLabel)
 {
     GtkWidget* UgEntry;
@@ -104,7 +103,7 @@ FgGtkUriSpin(TgGtkUri* UtGtkUri, const char* VcType, GtkWidget* UgParent,
             4, ViRow, 1, 1);
 
     g_signal_connect(UgEntry,
-            "value-changed", G_CALLBACK(FvGtkUriEntryBuild), UtGtkUri);
+            "value-changed", G_CALLBACK(FvGtkUriEntryBuild), PsGtkUri);
     g_signal_connect(UgButtonCopy,
             "clicked", G_CALLBACK(FvGtkUriEntryCopy), UgEntry);
 

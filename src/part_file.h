@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
+// part_file.h
 
 
 
