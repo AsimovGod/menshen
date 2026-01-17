@@ -44,9 +44,7 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
         exit(EXIT_SUCCESS);
     }
 
-    if (UgOptMode
-            && g_strcmp0(UgOptMode, "0") == 0
-            || g_strcmp0(UgOptMode, "term") == 0)
+    if (UgOptMode && g_strcmp0(UgOptMode, "0") == 0)
     {
         for (ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
             FvUriPrint(AcOptArgs[ViLoop]);
@@ -71,9 +69,7 @@ FiOptionGtk(GApplication* UgApplication,
     AcOptArgs = g_application_command_line_get_arguments(UgCommandline,
             &ViOptArgs);
 
-    if (UgOptMode
-            && g_strcmp0(UgOptMode, "1") == 0
-            || g_strcmp0(UgOptMode, "window") == 0)
+    if (UgOptMode && g_strcmp0(UgOptMode, "1") == 0)
     {
         FvGtkActivate(GTK_APPLICATION(UgApplication), AcOptArgs);
     }

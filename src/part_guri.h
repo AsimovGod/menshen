@@ -4,108 +4,108 @@
 
 
     char*
-FcGuriBuild(TgGuriParse* UtGuriParse)
+FcGuriBuild(TgGuriParse* UtParse)
 {
-    char* VcUriExport;
-    char* VcGuriParsePath;
-    GUri* UgUriExport;
+    char* VcBuild;
+    char* VcParsePath;
+    GUri* UgGuri;
 
-    UgUriExport = NULL;
-    VcGuriParsePath = g_strdup("");
+    UgGuri = NULL;
+    VcParsePath = NULL;
 
-    if (UtGuriParse->scheme && *UtGuriParse->scheme) {
-        VcGuriParsePath = UtGuriParse->path && *UtGuriParse->path
-            ? g_strconcat("/", UtGuriParse->path, NULL) : g_strdup("");
+    if (UtParse->scheme && *UtParse->scheme) {
+        VcParsePath = UtParse->path && *UtParse->path
+            ? g_strconcat("/", UtParse->path, NULL) : g_strdup("");
 
-        UgUriExport = g_uri_build(G_URI_FLAGS_NONE,
-                UtGuriParse->scheme,
-                UtGuriParse->userinfo && *UtGuriParse->userinfo
-                ? UtGuriParse->userinfo : NULL,
-                UtGuriParse->host && *UtGuriParse->host
-                ? UtGuriParse->host : NULL,
-                UtGuriParse->port ? UtGuriParse->port : -1,
-                VcGuriParsePath,
-                UtGuriParse->query && *UtGuriParse->query
-                ? UtGuriParse->query : NULL,
-                UtGuriParse->fragment && *UtGuriParse->fragment
-                ? UtGuriParse->fragment : NULL);
+        UgGuri = g_uri_build(G_URI_FLAGS_NONE,
+                UtParse->scheme,
+                UtParse->userinfo && *UtParse->userinfo
+                ? UtParse->userinfo : NULL,
+                UtParse->host && *UtParse->host
+                ? UtParse->host : NULL,
+                UtParse->port ? UtParse->port : -1,
+                VcParsePath,
+                UtParse->query && *UtParse->query
+                ? UtParse->query : NULL,
+                UtParse->fragment && *UtParse->fragment
+                ? UtParse->fragment : NULL);
 
-        VcUriExport = g_uri_to_string(UgUriExport ? UgUriExport : NULL);
+        VcBuild = g_uri_to_string(UgGuri ? UgGuri : NULL);
     }
     else {
-        VcUriExport = g_strdup("");
+        VcBuild = g_strdup("");
     }
 
-    if (UgUriExport) g_uri_unref(UgUriExport);
+    if (UgGuri) g_uri_unref(UgGuri);
 
-    if (VcGuriParsePath && *VcGuriParsePath) g_free(VcGuriParsePath);
+    if (VcParsePath && *VcParsePath) g_free(VcParsePath);
 
-    return VcUriExport;
+    return VcBuild;
 }
 
 
     TgGuriParse*
-FtGuriParse(const char* VcUriExport)
+FtGuriParse(const char* VcBuild)
 {
-    const char* VcGuriParse;
-    GUri* UgUriExport;
-    TgGuriParse* UtGuriParse;
+    const char* VcParse;
+    GUri* UgGuri;
+    TgGuriParse* UtParse;
 
-    UgUriExport = g_uri_parse(VcUriExport, G_URI_FLAGS_NONE, NULL);
+    UgGuri = g_uri_parse(VcBuild, G_URI_FLAGS_NONE, NULL);
 
-    if (! UgUriExport) return NULL;
+    if (! UgGuri) return NULL;
 
-    UtGuriParse = g_new0(TgGuriParse, 1);
-    UtGuriParse->string = g_strdup(VcUriExport);
+    UtParse = g_new0(TgGuriParse, 1);
+    UtParse->string = g_strdup(VcBuild);
 
-    VcGuriParse = g_uri_get_scheme(UgUriExport);
-    UtGuriParse->scheme = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = g_uri_get_scheme(UgGuri);
+    UtParse->scheme = VcParse ? g_strdup(VcParse) : NULL;
 
-    VcGuriParse = g_uri_get_userinfo(UgUriExport);
-    UtGuriParse->userinfo = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = g_uri_get_userinfo(UgGuri);
+    UtParse->userinfo = VcParse ? g_strdup(VcParse) : NULL;
 
-    VcGuriParse = g_uri_get_host(UgUriExport);
-    UtGuriParse->host = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = g_uri_get_host(UgGuri);
+    UtParse->host = VcParse ? g_strdup(VcParse) : NULL;
 
-    UtGuriParse->port = g_uri_get_port(UgUriExport) ;
+    UtParse->port = g_uri_get_port(UgGuri) ;
 
-    VcGuriParse = g_uri_get_path(UgUriExport);
-    UtGuriParse->path = VcGuriParse && *VcGuriParse == '/'
-        ? g_strdup(VcGuriParse + 1) : g_strdup("");
+    VcParse = g_uri_get_path(UgGuri);
+    UtParse->path = VcParse && *VcParse == '/'
+        ? g_strdup(VcParse + 1) : g_strdup("");
 
-    VcGuriParse = g_uri_get_query(UgUriExport);
-    UtGuriParse->query = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = g_uri_get_query(UgGuri);
+    UtParse->query = VcParse ? g_strdup(VcParse) : NULL;
 
-    VcGuriParse = g_uri_get_fragment(UgUriExport);
-    UtGuriParse->fragment = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = g_uri_get_fragment(UgGuri);
+    UtParse->fragment = VcParse ? g_strdup(VcParse) : NULL;
 
-    VcGuriParse = FcGuriBuild(UtGuriParse);
-    UtGuriParse->uri = VcGuriParse ? g_strdup(VcGuriParse) : NULL;
+    VcParse = FcGuriBuild(UtParse);
+    UtParse->uri = VcParse ? g_strdup(VcParse) : NULL;
 
-    g_uri_unref(UgUriExport);
+    g_uri_unref(UgGuri);
 
-    return UtGuriParse;
+    return UtParse;
 }
 
 
     void
-FvGuriFree(gpointer UpGuriFree)
+FvGuriFree(void* PvFree)
 {
-    TgGuriParse* UtGuriFree;
+    TgGuriParse* UtParse;
 
-    UtGuriFree = UpGuriFree;
+    UtParse = PvFree;
 
-    if (! UtGuriFree) return;
+    if (! UtParse) return;
 
-    g_free(UtGuriFree->string);
-    g_free(UtGuriFree->scheme);
-    g_free(UtGuriFree->userinfo);
-    g_free(UtGuriFree->host);
-    g_free(UtGuriFree->path);
-    g_free(UtGuriFree->query);
-    g_free(UtGuriFree->fragment);
-    g_free(UtGuriFree->uri);
-    g_free(UtGuriFree);
+    g_free(UtParse->string);
+    g_free(UtParse->scheme);
+    g_free(UtParse->userinfo);
+    g_free(UtParse->host);
+    g_free(UtParse->path);
+    g_free(UtParse->query);
+    g_free(UtParse->fragment);
+    g_free(UtParse->uri);
+    g_free(UtParse);
 }
 
 
@@ -121,6 +121,7 @@ FvUriPrint(char* VcUriPrint)
     printf("\n");
     printf("uri         %s\n", UtUriPrint->uri);
     printf("scheme      %s\n", UtUriPrint->scheme);
+    printf("userinfo    %s\n", UtUriPrint->userinfo);
     printf("host        %s\n", UtUriPrint->host);
     printf("port        %d\n", UtUriPrint->port);
     printf("path        %s\n", UtUriPrint->path);

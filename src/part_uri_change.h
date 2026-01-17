@@ -3,10 +3,6 @@
 
 
 
-_Bool VbUriChange = FALSE;
-
-
-
     char*
 FcGtkUriEntryGet(GtkWidget* UgEntry)
 {
@@ -25,17 +21,24 @@ FvGtkUriEntrySet(GtkWidget* UgEntry, char* VcUriEntry)
 
 
     void
-FvGtkUriEntryBuild(GtkEditable* UgEditable, void* GuUserdata)
+FvGtkUriEntryBuild(GtkEditable* UgEditable, void* PvUserdata)
 {
     int ViPort;
     char* VcText;
     TgGtkUri* UtGtkUri;
 
-    UtGtkUri = GuUserdata;
+    UtGtkUri = PvUserdata;
 
-    if (! UtGtkUri->entry || VbUriChange) return;
+    if (! UtGtkUri->entry || UtGtkUri->boolean) return;
 
-    VbUriChange = TRUE;
+    UtGtkUri->boolean = TRUE;
+
+    if (UtGtkUri->parse->scheme) g_free(UtGtkUri->parse->scheme);
+    if (UtGtkUri->parse->userinfo) g_free(UtGtkUri->parse->userinfo);
+    if (UtGtkUri->parse->host) g_free(UtGtkUri->parse->host);
+    if (UtGtkUri->parse->path) g_free(UtGtkUri->parse->path);
+    if (UtGtkUri->parse->query) g_free(UtGtkUri->parse->query);
+    if (UtGtkUri->parse->fragment) g_free(UtGtkUri->parse->fragment);
 
     UtGtkUri->parse->scheme = FcGtkUriEntryGet(UtGtkUri->entry->scheme);
     UtGtkUri->parse->userinfo = FcGtkUriEntryGet(UtGtkUri->entry->userinfo);
@@ -54,22 +57,24 @@ FvGtkUriEntryBuild(GtkEditable* UgEditable, void* GuUserdata)
 
     if (VcText) g_free(VcText);
 
-    VbUriChange = FALSE;
+    UtGtkUri->boolean = FALSE;
 }
 
 
     void
-FvGtkUriEntryParse(GtkEditable* UgEditable, void* GuUserdata)
+FvGtkUriEntryParse(GtkEditable* UgEditable, void* PvUserdata)
 {
     const char* VcText;
     TgGuriParse* UtUriParse;
     TgGtkUri* UtGtkUri;
 
-    UtGtkUri = GuUserdata;
+    UtGtkUri = PvUserdata;
 
-    if (! UtGtkUri->entry || VbUriChange) return;
+    if (! UtGtkUri->entry || UtGtkUri->boolean) return;
 
-    VbUriChange = TRUE;
+    UtGtkUri->boolean = TRUE;
+
+    if (UtGtkUri->parse) g_free(UtGtkUri->parse);
 
     VcText = gtk_editable_get_text(UgEditable);
     UtUriParse = FtGuriParse(VcText ? VcText : NULL);
@@ -85,6 +90,6 @@ FvGtkUriEntryParse(GtkEditable* UgEditable, void* GuUserdata)
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(UtGtkUri->spin->port),
             UtGtkUri->parse->port ? UtGtkUri->parse->port : -1);
 
-    VbUriChange = FALSE;
+    UtGtkUri->boolean = FALSE;
 }
 

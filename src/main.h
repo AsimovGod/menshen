@@ -77,5 +77,6 @@ typedef struct {
     TgGuriParse* parse;
     TgGtkUriEntry* entry;
     TgGtkUriSpin* spin;
+    bool boolean;
 } TgGtkUri;
 
