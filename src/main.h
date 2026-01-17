@@ -38,21 +38,25 @@ typedef struct SuGtkPaned {
 typedef struct SuGtkGrid {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
 } SuGtkGrid;
 
 typedef struct SuGtkScroll {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
 } SuGtkScroll;
 
-typedef struct SuGtkLayout {
+typedef struct SuGtkBase {
     SuGtkWindow* window;
     SuGtkHeaderbar* headerbar;
     SuGtkControl* control;
     SuGtkPaned* paned;
     SuGtkGrid* grid;
     SuGtkScroll* scroll;
-} SuGtkLayout;
+} SuGtkBase;
 
 
 typedef struct SuGuriParse {
@@ -87,4 +91,25 @@ typedef struct SuGtkUri {
     SuGtkUriSpin* spin;
     bool boolean;
 } SuGtkUri;
+
+
+typedef struct SuGtkMimeList {
+    GList* http;
+    GList* https;
+    GList* all;
+} SuGtkMimeList;
+
+typedef struct SuGtkMimeBox {
+    GtkWidget* list;
+} SuGtkMimeBox;
+
+typedef struct SuGtkMimeButton {
+    GtkWidget* open;
+} SuGtkMimeButton;
+
+typedef struct SuGtkMime {
+    SuGtkMimeList* list;
+    SuGtkMimeBox* box;
+    SuGtkMimeButton* button;
+} SuGtkMime;
 

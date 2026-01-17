@@ -1,3 +1,7 @@
+// main.c
+
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -6,6 +10,8 @@
 
 #include "main.h"
 #include "part_file.h"
+#include "part_mime_list.h"
+#include "part_mime.h"
 #include "part_guri.h"
 #include "part_uri_change.h"
 #include "part_uri_clipboard.h"
@@ -13,7 +19,6 @@
 #include "part_uri.h"
 #include "part_window.h"
 #include "part_option.h"
-
 
 
 

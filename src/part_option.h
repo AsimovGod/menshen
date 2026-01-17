@@ -103,7 +103,7 @@ FiOptionGtk(GApplication* UgApplication,
 
     if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0)
     {
-        FvGtkActivate(GTK_APPLICATION(UgApplication), AcArgument);
+        FvGtkBase(GTK_APPLICATION(UgApplication), AcArgument);
     }
 
     return EXIT_SUCCESS;

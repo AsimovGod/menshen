@@ -24,7 +24,6 @@ FgGtkUriEntry(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
 
     UgEntry = gtk_entry_new();
     UgLabel = gtk_label_new(VcLabel);
-    UgEmpty = gtk_label_new(NULL);
     UgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
     UgButtonPaste = gtk_button_new_from_icon_name("edit-paste-symbolic");
 
@@ -36,8 +35,6 @@ FgGtkUriEntry(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
             2, ViRow, 1, 1);
     gtk_grid_attach(GTK_GRID(UgParent), UgButtonCopy,
             3, ViRow, 1, 1);
-    gtk_grid_attach(GTK_GRID(UgParent), UgEmpty,
-            4, ViRow, 1, 1);
 
     if (strcmp(VcType, "build") == 0)
     {
@@ -61,7 +58,6 @@ FgGtkUriEntry(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
             GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
 
     gtk_widget_set_size_request(UgLabel, 96, -1);
-    gtk_widget_set_size_request(UgEmpty, 16, -1);
 
     gtk_widget_set_halign(UgLabel, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(UgLabel, GTK_ALIGN_CENTER);
@@ -90,7 +86,6 @@ FgGtkUriSpin(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
 
     UgEntry = gtk_spin_button_new_with_range(-1, 65535, 1);
     UgLabel = gtk_label_new(VcLabel);
-    UgEmpty = gtk_label_new(NULL);
     UgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
 
     gtk_grid_attach(GTK_GRID(UgParent), UgLabel,
@@ -99,8 +94,6 @@ FgGtkUriSpin(SuGtkUri* PsGtkUri, const char* VcType, GtkWidget* UgParent,
             1, ViRow, 2, 1);
     gtk_grid_attach(GTK_GRID(UgParent), UgButtonCopy,
             3, ViRow, 1, 1);
-    gtk_grid_attach(GTK_GRID(UgParent), UgEmpty,
-            4, ViRow, 1, 1);
 
     g_signal_connect(UgEntry,
             "value-changed", G_CALLBACK(FvGtkUriEntryBuild), PsGtkUri);
