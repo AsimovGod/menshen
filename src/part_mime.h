@@ -11,6 +11,7 @@ FvGtkMimeFree(void* PvFree)
 
     if (! PsGtkMime) return;
 
+    free(PsGtkMime->list);
     free(PsGtkMime->box);
     free(PsGtkMime->button);
     free(PsGtkMime);
@@ -22,7 +23,7 @@ FvGtkMime(SuGtkBase* PsGtkBase)
 {
     SuGtkMime* PsGtkMime;
 
-    PsGtkMime = g_new0(SuGtkMime, 1);
+    PsGtkMime = PsGtkBase->gtkMime;
     PsGtkMime->list = g_new0(SuGtkMimeList, 1);
     PsGtkMime->box = g_new0(SuGtkMimeBox, 1);
     PsGtkMime->button = g_new0(SuGtkMimeButton, 1);
@@ -81,5 +82,6 @@ FvGtkMime(SuGtkBase* PsGtkBase)
     gtk_grid_set_column_spacing(GTK_GRID(PsGtkBase->grid->mimeOpen), 4);
 
     FvGtkMimeList(PsGtkBase, PsGtkMime);
+    FvGtkMimeOpen(PsGtkBase, PsGtkMime);
 }
 

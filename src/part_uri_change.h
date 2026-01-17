@@ -54,6 +54,9 @@ FvGtkUriEntryBuild(GtkEditable* UgEditable, void* PvUserdata)
     gtk_editable_set_text(GTK_EDITABLE(PsGtkUri->entry->uri),
             VcText ? VcText : "");
 
+    g_object_set_data_full(G_OBJECT(PsGtkUri->entry->uri),
+            "PsGtkUri->entry->uri", g_strdup(VcText), g_free);
+
     if (VcText) g_free(VcText);
 
     PsGtkUri->boolean = FALSE;
@@ -88,6 +91,9 @@ FvGtkUriEntryParse(GtkEditable* UgEditable, void* PvUserdata)
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(PsGtkUri->spin->port),
             PsGtkUri->parse->port ? PsGtkUri->parse->port : -1);
+
+    g_object_set_data_full(G_OBJECT(PsGtkUri->entry->uri),
+            "PsGtkUri->entry->uri", g_strdup(VcText), g_free);
 
     PsGtkUri->boolean = FALSE;
 }

@@ -33,6 +33,8 @@ FvGtkBase(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     PsGtkBase->paned = g_new0(SuGtkPaned, 1);
     PsGtkBase->grid = g_new0(SuGtkGrid, 1);
     PsGtkBase->scroll = g_new0(SuGtkScroll, 1);
+    PsGtkBase->gtkUri = g_new0(SuGtkUri, 1);
+    PsGtkBase->gtkMime = g_new0(SuGtkMime, 1);
 
     PsGtkBase->window->main = gtk_application_window_new(UgApplication);
     PsGtkBase->headerbar->main = gtk_header_bar_new();
@@ -44,9 +46,9 @@ FvGtkBase(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     PsGtkBase->window->mainT = "MenShen";
     PsGtkBase->window->mainW = 960;
     PsGtkBase->window->mainH = 540;
-    PsGtkBase->paned->mainR = 0.7;
+    PsGtkBase->paned->mainR = 0.8;
     PsGtkBase->paned->mainLeftR = 0.2;
-    PsGtkBase->paned->mainRightR = 0.8;
+    PsGtkBase->paned->mainRightR = 0.7;
 
     g_object_set_data_full(G_OBJECT(PsGtkBase->window->main),
             "PsGtkBase", PsGtkBase, (GDestroyNotify)FvGtkBaseFree);

@@ -21,7 +21,7 @@ FgOptionInit()
     PsOption->option[ViOption].description = "Version";
     ViOption = ViOption + 1;
 
-    PsOption->mode = NULL;
+    PsOption->mode = g_strdup("1");
     PsOption->option[ViOption].long_name = "mode";
     PsOption->option[ViOption].short_name = 'm';
     PsOption->option[ViOption].arg = G_OPTION_ARG_STRING;
@@ -67,7 +67,6 @@ FiOptionGlib(int ViArgs, char** AcArgs, SuOption* PsOption)
 
     if (PsOption->version) {
         printf("\n0.0.1\n");
-
         FvOptionFree(PsOption);
         exit(EXIT_SUCCESS);
     }

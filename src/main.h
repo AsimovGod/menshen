@@ -11,54 +11,6 @@ typedef struct SuOption {
 } SuOption;
 
 
-typedef struct SuGtkWindow {
-    GtkWidget* main;
-    char* mainT;
-    int mainH;
-    int mainW;
-} SuGtkWindow;
-
-typedef struct SuGtkHeaderbar {
-    GtkWidget* main;
-} SuGtkHeaderbar;
-
-typedef struct SuGtkControl {
-    GtkWidget* main;
-} SuGtkControl;
-
-typedef struct SuGtkPaned {
-    GtkWidget* main;
-    double mainR;
-    GtkWidget* mainLeft;
-    double mainLeftR;
-    GtkWidget* mainRight;
-    double mainRightR;
-} SuGtkPaned;
-
-typedef struct SuGtkGrid {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-    GtkWidget* mimeList;
-    GtkWidget* mimeOpen;
-} SuGtkGrid;
-
-typedef struct SuGtkScroll {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-    GtkWidget* mimeList;
-    GtkWidget* mimeOpen;
-} SuGtkScroll;
-
-typedef struct SuGtkBase {
-    SuGtkWindow* window;
-    SuGtkHeaderbar* headerbar;
-    SuGtkControl* control;
-    SuGtkPaned* paned;
-    SuGtkGrid* grid;
-    SuGtkScroll* scroll;
-} SuGtkBase;
-
-
 typedef struct SuGuriParse {
     char* string;
     char* scheme;
@@ -112,4 +64,54 @@ typedef struct SuGtkMime {
     SuGtkMimeBox* box;
     SuGtkMimeButton* button;
 } SuGtkMime;
+
+
+typedef struct SuGtkWindow {
+    GtkWidget* main;
+    char* mainT;
+    int mainH;
+    int mainW;
+} SuGtkWindow;
+
+typedef struct SuGtkHeaderbar {
+    GtkWidget* main;
+} SuGtkHeaderbar;
+
+typedef struct SuGtkControl {
+    GtkWidget* main;
+} SuGtkControl;
+
+typedef struct SuGtkPaned {
+    GtkWidget* main;
+    double mainR;
+    GtkWidget* mainLeft;
+    double mainLeftR;
+    GtkWidget* mainRight;
+    double mainRightR;
+} SuGtkPaned;
+
+typedef struct SuGtkGrid {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
+} SuGtkGrid;
+
+typedef struct SuGtkScroll {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
+} SuGtkScroll;
+
+typedef struct SuGtkBase {
+    SuGtkWindow* window;
+    SuGtkHeaderbar* headerbar;
+    SuGtkControl* control;
+    SuGtkPaned* paned;
+    SuGtkGrid* grid;
+    SuGtkScroll* scroll;
+    SuGtkUri* gtkUri;
+    SuGtkMime* gtkMime;
+} SuGtkBase;
 

@@ -45,7 +45,7 @@ FvGtkUri(SuGtkBase* PsGtkBase, char* VcUri)
 {
     SuGtkUri* PsGtkUri;
 
-    PsGtkUri = g_new0(SuGtkUri, 1);
+    PsGtkUri = PsGtkBase->gtkUri;
     PsGtkUri->entry = g_new0(SuGtkUriEntry, 1);
     PsGtkUri->spin = g_new0(SuGtkUriSpin, 1);
     PsGtkUri->parse = g_new0(SuGuriParse, 1);

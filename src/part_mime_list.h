@@ -22,6 +22,9 @@ FvGtkMimeListAdd(GtkListBox* UgListbox, GAppInfo* UgAppinfo)
     gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(UgListrow), UgGrid);
     gtk_list_box_append(GTK_LIST_BOX(UgListbox), UgListrow);
 
+    g_object_set_data_full(G_OBJECT(UgListrow),
+            "UgListrow", g_object_ref(UgAppinfo), g_object_unref);
+
     if (UgIcon) {
         gtk_image_set_from_gicon(GTK_IMAGE(UgImage), UgIcon);
     }
@@ -31,6 +34,8 @@ FvGtkMimeListAdd(GtkListBox* UgListbox, GAppInfo* UgAppinfo)
     }
 
     gtk_widget_set_size_request(UgListrow, -1, 32);
+    gtk_widget_set_margin_top(UgListrow, 4);
+    gtk_widget_set_margin_bottom(UgListrow, 4);
     gtk_image_set_pixel_size(GTK_IMAGE(UgImage), 24);
     gtk_widget_set_halign(UgLabel, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(UgLabel, GTK_ALIGN_CENTER);
