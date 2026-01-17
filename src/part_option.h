@@ -5,55 +5,86 @@
 
 
 
-gboolean UgOptVersion = FALSE;
-gboolean UgOptWindow = FALSE;
-gchar* UgOptMode = NULL;
-gchar* UgOptStyle = NULL;
+    TgOption*
+FgOptionInit()
+{
+    int ViOption;
+    TgOption* UtOption;
 
-GOptionEntry UgOptionentry[] = {
-    {"version", 'v',    0,  G_OPTION_ARG_NONE,      &UgOptVersion,
-        "Version",  NULL},
-    {"mode",    'm',    0,  G_OPTION_ARG_STRING,    &UgOptMode,
-        "Mode",     NULL},
-    {"style",   's',    0,  G_OPTION_ARG_STRING,    &UgOptStyle,
-        "Style",    NULL},
-    {NULL}
-};
+    ViOption = 0;
+    UtOption = g_new0(TgOption, 1);
+    UtOption->optionN = 3;
+    UtOption->option = g_new0(GOptionEntry, UtOption->optionN +1);
+
+    UtOption->version = FALSE;
+    UtOption->option[ViOption].long_name = "version";
+    UtOption->option[ViOption].short_name = 'v';
+    UtOption->option[ViOption].arg = G_OPTION_ARG_NONE;
+    UtOption->option[ViOption].arg_data = &UtOption->version;
+    UtOption->option[ViOption].description = "Version";
+    ViOption = ViOption + 1;
+
+    UtOption->mode = NULL;
+    UtOption->option[ViOption].long_name = "mode";
+    UtOption->option[ViOption].short_name = 'm';
+    UtOption->option[ViOption].arg = G_OPTION_ARG_STRING;
+    UtOption->option[ViOption].arg_data = &UtOption->mode;
+    UtOption->option[ViOption].description = "Mode";
+    ViOption = ViOption + 1;
+
+    return UtOption;
+}
+
+
+    void
+FvOptionFree(void* PvFree)
+{
+    TgOption* UtOption;
+
+    UtOption = PvFree;
+
+    if (! UtOption) return;
+
+    g_free(UtOption->mode);
+    g_free(UtOption->option);
+    g_free(UtOption);
+}
 
 
     int
-FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
+FiOptionGlib(int ViArgs, char** AcArgs, TgOption* UtOption)
 {
     int ViLoop;
-    gint ViOptArgs;
-    gchar** AcOptArgs;
+    int ViArgument;
+    char** AcArgument;
 
     GOptionContext* UgOptioncontext;
 
-    ViOptArgs = ViArgsOptionglib;
-    AcOptArgs = g_strdupv((gchar**)AcArgsOptionglib);
+    ViArgument = ViArgs;
+    AcArgument = g_strdupv((char**)AcArgs);
     UgOptioncontext = g_option_context_new(NULL);
 
     g_option_context_set_help_enabled(UgOptioncontext, FALSE);
-    g_option_context_add_main_entries(UgOptioncontext, UgOptionentry, NULL);
-    g_option_context_parse(UgOptioncontext, &ViOptArgs, &AcOptArgs, NULL);
+    g_option_context_add_main_entries(UgOptioncontext, UtOption->option, NULL);
+    g_option_context_parse(UgOptioncontext, &ViArgument, &AcArgument, NULL);
 
-    if (UgOptVersion) {
+    if (UtOption->version) {
         printf("\n0.0.1\n");
 
+        FvOptionFree(UtOption);
         exit(EXIT_SUCCESS);
     }
 
-    if (UgOptMode && g_strcmp0(UgOptMode, "0") == 0)
+    if (UtOption->mode && g_strcmp0(UtOption->mode, "0") == 0)
     {
-        for (ViLoop = 1; ViLoop < ViOptArgs; ViLoop++) {
-            FvUriPrint(AcOptArgs[ViLoop]);
+        for (ViLoop = 1; ViLoop < ViArgument; ViLoop++) {
+            FvUriPrint(AcArgument[ViLoop]);
         }
 
         exit(EXIT_SUCCESS);
     }
 
-    g_strfreev(AcOptArgs);
+    g_strfreev(AcArgument);
 
     return EXIT_SUCCESS;
 }
@@ -61,17 +92,21 @@ FiOptionGlib(int ViArgsOptionglib, char** AcArgsOptionglib)
 
     int
 FiOptionGtk(GApplication* UgApplication,
-        GApplicationCommandLine* UgCommandline)
+        GApplicationCommandLine* UgCommandline,
+        void* PvUserdata)
 {
-    gint ViOptArgs;
-    gchar** AcOptArgs;
+    int ViArgument;
+    char** AcArgument;
+    TgOption* UtOption;
 
-    AcOptArgs = g_application_command_line_get_arguments(UgCommandline,
-            &ViOptArgs);
+    UtOption = PvUserdata;
 
-    if (UgOptMode && g_strcmp0(UgOptMode, "1") == 0)
+    AcArgument = g_application_command_line_get_arguments(UgCommandline,
+            &ViArgument);
+
+    if (UtOption->mode && g_strcmp0(UtOption->mode, "1") == 0)
     {
-        FvGtkActivate(GTK_APPLICATION(UgApplication), AcOptArgs);
+        FvGtkActivate(GTK_APPLICATION(UgApplication), AcArgument);
     }
 
     return EXIT_SUCCESS;

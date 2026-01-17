@@ -42,12 +42,12 @@ FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     UtGtkLayout->paned->mainLeft = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
     UtGtkLayout->paned->mainRight = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
 
-    UtGtkLayout->window->Tmain = "MenShen";
-    UtGtkLayout->window->Wmain = 960;
-    UtGtkLayout->window->Hmain = 540;
-    UtGtkLayout->paned->Rmain = 0.7;
-    UtGtkLayout->paned->RmainLeft = 0.2;
-    UtGtkLayout->paned->RmainRight = 0.2;
+    UtGtkLayout->window->mainT = "MenShen";
+    UtGtkLayout->window->mainW = 960;
+    UtGtkLayout->window->mainH = 540;
+    UtGtkLayout->paned->mainR = 0.7;
+    UtGtkLayout->paned->mainLeftR = 0.2;
+    UtGtkLayout->paned->mainRightR = 0.2;
 
     g_object_set_data_full(G_OBJECT(UtGtkLayout->window->main),
             "UtGtkLayout", UtGtkLayout, (GDestroyNotify)FvGtkLayoutFree);
@@ -67,16 +67,16 @@ FvGtkActivate(GtkApplication* UgApplication, char** AcArgsGtkActivate)
             GTK_WINDOW_CONTROLS(UtGtkLayout->control->main),
             "minimize,maximize");
     gtk_window_set_title(GTK_WINDOW(UtGtkLayout->window->main),
-            UtGtkLayout->window->Tmain);
+            UtGtkLayout->window->mainT);
     gtk_window_set_default_size(GTK_WINDOW(UtGtkLayout->window->main),
-            UtGtkLayout->window->Wmain, UtGtkLayout->window->Hmain);
+            UtGtkLayout->window->mainW, UtGtkLayout->window->mainH);
 
     gtk_paned_set_position(GTK_PANED(UtGtkLayout->paned->main),
-            UtGtkLayout->paned->Rmain * UtGtkLayout->window->Wmain);
+            UtGtkLayout->paned->mainR * UtGtkLayout->window->mainW);
     gtk_paned_set_position(GTK_PANED(UtGtkLayout->paned->mainLeft),
-            UtGtkLayout->paned->RmainLeft * UtGtkLayout->window->Hmain);
+            UtGtkLayout->paned->mainLeftR * UtGtkLayout->window->mainH);
     gtk_paned_set_position(GTK_PANED(UtGtkLayout->paned->mainRight),
-            UtGtkLayout->paned->RmainRight * UtGtkLayout->window->Hmain);
+            UtGtkLayout->paned->mainRightR * UtGtkLayout->window->mainH);
 
     gtk_widget_set_valign(UtGtkLayout->paned->main, GTK_ALIGN_FILL);
     gtk_widget_set_halign(UtGtkLayout->paned->main, GTK_ALIGN_FILL);

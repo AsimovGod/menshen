@@ -2,12 +2,20 @@
 
 
 
+typedef struct {
+    bool version;
+    bool help;
+    char* mode;
+    GOptionEntry* option;
+    int optionN;
+} TgOption;
+
 
 typedef struct {
     GtkWidget* main;
-    char* Tmain;
-    int Hmain;
-    int Wmain;
+    char* mainT;
+    int mainH;
+    int mainW;
 } TgGtkWindow;
 
 typedef struct {
@@ -20,11 +28,11 @@ typedef struct {
 
 typedef struct {
     GtkWidget* main;
-    double Rmain;
+    double mainR;
     GtkWidget* mainLeft;
-    double RmainLeft;
+    double mainLeftR;
     GtkWidget* mainRight;
-    double RmainRight;
+    double mainRightR;
 } TgGtkPaned;
 
 typedef struct {
