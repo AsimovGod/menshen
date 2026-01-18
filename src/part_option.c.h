@@ -72,18 +72,16 @@ FdOptionGlib(int DiArgs, char** TcArgs,
         exit(EXIT_SUCCESS);
     }
 
-    if (CsOption->mode && g_strcmp0(CsOption->mode, "0") == 0)
-    {
-        for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
-            FvUriPrint(TcArgument[DiLoop]);
-        }
-
-        exit(EXIT_SUCCESS);
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "0") != 0) {
+        g_strfreev(TcArgument);
+        return EXIT_SUCCESS;
     }
 
-    g_strfreev(TcArgument);
+    for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
+        FvUriPrint(TcArgument[DiLoop]);
+    }
 
-    return EXIT_SUCCESS;
+    exit(EXIT_SUCCESS);
 }
 
 
@@ -91,6 +89,7 @@ FdOptionGlib(int DiArgs, char** TcArgs,
 FdOptionGtk(GApplication* EgApplication,
         GApplicationCommandLine* EgCommandline, void* PvUserdata)
 {
+    int DiLoop;
     int DiArgument;
     char** TcArgument;
     SaMap* CsMap;
@@ -104,9 +103,16 @@ FdOptionGtk(GApplication* EgApplication,
     TcArgument = g_application_command_line_get_arguments(EgCommandline,
             &DiArgument);
 
-    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") == 0)
-    {
-        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, TcArgument);
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") != 0) {
+        return EXIT_SUCCESS;
+    }
+
+    if ((! TcArgument) || (DiArgument < 2)) {
+        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, NULL);
+    }
+
+    for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
+        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, TcArgument[DiLoop]);
     }
 
     return EXIT_SUCCESS;

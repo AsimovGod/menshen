@@ -118,7 +118,6 @@ typedef struct SaGtkPaned {
 } SaGtkPaned;
 
 typedef struct SaGtkGrid {
-    GtkWidget* about;
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;

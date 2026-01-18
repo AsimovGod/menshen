@@ -2,7 +2,7 @@
 
 
 
-void FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char** TcArgument);
+void FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char* AcUri);
 
 
     void
@@ -21,14 +21,13 @@ FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
 FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
         void* PvUserdata)
 {
-    SaMap* CsMap;
+    GtkWidget* EgOverlay;
+    GtkWidget* EgGrid;
 
-    CsMap = PvUserdata;
+    EgOverlay = PvUserdata;
+    EgGrid = gtk_grid_new();
 
-    CsMap->GtkBase->grid->about = gtk_grid_new();
-
-    gtk_overlay_add_overlay(GTK_OVERLAY(CsMap->GtkBase->overlay->base),
-            CsMap->GtkBase->grid->about);
+    gtk_overlay_add_overlay(GTK_OVERLAY(EgOverlay), EgGrid);
 }
 
 
@@ -77,7 +76,7 @@ FvGtkMenu(SaMap* CsMap, SaGtkBase* CsGtkBase)
     g_signal_connect(CsGtkMenu->action->newwindow,
             "activate", G_CALLBACK(FvGtkMenuNewwindow), CsMap);
     g_signal_connect(CsGtkMenu->action->about,
-            "activate", G_CALLBACK(FvGtkMenuAbout), CsMap);
+            "activate", G_CALLBACK(FvGtkMenuAbout), CsGtkBase->overlay->base);
 
     gtk_menu_button_set_icon_name(GTK_MENU_BUTTON(CsGtkMenu->button->base),
             "open-menu-symbolic");

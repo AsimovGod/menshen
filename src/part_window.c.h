@@ -23,7 +23,7 @@ FvGtkBaseFree(void* PvFree)
 
 
     void
-FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char** TcArgument)
+FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char* AcUri)
 {
     SaGtkBase* CsGtkBase;
 
@@ -97,7 +97,7 @@ FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char** TcArgument)
     gtk_widget_set_halign(CsGtkBase->paned->baseRight, GTK_ALIGN_FILL);
 
     FvGtkMenu(CsMap, CsGtkBase);
-    FvGtkUri(CsGtkBase, TcArgument[1]);
+    FvGtkUri(CsGtkBase, AcUri);
     FvGtkMime(CsGtkBase);
 
     gtk_window_present(GTK_WINDOW(CsGtkBase->window->base));
