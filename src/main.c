@@ -8,43 +8,43 @@
 #include <gtk/gtk.h>
 #include <adwaita.h>
 
-#include "main.h"
-#include "part_file.h"
-#include "part_guri.h"
-#include "part_uri_change.h"
-#include "part_uri_clipboard.h"
-#include "part_uri_widget.h"
-#include "part_uri.h"
-#include "part_mime_open.h"
-#include "part_mime_list.h"
-#include "part_mime.h"
-#include "part_menu.h"
-#include "part_window.h"
-#include "part_option.h"
-#include "part_app.h"
+#include "main.c.h"
+#include "part_file.c.h"
+#include "part_guri.c.h"
+#include "part_uri_change.c.h"
+#include "part_uri_clipboard.c.h"
+#include "part_uri_widget.c.h"
+#include "part_uri.c.h"
+#include "part_mime_open.c.h"
+#include "part_mime_list.c.h"
+#include "part_mime.c.h"
+#include "part_menu.c.h"
+#include "part_window.c.h"
+#include "part_option.c.h"
+#include "part_app.c.h"
 
 
 
     int
-main(int ViArgs, char** AcArgs)
+main(int DiArgs, char** TcArgs)
 {
-    int ViExit;
-    SuMap* PsMap;
-    SuInfo* PsInfo;
-    SuOption* PsOption;
+    int DiExit;
+    SaMap* CsMap;
+    SaInfo* CsInfo;
+    SaOption* CsOption;
 
-    PsMap = g_new0(SuMap, 1);
-    PsInfo = FsInfoInit();
-    PsOption = FsOptionInit();
-    PsMap->info = PsInfo;
-    PsMap->option = PsOption;
+    CsMap = g_new0(SaMap, 1);
+    CsInfo = FsInfoInit();
+    CsOption = FsOptionInit();
+    CsMap->Info = CsInfo;
+    CsMap->Option = CsOption;
 
-    ViExit = FiOptionGlib(ViArgs, AcArgs, PsMap, PsInfo, PsOption);
-    ViExit = FiGtkApp(ViArgs, AcArgs, PsMap, PsInfo, PsOption);
+    DiExit = FdOptionGlib(DiArgs, TcArgs, CsMap, CsInfo, CsOption);
+    DiExit = FdGtkApp(DiArgs, TcArgs, CsMap, CsInfo, CsOption);
 
-    FvInfoFree(PsInfo);
-    FvOptionFree(PsOption);
-    if (PsMap) g_free(PsMap);
+    FvInfoFree(CsInfo);
+    FvOptionFree(CsOption);
+    if (CsMap) g_free(CsMap);
 
-    return ViExit;
+    return DiExit;
 }

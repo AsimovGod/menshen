@@ -3,51 +3,51 @@
 
 
     void
-FvGtkMimeListOpen(GtkButton *UgBotton, void* PvUserdata)
+FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
 {
-    const char* VcUri;
-    GtkListBox* UgListbox;
-    GtkListBoxRow* UgListrow;
-    GAppInfo* UgAppinfo;
-    GList* UgList;
-    GFile* UgFile;
-    SuGtkBase* PsGtkBase;
+    const char* AcUri;
+    GtkListBox* EgListbox;
+    GtkListBoxRow* EgListrow;
+    GAppInfo* EgAppinfo;
+    GList* EgList;
+    GFile* EgFile;
+    SaGtkBase* CsGtkBase;
 
-    PsGtkBase = PvUserdata;
-    UgListbox = GTK_LIST_BOX(PsGtkBase->GtkMime->box->list);
-    UgListrow = gtk_list_box_get_selected_row(UgListbox);
+    CsGtkBase = PvUserdata;
+    EgListbox = GTK_LIST_BOX(CsGtkBase->GtkMime->box->list);
+    EgListrow = gtk_list_box_get_selected_row(EgListbox);
 
-    if (! UgListrow) return;
+    if (! EgListrow) return;
 
-    UgAppinfo = g_object_get_data(G_OBJECT(UgListrow), "UgListrow");
-    VcUri = FcGtkUriEntryGet(PsGtkBase->GtkUri->entry->uri);
-    UgFile = VcUri ? g_file_new_for_uri(VcUri) : NULL;
-    UgList = g_list_append(NULL, UgFile);
+    EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgListrow");
+    AcUri = FaGtkUriEntryGet(CsGtkBase->GtkUri->entry->uri);
+    EgFile = AcUri ? g_file_new_for_uri(AcUri) : NULL;
+    EgList = g_list_append(NULL, EgFile);
 
-    if (! UgAppinfo) return;
+    if (! EgAppinfo) return;
 
-    g_app_info_launch(UgAppinfo, UgList, NULL, NULL);
+    g_app_info_launch(EgAppinfo, EgList, NULL, NULL);
 
-    g_list_free_full(UgList, g_object_unref);
+    g_list_free_full(EgList, g_object_unref);
 }
 
 
     void
-FvGtkMimeOpen(SuGtkBase* PsGtkBase, SuGtkMime* PsGtkMime)
+FvGtkMimeOpen(SaGtkBase* CsGtkBase, SaGtkMime* CsGtkMime)
 {
-    GtkWidget* UgButton;
+    GtkWidget* EgButton;
 
-    UgButton = gtk_button_new_with_label("OPEN");
+    EgButton = gtk_button_new_with_label("OPEN");
 
-    gtk_grid_attach(GTK_GRID(PsGtkBase->grid->mimeOpen),
-            UgButton, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkBase->grid->mimeOpen),
+            EgButton, 0, 0, 1, 1);
 
-    g_signal_connect(UgButton,
-            "clicked", G_CALLBACK(FvGtkMimeListOpen), PsGtkBase);
+    g_signal_connect(EgButton,
+            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsGtkBase);
 
-    gtk_widget_set_vexpand(UgButton, TRUE);
-    gtk_widget_set_hexpand(UgButton, TRUE);
-    gtk_widget_set_valign(UgButton, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(UgButton, GTK_ALIGN_FILL);
+    gtk_widget_set_vexpand(EgButton, TRUE);
+    gtk_widget_set_hexpand(EgButton, TRUE);
+    gtk_widget_set_valign(EgButton, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(EgButton, GTK_ALIGN_FILL);
 }
 

@@ -3,28 +3,24 @@
 
 
     void
-FvFileRead(char* AcArgShow)
+FvFileRead(char* TcArgs)
 {
-    char VcFileShow[2048];
+    char AcRead[2048];
+    FILE* PfRead;
 
-    FILE* UpFileShow;
+    PfRead = fopen(TcArgs, "r");
 
-    UpFileShow = fopen(AcArgShow, "r");
-
-    if (UpFileShow == NULL) {
-        fprintf(stderr,
-                "\n\033[31mError: File not open!\033[0m\n\n");
-
+    if (PfRead == NULL) {
+        fprintf(stderr, "\n\033[31mError: File not open!\033[0m\n\n");
         exit(EXIT_FAILURE);
     }
 
-    while (fgets(VcFileShow, sizeof(VcFileShow), UpFileShow)) {
-        printf("%s", VcFileShow);
+    while (fgets(AcRead, sizeof(AcRead), PfRead)) {
+        printf("%s", AcRead);
     }
 
-    if (fclose(UpFileShow) != 0) {
-        fprintf(stderr,
-                "\n\033[31mError: File not close!\033[0m\n\n");
+    if (fclose(PfRead) != 0) {
+        fprintf(stderr, "\n\033[31mError: File not close!\033[0m\n\n");
     }
 }
 

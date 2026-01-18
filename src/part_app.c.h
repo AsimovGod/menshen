@@ -2,63 +2,63 @@
 
 
 
-    SuInfo*
+    SaInfo*
 FsInfoInit()
 {
-    SuInfo* PsInfo;
+    SaInfo* CsInfo;
 
-    PsInfo = g_new0(SuInfo, 1);
-    PsInfo->name = "MenShen";
-    PsInfo->id = "com.AsimovGod.menshen";
-    PsInfo->version = "0.1.0";
+    CsInfo = g_new0(SaInfo, 1);
+    CsInfo->name = "MenShen";
+    CsInfo->id = "com.AsimovGod.menshen";
+    CsInfo->version = "0.1.0";
 
-    return PsInfo;
+    return CsInfo;
 }
 
 
     void
 FvInfoFree(void* PvFree)
 {
-    SuInfo* PsInfo;
+    SaInfo* CsInfo;
 
-    PsInfo = PvFree;
+    CsInfo = PvFree;
 
-    if (! PsInfo) return;
+    if (! CsInfo) return;
 
-    g_free(PsInfo);
+    g_free(CsInfo);
 }
 
 
     int
-FiGtkApp(int ViArgs, char** AcArgs,
-        SuMap* PsMap, SuInfo* PsInfo, SuOption* PsOption)
+FdGtkApp(int DiArgs, char** TcArgs,
+        SaMap* CsMap, SaInfo* CsInfo, SaOption* CsOption)
 {
-    int ViExit;
-    GtkApplication* UgApplication;
+    int DiExit;
+    GtkApplication* EgApplication;
     AdwStyleManager* UaStylemanager;
 
-    if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0) {
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") == 0) {
         adw_init();
         UaStylemanager = adw_style_manager_get_default();
         adw_style_manager_set_color_scheme(UaStylemanager,
                 ADW_COLOR_SCHEME_PREFER_DARK);
     }
 
-    UgApplication = gtk_application_new(NULL,
+    EgApplication = gtk_application_new(NULL,
             G_APPLICATION_HANDLES_COMMAND_LINE);
 
-    PsMap->application = UgApplication;
+    CsMap->application = EgApplication;
 
-    g_application_add_main_option_entries(G_APPLICATION(UgApplication),
-            PsOption->option);
+    g_application_add_main_option_entries(G_APPLICATION(EgApplication),
+            CsOption->option);
 
-    g_signal_connect(UgApplication,
-            "command-line", G_CALLBACK(FiOptionGtk), PsMap);
+    g_signal_connect(EgApplication,
+            "command-line", G_CALLBACK(FdOptionGtk), CsMap);
 
-    ViExit = g_application_run(G_APPLICATION(UgApplication), ViArgs, AcArgs);
+    DiExit = g_application_run(G_APPLICATION(EgApplication), DiArgs, TcArgs);
 
-    g_object_unref(UgApplication);
+    g_object_unref(EgApplication);
 
-    return ViExit;
+    return DiExit;
 }
 

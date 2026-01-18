@@ -2,111 +2,111 @@
 
 
 
-    SuOption*
+    SaOption*
 FsOptionInit()
 {
-    int ViOption;
-    SuOption* PsOption;
+    int DiOption;
+    SaOption* CsOption;
 
-    ViOption = 0;
-    PsOption = g_new0(SuOption, 1);
-    PsOption->optionN = 3;
-    PsOption->option = g_new0(GOptionEntry, PsOption->optionN +1);
+    DiOption = 0;
+    CsOption = g_new0(SaOption, 1);
+    CsOption->optionN = 3;
+    CsOption->option = g_new0(GOptionEntry, CsOption->optionN +1);
 
-    PsOption->version = FALSE;
-    PsOption->option[ViOption].long_name = "version";
-    PsOption->option[ViOption].short_name = 'v';
-    PsOption->option[ViOption].arg = G_OPTION_ARG_NONE;
-    PsOption->option[ViOption].arg_data = &PsOption->version;
-    PsOption->option[ViOption].description = "Version";
-    ViOption = ViOption + 1;
+    CsOption->version = FALSE;
+    CsOption->option[DiOption].long_name = "version";
+    CsOption->option[DiOption].short_name = 'v';
+    CsOption->option[DiOption].arg = G_OPTION_ARG_NONE;
+    CsOption->option[DiOption].arg_data = &CsOption->version;
+    CsOption->option[DiOption].description = "Version";
+    DiOption = DiOption + 1;
 
-    PsOption->mode = g_strdup("1");
-    PsOption->option[ViOption].long_name = "mode";
-    PsOption->option[ViOption].short_name = 'm';
-    PsOption->option[ViOption].arg = G_OPTION_ARG_STRING;
-    PsOption->option[ViOption].arg_data = &PsOption->mode;
-    PsOption->option[ViOption].description = "Mode";
-    ViOption = ViOption + 1;
+    CsOption->mode = g_strdup("1");
+    CsOption->option[DiOption].long_name = "mode";
+    CsOption->option[DiOption].short_name = 'm';
+    CsOption->option[DiOption].arg = G_OPTION_ARG_STRING;
+    CsOption->option[DiOption].arg_data = &CsOption->mode;
+    CsOption->option[DiOption].description = "Mode";
+    DiOption = DiOption + 1;
 
-    return PsOption;
+    return CsOption;
 }
 
 
     void
 FvOptionFree(void* PvFree)
 {
-    SuOption* PsOption;
+    SaOption* CsOption;
 
-    PsOption = PvFree;
+    CsOption = PvFree;
 
-    if (! PsOption) return;
+    if (! CsOption) return;
 
-    g_free(PsOption->mode);
-    g_free(PsOption->option);
-    g_free(PsOption);
+    g_free(CsOption->mode);
+    g_free(CsOption->option);
+    g_free(CsOption);
 }
 
 
     int
-FiOptionGlib(int ViArgs, char** AcArgs,
-        SuMap* PsMap, SuInfo* PsInfo, SuOption* PsOption)
+FdOptionGlib(int DiArgs, char** TcArgs,
+        SaMap* CsMap, SaInfo* CsInfo, SaOption* CsOption)
 {
-    int ViLoop;
-    int ViArgument;
-    char** AcArgument;
+    int DiLoop;
+    int DiArgument;
+    char** TcArgument;
 
-    GOptionContext* UgOptioncontext;
+    GOptionContext* EgOptioncontext;
 
-    ViArgument = ViArgs;
-    AcArgument = g_strdupv((char**)AcArgs);
-    UgOptioncontext = g_option_context_new(NULL);
+    DiArgument = DiArgs;
+    TcArgument = g_strdupv((char**)TcArgs);
+    EgOptioncontext = g_option_context_new(NULL);
 
-    g_option_context_set_help_enabled(UgOptioncontext, FALSE);
-    g_option_context_add_main_entries(UgOptioncontext, PsOption->option, NULL);
-    g_option_context_parse(UgOptioncontext, &ViArgument, &AcArgument, NULL);
+    g_option_context_set_help_enabled(EgOptioncontext, FALSE);
+    g_option_context_add_main_entries(EgOptioncontext, CsOption->option, NULL);
+    g_option_context_parse(EgOptioncontext, &DiArgument, &TcArgument, NULL);
 
-    if (PsOption->version) {
-        printf("\n%s\n", PsInfo->version);
-        FvOptionFree(PsOption);
+    if (CsOption->version) {
+        printf("\n%s\n", CsInfo->version);
+        FvOptionFree(CsOption);
         exit(EXIT_SUCCESS);
     }
 
-    if (PsOption->mode && g_strcmp0(PsOption->mode, "0") == 0)
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "0") == 0)
     {
-        for (ViLoop = 1; ViLoop < ViArgument; ViLoop++) {
-            FvUriPrint(AcArgument[ViLoop]);
+        for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
+            FvUriPrint(TcArgument[DiLoop]);
         }
 
         exit(EXIT_SUCCESS);
     }
 
-    g_strfreev(AcArgument);
+    g_strfreev(TcArgument);
 
     return EXIT_SUCCESS;
 }
 
 
     int
-FiOptionGtk(GApplication* UgApplication,
-        GApplicationCommandLine* UgCommandline, void* PvUserdata)
+FdOptionGtk(GApplication* EgApplication,
+        GApplicationCommandLine* EgCommandline, void* PvUserdata)
 {
-    int ViArgument;
-    char** AcArgument;
-    SuMap* PsMap;
-    SuInfo* PsInfo;
-    SuOption* PsOption;
+    int DiArgument;
+    char** TcArgument;
+    SaMap* CsMap;
+    SaInfo* CsInfo;
+    SaOption* CsOption;
 
-    PsMap = PvUserdata;
-    PsInfo = PsMap->info;
-    PsOption = PsMap->option;
+    CsMap = PvUserdata;
+    CsInfo = CsMap->Info;
+    CsOption = CsMap->Option;
 
-    AcArgument = g_application_command_line_get_arguments(UgCommandline,
-            &ViArgument);
+    TcArgument = g_application_command_line_get_arguments(EgCommandline,
+            &DiArgument);
 
-    if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0)
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") == 0)
     {
-        FvGtkBase(GTK_APPLICATION(UgApplication), PsMap, AcArgument);
+        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, TcArgument);
     }
 
     return EXIT_SUCCESS;

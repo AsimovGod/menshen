@@ -2,83 +2,83 @@
 
 
 
-void FvGtkBase(GtkApplication* UgApplication, SuMap* PsMap, char** AcArgument);
+void FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char** TcArgument);
 
 
     void
-FvGtkMenuNewwindow(GSimpleAction* UgSimpleaction, GVariant* UgVariant,
+FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
         void* PvUserdata)
 {
-    SuMap* PsMap;
+    SaMap* CsMap;
 
-    PsMap = PvUserdata;
+    CsMap = PvUserdata;
 
-    FvGtkBase(GTK_APPLICATION(PsMap->application), PsMap, NULL);
+    FvGtkBase(GTK_APPLICATION(CsMap->application), CsMap, NULL);
 }
 
 
     void
-FvGtkMenuAbout(GSimpleAction* UgSimpleaction, GVariant* UgVariant,
+FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
         void* PvUserdata)
 {
-    SuMap* PsMap;
+    SaMap* CsMap;
 
-    PsMap = PvUserdata;
+    CsMap = PvUserdata;
 
-    PsMap->gtkBase->grid->about = gtk_grid_new();
+    CsMap->GtkBase->grid->about = gtk_grid_new();
 
-    gtk_overlay_add_overlay(GTK_OVERLAY(PsMap->gtkBase->overlay->base),
-            PsMap->gtkBase->grid->about);
+    gtk_overlay_add_overlay(GTK_OVERLAY(CsMap->GtkBase->overlay->base),
+            CsMap->GtkBase->grid->about);
 }
 
 
     void
 FvGtkMenuFree(void* PvFree)
 {
-    SuGtkMenu* PsGtkMenu;
+    SaGtkMenu* CsGtkMenu;
 
-    PsGtkMenu = PvFree;
+    CsGtkMenu = PvFree;
 
-    if (! PsGtkMenu) return;
+    if (! CsGtkMenu) return;
 
-    g_free(PsGtkMenu->action);
-    g_free(PsGtkMenu->button);
-    g_free(PsGtkMenu);
+    g_free(CsGtkMenu->action);
+    g_free(CsGtkMenu->button);
+    g_free(CsGtkMenu);
 }
 
 
     void
-FvGtkMenu(SuMap* PsMap, SuGtkBase* PsGtkBase)
+FvGtkMenu(SaMap* CsMap, SaGtkBase* CsGtkBase)
 {
-    SuGtkMenu* PsGtkMenu;
+    SaGtkMenu* CsGtkMenu;
 
-    PsGtkMenu = PsGtkBase->GtkMenu;
-    PsGtkMenu->button = g_new0(SuGtkMenuButton, 1);
-    PsGtkMenu->action = g_new0(SuGtkMenuAction, 1);
-    PsGtkMenu->base = g_menu_new();
-    PsGtkMenu->button->base = gtk_menu_button_new();
-    PsGtkMenu->action->newwindow = g_simple_action_new("newwindow", NULL);
-    PsGtkMenu->action->about = g_simple_action_new("about", NULL);
+    CsGtkMenu = CsGtkBase->GtkMenu;
+    CsGtkMenu->button = g_new0(SaGtkMenuButton, 1);
+    CsGtkMenu->action = g_new0(SaGtkMenuAction, 1);
+    CsGtkMenu->base = g_menu_new();
+    CsGtkMenu->button->base = gtk_menu_button_new();
+    CsGtkMenu->action->newwindow = g_simple_action_new("newwindow", NULL);
+    CsGtkMenu->action->about = g_simple_action_new("about", NULL);
 
-    g_object_set_data_full(G_OBJECT(PsGtkBase->window->base),
-            "PsGtkMenu", PsGtkMenu, (GDestroyNotify)FvGtkMenuFree);
+    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
+            "CsGtkMenu", CsGtkMenu, (GDestroyNotify)FvGtkMenuFree);
 
-    g_menu_append(PsGtkMenu->base, "New Window", "win.newwindow");
-    g_menu_append(PsGtkMenu->base, "About", "win.about");
-    g_action_map_add_action(G_ACTION_MAP(PsGtkBase->window->base),
-            G_ACTION(PsGtkMenu->action->newwindow));
-    g_action_map_add_action(G_ACTION_MAP(PsGtkBase->window->base),
-            G_ACTION(PsGtkMenu->action->about));
-    gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(PsGtkMenu->button->base),
-            G_MENU_MODEL(PsGtkMenu->base));
-    gtk_header_bar_pack_end(GTK_HEADER_BAR(PsGtkBase->headerbar->base),
-            PsGtkBase->GtkMenu->button->base);
+    g_menu_append(CsGtkMenu->base, "New Window", "win.newwindow");
+    g_menu_append(CsGtkMenu->base, "About", "win.about");
+    g_action_map_add_action(G_ACTION_MAP(CsGtkBase->window->base),
+            G_ACTION(CsGtkMenu->action->newwindow));
+    g_action_map_add_action(G_ACTION_MAP(CsGtkBase->window->base),
+            G_ACTION(CsGtkMenu->action->about));
+    gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(CsGtkMenu->button->base),
+            G_MENU_MODEL(CsGtkMenu->base));
+    gtk_header_bar_pack_end(GTK_HEADER_BAR(CsGtkBase->headerbar->base),
+            CsGtkBase->GtkMenu->button->base);
 
-    g_signal_connect(PsGtkMenu->action->newwindow,
-            "activate", G_CALLBACK(FvGtkMenuNewwindow), PsMap);
-    g_signal_connect(PsGtkMenu->action->about,
-            "activate", G_CALLBACK(FvGtkMenuAbout), PsMap);
+    g_signal_connect(CsGtkMenu->action->newwindow,
+            "activate", G_CALLBACK(FvGtkMenuNewwindow), CsMap);
+    g_signal_connect(CsGtkMenu->action->about,
+            "activate", G_CALLBACK(FvGtkMenuAbout), CsMap);
 
-    gtk_menu_button_set_icon_name(GTK_MENU_BUTTON(PsGtkMenu->button->base),
+    gtk_menu_button_set_icon_name(GTK_MENU_BUTTON(CsGtkMenu->button->base),
             "open-menu-symbolic");
 }

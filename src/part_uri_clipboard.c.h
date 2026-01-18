@@ -3,58 +3,58 @@
 
 
     void
-FvGtkUriEntryCopy(GtkButton *UgButton, void* PvUserdata)
+FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
 {
-    GtkEntry* UgEntry;
-    GdkClipboard* UgClipboard;
-    const char* VcText;
+    GtkEntry* EgEntry;
+    GdkClipboard* EgClipboard;
+    const char* AcText;
 
-    UgEntry = PvUserdata;
-    VcText = gtk_editable_get_text(GTK_EDITABLE(UgEntry));
+    EgEntry = PvUserdata;
+    AcText = gtk_editable_get_text(GTK_EDITABLE(EgEntry));
 
-    if (! VcText) return;
+    if (! AcText) return;
 
-    UgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(UgEntry));
-    gdk_clipboard_set_text(UgClipboard, VcText);
+    EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
+    gdk_clipboard_set_text(EgClipboard, AcText);
 }
 
 
     void
-FvGtkUriEntryPasteReceived(GObject* UgObject, GAsyncResult* UgResult,
+FvGtkUriEntryPasteReceived(GObject* EgObject, GAsyncResult* EgResult,
         void* PvUserdata)
 {
-    GtkEntry* UgEntry;
-    GdkClipboard* UgClipboard;
-    const GValue* UgValue;
-    const char* VcText;
+    GtkEntry* EgEntry;
+    GdkClipboard* EgClipboard;
+    const GValue* EgValue;
+    const char* AcText;
 
-    UgEntry = GTK_ENTRY(PvUserdata);
-    UgClipboard = GDK_CLIPBOARD(UgObject);
-    UgValue = gdk_clipboard_read_value_finish(UgClipboard, UgResult, NULL);
+    EgEntry = GTK_ENTRY(PvUserdata);
+    EgClipboard = GDK_CLIPBOARD(EgObject);
+    EgValue = gdk_clipboard_read_value_finish(EgClipboard, EgResult, NULL);
 
-    if (! UgValue) return;
-    if (! G_VALUE_HOLDS_STRING(UgValue)) return;
+    if (! EgValue) return;
+    if (! G_VALUE_HOLDS_STRING(EgValue)) return;
 
-    VcText = g_value_get_string(UgValue);
+    AcText = g_value_get_string(EgValue);
 
-    if (! VcText) return;
+    if (! AcText) return;
 
-    gtk_editable_set_text(GTK_EDITABLE(UgEntry), VcText);
+    gtk_editable_set_text(GTK_EDITABLE(EgEntry), AcText);
 }
 
 
     void
-FvGtkUriEntryPaste(GtkButton *UgButton, void* PvUserdata)
+FvGtkUriEntryPaste(GtkButton *EgButton, void* PvUserdata)
 {
-    GtkEntry* UgEntry;
-    GdkClipboard* UgClipboard;
+    GtkEntry* EgEntry;
+    GdkClipboard* EgClipboard;
 
-    UgEntry = GTK_ENTRY(PvUserdata);
-    UgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(UgEntry));
+    EgEntry = GTK_ENTRY(PvUserdata);
+    EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
 
-    if (! UgClipboard) return;
+    if (! EgClipboard) return;
 
-    gdk_clipboard_read_value_async(UgClipboard, G_TYPE_STRING,
-            G_PRIORITY_DEFAULT, NULL, FvGtkUriEntryPasteReceived, UgEntry);
+    gdk_clipboard_read_value_async(EgClipboard, G_TYPE_STRING,
+            G_PRIORITY_DEFAULT, NULL, FvGtkUriEntryPasteReceived, EgEntry);
 }
 

@@ -5,83 +5,83 @@
     void
 FvGtkMimeFree(void* PvFree)
 {
-    SuGtkMime* PsGtkMime;
+    SaGtkMime* CsGtkMime;
 
-    PsGtkMime = PvFree;
+    CsGtkMime = PvFree;
 
-    if (! PsGtkMime) return;
+    if (! CsGtkMime) return;
 
-    g_free(PsGtkMime->list);
-    g_free(PsGtkMime->box);
-    g_free(PsGtkMime->button);
-    g_free(PsGtkMime);
+    g_free(CsGtkMime->list);
+    g_free(CsGtkMime->box);
+    g_free(CsGtkMime->button);
+    g_free(CsGtkMime);
 }
 
 
     void
-FvGtkMime(SuGtkBase* PsGtkBase)
+FvGtkMime(SaGtkBase* CsGtkBase)
 {
-    SuGtkMime* PsGtkMime;
+    SaGtkMime* CsGtkMime;
 
-    PsGtkMime = PsGtkBase->GtkMime;
-    PsGtkMime->list = g_new0(SuGtkMimeList, 1);
-    PsGtkMime->box = g_new0(SuGtkMimeBox, 1);
-    PsGtkMime->button = g_new0(SuGtkMimeButton, 1);
+    CsGtkMime = CsGtkBase->GtkMime;
+    CsGtkMime->list = g_new0(SaGtkMimeList, 1);
+    CsGtkMime->box = g_new0(SaGtkMimeBox, 1);
+    CsGtkMime->button = g_new0(SaGtkMimeButton, 1);
 
-    g_object_set_data_full(G_OBJECT(PsGtkBase->window->base),
-            "PsGtkMime", PsGtkMime, (GDestroyNotify)FvGtkMimeFree);
+    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
+            "CsGtkMime", CsGtkMime, (GDestroyNotify)FvGtkMimeFree);
 
-    PsGtkBase->scroll->mimeList = gtk_scrolled_window_new();
-    PsGtkBase->scroll->mimeOpen = gtk_scrolled_window_new();
-    PsGtkBase->grid->mimeList = gtk_grid_new();
-    PsGtkBase->grid->mimeOpen = gtk_grid_new();
+    CsGtkBase->scroll->mimeList = gtk_scrolled_window_new();
+    CsGtkBase->scroll->mimeOpen = gtk_scrolled_window_new();
+    CsGtkBase->grid->mimeList = gtk_grid_new();
+    CsGtkBase->grid->mimeOpen = gtk_grid_new();
 
-    gtk_paned_set_start_child(GTK_PANED(PsGtkBase->paned->baseRight),
-            PsGtkBase->scroll->mimeList);
-    gtk_paned_set_end_child(GTK_PANED(PsGtkBase->paned->baseRight),
-            PsGtkBase->scroll->mimeOpen);
+    gtk_paned_set_start_child(GTK_PANED(CsGtkBase->paned->baseRight),
+            CsGtkBase->scroll->mimeList);
+    gtk_paned_set_end_child(GTK_PANED(CsGtkBase->paned->baseRight),
+            CsGtkBase->scroll->mimeOpen);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
-                PsGtkBase->scroll->mimeList), PsGtkBase->grid->mimeList);
+                CsGtkBase->scroll->mimeList), CsGtkBase->grid->mimeList);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
-                PsGtkBase->scroll->mimeOpen), PsGtkBase->grid->mimeOpen);
+                CsGtkBase->scroll->mimeOpen), CsGtkBase->grid->mimeOpen);
 
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
-                PsGtkBase->scroll->mimeList),
+                CsGtkBase->scroll->mimeList),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
-                PsGtkBase->scroll->mimeOpen),
+                CsGtkBase->scroll->mimeOpen),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-    gtk_widget_set_margin_start(PsGtkBase->grid->mimeList, 16);
-    gtk_widget_set_margin_end(PsGtkBase->grid->mimeList, 16);
-    gtk_widget_set_margin_top(PsGtkBase->grid->mimeList, 16);
-    gtk_widget_set_margin_bottom(PsGtkBase->grid->mimeList, 16);
-    gtk_widget_set_margin_start(PsGtkBase->grid->mimeOpen, 16);
-    gtk_widget_set_margin_end(PsGtkBase->grid->mimeOpen, 16);
-    gtk_widget_set_margin_top(PsGtkBase->grid->mimeOpen, 16);
-    gtk_widget_set_margin_bottom(PsGtkBase->grid->mimeOpen, 16);
+    gtk_widget_set_margin_start(CsGtkBase->grid->mimeList, 16);
+    gtk_widget_set_margin_end(CsGtkBase->grid->mimeList, 16);
+    gtk_widget_set_margin_top(CsGtkBase->grid->mimeList, 16);
+    gtk_widget_set_margin_bottom(CsGtkBase->grid->mimeList, 16);
+    gtk_widget_set_margin_start(CsGtkBase->grid->mimeOpen, 16);
+    gtk_widget_set_margin_end(CsGtkBase->grid->mimeOpen, 16);
+    gtk_widget_set_margin_top(CsGtkBase->grid->mimeOpen, 16);
+    gtk_widget_set_margin_bottom(CsGtkBase->grid->mimeOpen, 16);
 
-    gtk_widget_set_vexpand(PsGtkBase->grid->mimeList, TRUE);
-    gtk_widget_set_hexpand(PsGtkBase->grid->mimeList, TRUE);
-    gtk_widget_set_vexpand(PsGtkBase->grid->mimeOpen, TRUE);
-    gtk_widget_set_hexpand(PsGtkBase->grid->mimeOpen, TRUE);
+    gtk_widget_set_vexpand(CsGtkBase->grid->mimeList, TRUE);
+    gtk_widget_set_hexpand(CsGtkBase->grid->mimeList, TRUE);
+    gtk_widget_set_vexpand(CsGtkBase->grid->mimeOpen, TRUE);
+    gtk_widget_set_hexpand(CsGtkBase->grid->mimeOpen, TRUE);
 
-    gtk_widget_set_valign(PsGtkBase->grid->mimeList, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(PsGtkBase->grid->mimeList, GTK_ALIGN_FILL);
-    gtk_widget_set_valign(PsGtkBase->grid->mimeOpen, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(PsGtkBase->grid->mimeOpen, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(CsGtkBase->grid->mimeList, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(CsGtkBase->grid->mimeList, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(CsGtkBase->grid->mimeOpen, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(CsGtkBase->grid->mimeOpen, GTK_ALIGN_FILL);
 
-    gtk_grid_set_row_homogeneous(GTK_GRID(PsGtkBase->grid->mimeList), TRUE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(PsGtkBase->grid->mimeList), FALSE);
-    gtk_grid_set_row_homogeneous(GTK_GRID(PsGtkBase->grid->mimeOpen), TRUE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(PsGtkBase->grid->mimeOpen), FALSE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(CsGtkBase->grid->mimeList), TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(CsGtkBase->grid->mimeList), FALSE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(CsGtkBase->grid->mimeOpen), TRUE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(CsGtkBase->grid->mimeOpen), FALSE);
 
-    gtk_grid_set_row_spacing(GTK_GRID(PsGtkBase->grid->mimeList), 4);
-    gtk_grid_set_column_spacing(GTK_GRID(PsGtkBase->grid->mimeList), 4);
-    gtk_grid_set_row_spacing(GTK_GRID(PsGtkBase->grid->mimeOpen), 4);
-    gtk_grid_set_column_spacing(GTK_GRID(PsGtkBase->grid->mimeOpen), 4);
+    gtk_grid_set_row_spacing(GTK_GRID(CsGtkBase->grid->mimeList), 4);
+    gtk_grid_set_column_spacing(GTK_GRID(CsGtkBase->grid->mimeList), 4);
+    gtk_grid_set_row_spacing(GTK_GRID(CsGtkBase->grid->mimeOpen), 4);
+    gtk_grid_set_column_spacing(GTK_GRID(CsGtkBase->grid->mimeOpen), 4);
 
-    FvGtkMimeList(PsGtkBase, PsGtkMime);
-    FvGtkMimeOpen(PsGtkBase, PsGtkMime);
+    FvGtkMimeList(CsGtkBase, CsGtkMime);
+    FvGtkMimeOpen(CsGtkBase, CsGtkMime);
 }
 

@@ -2,23 +2,23 @@
 
 
 
-typedef struct SuInfo {
+typedef struct SaInfo {
     char* name;
     char* id;
     char* version;
-} SuInfo;
+} SaInfo;
 
 
-typedef struct SuOption {
+typedef struct SaOption {
     bool version;
     bool help;
     char* mode;
     GOptionEntry* option;
     int optionN;
-} SuOption;
+} SaOption;
 
 
-typedef struct SuGuriParse {
+typedef struct SaGuriParse {
     char* string;
     char* scheme;
     char* userinfo;
@@ -28,9 +28,9 @@ typedef struct SuGuriParse {
     char* query;
     char* fragment;
     char* uri;
-} SuGuriParse;
+} SaGuriParse;
 
-typedef struct SuGtkUriEntry {
+typedef struct SaGtkUriEntry {
     GtkWidget* uri;
     GtkWidget* scheme;
     GtkWidget* userinfo;
@@ -38,120 +38,120 @@ typedef struct SuGtkUriEntry {
     GtkWidget* path;
     GtkWidget* query;
     GtkWidget* fragment;
-} SuGtkUriEntry;
+} SaGtkUriEntry;
 
-typedef struct SuGtkUriSpin {
+typedef struct SaGtkUriSpin {
     GtkWidget* port;
-} SuGtkUriSpin;
+} SaGtkUriSpin;
 
-typedef struct SuGtkUri {
-    SuGuriParse* parse;
-    SuGtkUriEntry* entry;
-    SuGtkUriSpin* spin;
+typedef struct SaGtkUri {
+    SaGuriParse* parse;
+    SaGtkUriEntry* entry;
+    SaGtkUriSpin* spin;
     bool boolean;
-} SuGtkUri;
+} SaGtkUri;
 
 
-typedef struct SuGtkMimeList {
+typedef struct SaGtkMimeList {
     GList* http;
     GList* https;
     GList* all;
-} SuGtkMimeList;
+} SaGtkMimeList;
 
-typedef struct SuGtkMimeBox {
+typedef struct SaGtkMimeBox {
     GtkWidget* list;
-} SuGtkMimeBox;
+} SaGtkMimeBox;
 
-typedef struct SuGtkMimeButton {
+typedef struct SaGtkMimeButton {
     GtkWidget* open;
-} SuGtkMimeButton;
+} SaGtkMimeButton;
 
-typedef struct SuGtkMime {
-    SuGtkMimeList* list;
-    SuGtkMimeBox* box;
-    SuGtkMimeButton* button;
-} SuGtkMime;
+typedef struct SaGtkMime {
+    SaGtkMimeList* list;
+    SaGtkMimeBox* box;
+    SaGtkMimeButton* button;
+} SaGtkMime;
 
 
-typedef struct SuGtkMenuAction {
+typedef struct SaGtkMenuAction {
     GSimpleAction* newwindow;
     GSimpleAction* about;
-} SuGtkMenuAction;
+} SaGtkMenuAction;
 
-typedef struct SuGtkMenuButton {
+typedef struct SaGtkMenuButton {
     GtkWidget* base;
-} SuGtkMenuButton;
+} SaGtkMenuButton;
 
-typedef struct SuGtkMenu {
+typedef struct SaGtkMenu {
     GMenu* base;
-    SuGtkMenuAction* action;
-    SuGtkMenuButton* button;
-} SuGtkMenu;
+    SaGtkMenuAction* action;
+    SaGtkMenuButton* button;
+} SaGtkMenu;
 
 
-typedef struct SuGtkWindow {
+typedef struct SaGtkWindow {
     GtkWidget* base;
     char* baseT;
     int baseH;
     int baseW;
-} SuGtkWindow;
+} SaGtkWindow;
 
-typedef struct SuGtkOverlay {
+typedef struct SaGtkOverlay {
     GtkWidget* base;
-} SuGtkOverlay;
+} SaGtkOverlay;
 
-typedef struct SuGtkHeaderbar {
+typedef struct SaGtkHeaderbar {
     GtkWidget* base;
-} SuGtkHeaderbar;
+} SaGtkHeaderbar;
 
-typedef struct SuGtkControl {
+typedef struct SaGtkControl {
     GtkWidget* base;
-} SuGtkControl;
+} SaGtkControl;
 
-typedef struct SuGtkPaned {
+typedef struct SaGtkPaned {
     GtkWidget* base;
     double baseR;
     GtkWidget* baseLeft;
     double baseLeftR;
     GtkWidget* baseRight;
     double baseRightR;
-} SuGtkPaned;
+} SaGtkPaned;
 
-typedef struct SuGtkGrid {
+typedef struct SaGtkGrid {
     GtkWidget* about;
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
     GtkWidget* mimeOpen;
-} SuGtkGrid;
+} SaGtkGrid;
 
-typedef struct SuGtkScroll {
+typedef struct SaGtkScroll {
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
     GtkWidget* mimeOpen;
-} SuGtkScroll;
+} SaGtkScroll;
 
-typedef struct SuGtkBase {
+typedef struct SaGtkBase {
     GtkApplication* application;
-    SuGtkWindow* window;
-    SuGtkOverlay* overlay;
-    SuGtkHeaderbar* headerbar;
-    SuGtkControl* control;
-    SuGtkPaned* paned;
-    SuGtkGrid* grid;
-    SuGtkScroll* scroll;
-    SuInfo* Info;
-    SuOption* Option;
-    SuGtkMenu* GtkMenu;
-    SuGtkUri* GtkUri;
-    SuGtkMime* GtkMime;
-} SuGtkBase;
+    SaGtkWindow* window;
+    SaGtkOverlay* overlay;
+    SaGtkHeaderbar* headerbar;
+    SaGtkControl* control;
+    SaGtkPaned* paned;
+    SaGtkGrid* grid;
+    SaGtkScroll* scroll;
+    SaInfo* Info;
+    SaOption* Option;
+    SaGtkMenu* GtkMenu;
+    SaGtkUri* GtkUri;
+    SaGtkMime* GtkMime;
+} SaGtkBase;
 
 
-typedef struct SuMap {
+typedef struct SaMap {
     GtkApplication* application;
-    SuInfo* info;
-    SuOption* option;
-    SuGtkBase* gtkBase;
-} SuMap;
+    SaInfo* Info;
+    SaOption* Option;
+    SaGtkBase* GtkBase;
+} SaMap;
