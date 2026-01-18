@@ -20,6 +20,7 @@
 #include "part_mime.h"
 #include "part_window.h"
 #include "part_option.h"
+#include "part_app.h"
 
 
 
@@ -27,34 +28,22 @@
 main(int ViArgs, char** AcArgs)
 {
     int ViExit;
-    GtkApplication* UgApplication;
-    AdwStyleManager* UaStylemanager;
+    SuMap* PsMap;
+    SuInfo* PsInfo;
     SuOption* PsOption;
 
-    PsOption = FgOptionInit();
-    ViExit = FiOptionGlib(ViArgs, AcArgs, PsOption);
+    PsMap = g_new0(SuMap, 1);
+    PsInfo = FsInfoInit();
+    PsOption = FsOptionInit();
+    PsMap->info = PsInfo;
+    PsMap->option = PsOption;
 
-    if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0)
-    {
-        adw_init();
-        UaStylemanager = adw_style_manager_get_default();
-        adw_style_manager_set_color_scheme(UaStylemanager,
-                ADW_COLOR_SCHEME_PREFER_DARK);
-    }
+    ViExit = FiOptionGlib(ViArgs, AcArgs, PsMap, PsInfo, PsOption);
+    ViExit = FiGtkApp(ViArgs, AcArgs, PsMap, PsInfo, PsOption);
 
-    UgApplication = gtk_application_new(NULL,
-            G_APPLICATION_HANDLES_COMMAND_LINE);
-
-    g_application_add_main_option_entries(G_APPLICATION(UgApplication),
-            PsOption->option);
-
-    g_signal_connect(UgApplication,
-            "command-line", G_CALLBACK(FiOptionGtk), PsOption);
-
-    ViExit = g_application_run(G_APPLICATION(UgApplication), ViArgs, AcArgs);
-
-    g_object_unref(UgApplication);
+    FvInfoFree(PsInfo);
     FvOptionFree(PsOption);
+    if (PsMap) g_free(PsMap);
 
     return ViExit;
 }

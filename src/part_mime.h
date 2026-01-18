@@ -11,10 +11,10 @@ FvGtkMimeFree(void* PvFree)
 
     if (! PsGtkMime) return;
 
-    free(PsGtkMime->list);
-    free(PsGtkMime->box);
-    free(PsGtkMime->button);
-    free(PsGtkMime);
+    g_free(PsGtkMime->list);
+    g_free(PsGtkMime->box);
+    g_free(PsGtkMime->button);
+    g_free(PsGtkMime);
 }
 
 
@@ -23,7 +23,7 @@ FvGtkMime(SuGtkBase* PsGtkBase)
 {
     SuGtkMime* PsGtkMime;
 
-    PsGtkMime = PsGtkBase->gtkMime;
+    PsGtkMime = PsGtkBase->GtkMime;
     PsGtkMime->list = g_new0(SuGtkMimeList, 1);
     PsGtkMime->box = g_new0(SuGtkMimeBox, 1);
     PsGtkMime->button = g_new0(SuGtkMimeButton, 1);

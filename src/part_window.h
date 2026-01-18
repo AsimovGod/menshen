@@ -11,21 +11,22 @@ FvGtkBaseFree(void* PvFree)
 
     if (! PsGtkBase) return;
 
-    free(PsGtkBase->window);
-    free(PsGtkBase->headerbar);
-    free(PsGtkBase->control);
-    free(PsGtkBase->paned);
-    free(PsGtkBase->grid);
-    free(PsGtkBase->scroll);
-    free(PsGtkBase);
+    g_free(PsGtkBase->window);
+    g_free(PsGtkBase->headerbar);
+    g_free(PsGtkBase->control);
+    g_free(PsGtkBase->paned);
+    g_free(PsGtkBase->grid);
+    g_free(PsGtkBase->scroll);
+    g_free(PsGtkBase);
 }
 
 
     void
-FvGtkBase(GtkApplication* UgApplication, char** AcArgsGtkActivate)
+FvGtkBase(GtkApplication* UgApplication, SuMap* PsMap, char** AcArgument)
 {
     SuGtkBase* PsGtkBase;
 
+    PsMap->gtkBase = PsGtkBase;
     PsGtkBase = g_new0(SuGtkBase, 1);
     PsGtkBase->window = g_new0(SuGtkWindow, 1);
     PsGtkBase->headerbar = g_new0(SuGtkHeaderbar, 1);
@@ -33,8 +34,10 @@ FvGtkBase(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     PsGtkBase->paned = g_new0(SuGtkPaned, 1);
     PsGtkBase->grid = g_new0(SuGtkGrid, 1);
     PsGtkBase->scroll = g_new0(SuGtkScroll, 1);
-    PsGtkBase->gtkUri = g_new0(SuGtkUri, 1);
-    PsGtkBase->gtkMime = g_new0(SuGtkMime, 1);
+    PsGtkBase->GtkUri = g_new0(SuGtkUri, 1);
+    PsGtkBase->GtkMime = g_new0(SuGtkMime, 1);
+    PsGtkBase->Info = PsMap->info;
+    PsGtkBase->Option = PsMap->option;
 
     PsGtkBase->window->main = gtk_application_window_new(UgApplication);
     PsGtkBase->headerbar->main = gtk_header_bar_new();
@@ -86,7 +89,7 @@ FvGtkBase(GtkApplication* UgApplication, char** AcArgsGtkActivate)
     gtk_widget_set_valign(PsGtkBase->paned->mainRight, GTK_ALIGN_FILL);
     gtk_widget_set_halign(PsGtkBase->paned->mainRight, GTK_ALIGN_FILL);
 
-    FvGtkUri(PsGtkBase, AcArgsGtkActivate[1]);
+    FvGtkUri(PsGtkBase, AcArgument[1]);
     FvGtkMime(PsGtkBase);
 
     gtk_window_present(GTK_WINDOW(PsGtkBase->window->main));

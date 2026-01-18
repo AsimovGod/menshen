@@ -33,10 +33,10 @@ FvGtkUriFree(void* PvFree)
 
     if (! PsGtkUri) return;
 
-    free(PsGtkUri->parse);
-    free(PsGtkUri->entry);
-    free(PsGtkUri->spin);
-    free(PsGtkUri);
+    g_free(PsGtkUri->parse);
+    g_free(PsGtkUri->entry);
+    g_free(PsGtkUri->spin);
+    g_free(PsGtkUri);
 }
 
 
@@ -45,7 +45,7 @@ FvGtkUri(SuGtkBase* PsGtkBase, char* VcUri)
 {
     SuGtkUri* PsGtkUri;
 
-    PsGtkUri = PsGtkBase->gtkUri;
+    PsGtkUri = PsGtkBase->GtkUri;
     PsGtkUri->entry = g_new0(SuGtkUriEntry, 1);
     PsGtkUri->spin = g_new0(SuGtkUriSpin, 1);
     PsGtkUri->parse = g_new0(SuGuriParse, 1);

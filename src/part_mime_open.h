@@ -14,15 +14,13 @@ FvGtkMimeListOpen(GtkButton *UgBotton, void* PvUserdata)
     SuGtkBase* PsGtkBase;
 
     PsGtkBase = PvUserdata;
-    UgListbox = GTK_LIST_BOX(PsGtkBase->gtkMime->box->list);
+    UgListbox = GTK_LIST_BOX(PsGtkBase->GtkMime->box->list);
     UgListrow = gtk_list_box_get_selected_row(UgListbox);
 
     if (! UgListrow) return;
 
     UgAppinfo = g_object_get_data(G_OBJECT(UgListrow), "UgListrow");
-    VcUri = g_object_get_data(G_OBJECT(PsGtkBase->gtkUri->entry->uri),
-            "PsGtkUri->entry->uri");
-
+    VcUri = FcGtkUriEntryGet(PsGtkBase->GtkUri->entry->uri);
     UgFile = VcUri ? g_file_new_for_uri(VcUri) : NULL;
     UgList = g_list_append(NULL, UgFile);
 

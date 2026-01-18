@@ -2,6 +2,13 @@
 
 
 
+typedef struct SuInfo {
+    char* name;
+    char* id;
+    char* version;
+} SuInfo;
+
+
 typedef struct SuOption {
     bool version;
     bool help;
@@ -111,7 +118,15 @@ typedef struct SuGtkBase {
     SuGtkPaned* paned;
     SuGtkGrid* grid;
     SuGtkScroll* scroll;
-    SuGtkUri* gtkUri;
-    SuGtkMime* gtkMime;
+    SuInfo* Info;
+    SuOption* Option;
+    SuGtkUri* GtkUri;
+    SuGtkMime* GtkMime;
 } SuGtkBase;
 
+
+typedef struct SuMap {
+    SuInfo* info;
+    SuOption* option;
+    SuGtkBase* gtkBase;
+} SuMap;

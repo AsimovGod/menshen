@@ -3,7 +3,7 @@
 
 
     SuOption*
-FgOptionInit()
+FsOptionInit()
 {
     int ViOption;
     SuOption* PsOption;
@@ -49,7 +49,8 @@ FvOptionFree(void* PvFree)
 
 
     int
-FiOptionGlib(int ViArgs, char** AcArgs, SuOption* PsOption)
+FiOptionGlib(int ViArgs, char** AcArgs,
+        SuMap* PsMap, SuInfo* PsInfo, SuOption* PsOption)
 {
     int ViLoop;
     int ViArgument;
@@ -66,7 +67,7 @@ FiOptionGlib(int ViArgs, char** AcArgs, SuOption* PsOption)
     g_option_context_parse(UgOptioncontext, &ViArgument, &AcArgument, NULL);
 
     if (PsOption->version) {
-        printf("\n0.0.1\n");
+        printf("\n%s\n", PsInfo->version);
         FvOptionFree(PsOption);
         exit(EXIT_SUCCESS);
     }
@@ -88,21 +89,24 @@ FiOptionGlib(int ViArgs, char** AcArgs, SuOption* PsOption)
 
     int
 FiOptionGtk(GApplication* UgApplication,
-        GApplicationCommandLine* UgCommandline,
-        void* PvUserdata)
+        GApplicationCommandLine* UgCommandline, void* PvUserdata)
 {
     int ViArgument;
     char** AcArgument;
+    SuMap* PsMap;
+    SuInfo* PsInfo;
     SuOption* PsOption;
 
-    PsOption = PvUserdata;
+    PsMap = PvUserdata;
+    PsInfo = PsMap->info;
+    PsOption = PsMap->option;
 
     AcArgument = g_application_command_line_get_arguments(UgCommandline,
             &ViArgument);
 
     if (PsOption->mode && g_strcmp0(PsOption->mode, "1") == 0)
     {
-        FvGtkBase(GTK_APPLICATION(UgApplication), AcArgument);
+        FvGtkBase(GTK_APPLICATION(UgApplication), PsMap, AcArgument);
     }
 
     return EXIT_SUCCESS;

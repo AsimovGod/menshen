@@ -44,7 +44,7 @@ FcGuriBuild(SuGuriParse* PsParse)
 
 
     SuGuriParse*
-FtGuriParse(const char* VcBuild)
+FsGuriParse(const char* VcBuild)
 {
     const char* VcParse;
     GUri* UgGuri;
@@ -113,7 +113,7 @@ FvUriPrint(char* VcUriPrint)
 {
     SuGuriParse* PsUriPrint;
 
-    PsUriPrint = FtGuriParse(VcUriPrint);
+    PsUriPrint = FsGuriParse(VcUriPrint);
 
     if (! PsUriPrint) return;
 
