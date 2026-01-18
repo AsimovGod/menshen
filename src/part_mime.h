@@ -28,17 +28,17 @@ FvGtkMime(SuGtkBase* PsGtkBase)
     PsGtkMime->box = g_new0(SuGtkMimeBox, 1);
     PsGtkMime->button = g_new0(SuGtkMimeButton, 1);
 
+    g_object_set_data_full(G_OBJECT(PsGtkBase->window->base),
+            "PsGtkMime", PsGtkMime, (GDestroyNotify)FvGtkMimeFree);
+
     PsGtkBase->scroll->mimeList = gtk_scrolled_window_new();
     PsGtkBase->scroll->mimeOpen = gtk_scrolled_window_new();
     PsGtkBase->grid->mimeList = gtk_grid_new();
     PsGtkBase->grid->mimeOpen = gtk_grid_new();
 
-    g_object_set_data_full(G_OBJECT(PsGtkBase->window->main),
-            "PsGtkMime", PsGtkMime, (GDestroyNotify)FvGtkMimeFree);
-
-    gtk_paned_set_start_child(GTK_PANED(PsGtkBase->paned->mainRight),
+    gtk_paned_set_start_child(GTK_PANED(PsGtkBase->paned->baseRight),
             PsGtkBase->scroll->mimeList);
-    gtk_paned_set_end_child(GTK_PANED(PsGtkBase->paned->mainRight),
+    gtk_paned_set_end_child(GTK_PANED(PsGtkBase->paned->baseRight),
             PsGtkBase->scroll->mimeOpen);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 PsGtkBase->scroll->mimeList), PsGtkBase->grid->mimeList);

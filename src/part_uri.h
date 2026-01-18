@@ -50,17 +50,17 @@ FvGtkUri(SuGtkBase* PsGtkBase, char* VcUri)
     PsGtkUri->spin = g_new0(SuGtkUriSpin, 1);
     PsGtkUri->parse = g_new0(SuGuriParse, 1);
 
+    g_object_set_data_full(G_OBJECT(PsGtkBase->window->base),
+            "PsGtkUri", PsGtkUri, (GDestroyNotify)FvGtkUriFree);
+
     PsGtkBase->scroll->uriBuild = gtk_scrolled_window_new();
     PsGtkBase->scroll->uriParse = gtk_scrolled_window_new();
     PsGtkBase->grid->uriBuild = gtk_grid_new();
     PsGtkBase->grid->uriParse = gtk_grid_new();
 
-    g_object_set_data_full(G_OBJECT(PsGtkBase->window->main),
-            "PsGtkUri", PsGtkUri, (GDestroyNotify)FvGtkUriFree);
-
-    gtk_paned_set_start_child(GTK_PANED(PsGtkBase->paned->mainLeft),
+    gtk_paned_set_start_child(GTK_PANED(PsGtkBase->paned->baseLeft),
             PsGtkBase->scroll->uriBuild);
-    gtk_paned_set_end_child(GTK_PANED(PsGtkBase->paned->mainLeft),
+    gtk_paned_set_end_child(GTK_PANED(PsGtkBase->paned->baseLeft),
             PsGtkBase->scroll->uriParse);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 PsGtkBase->scroll->uriBuild), PsGtkBase->grid->uriBuild);

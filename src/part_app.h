@@ -47,6 +47,8 @@ FiGtkApp(int ViArgs, char** AcArgs,
     UgApplication = gtk_application_new(NULL,
             G_APPLICATION_HANDLES_COMMAND_LINE);
 
+    PsMap->application = UgApplication;
+
     g_application_add_main_option_entries(G_APPLICATION(UgApplication),
             PsOption->option);
 

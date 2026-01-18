@@ -1,4 +1,4 @@
-// main.h
+// base.h
 
 
 
@@ -73,31 +73,52 @@ typedef struct SuGtkMime {
 } SuGtkMime;
 
 
+typedef struct SuGtkMenuAction {
+    GSimpleAction* newwindow;
+    GSimpleAction* about;
+} SuGtkMenuAction;
+
+typedef struct SuGtkMenuButton {
+    GtkWidget* base;
+} SuGtkMenuButton;
+
+typedef struct SuGtkMenu {
+    GMenu* base;
+    SuGtkMenuAction* action;
+    SuGtkMenuButton* button;
+} SuGtkMenu;
+
+
 typedef struct SuGtkWindow {
-    GtkWidget* main;
-    char* mainT;
-    int mainH;
-    int mainW;
+    GtkWidget* base;
+    char* baseT;
+    int baseH;
+    int baseW;
 } SuGtkWindow;
 
+typedef struct SuGtkOverlay {
+    GtkWidget* base;
+} SuGtkOverlay;
+
 typedef struct SuGtkHeaderbar {
-    GtkWidget* main;
+    GtkWidget* base;
 } SuGtkHeaderbar;
 
 typedef struct SuGtkControl {
-    GtkWidget* main;
+    GtkWidget* base;
 } SuGtkControl;
 
 typedef struct SuGtkPaned {
-    GtkWidget* main;
-    double mainR;
-    GtkWidget* mainLeft;
-    double mainLeftR;
-    GtkWidget* mainRight;
-    double mainRightR;
+    GtkWidget* base;
+    double baseR;
+    GtkWidget* baseLeft;
+    double baseLeftR;
+    GtkWidget* baseRight;
+    double baseRightR;
 } SuGtkPaned;
 
 typedef struct SuGtkGrid {
+    GtkWidget* about;
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
@@ -112,7 +133,9 @@ typedef struct SuGtkScroll {
 } SuGtkScroll;
 
 typedef struct SuGtkBase {
+    GtkApplication* application;
     SuGtkWindow* window;
+    SuGtkOverlay* overlay;
     SuGtkHeaderbar* headerbar;
     SuGtkControl* control;
     SuGtkPaned* paned;
@@ -120,12 +143,14 @@ typedef struct SuGtkBase {
     SuGtkScroll* scroll;
     SuInfo* Info;
     SuOption* Option;
+    SuGtkMenu* GtkMenu;
     SuGtkUri* GtkUri;
     SuGtkMime* GtkMime;
 } SuGtkBase;
 
 
 typedef struct SuMap {
+    GtkApplication* application;
     SuInfo* info;
     SuOption* option;
     SuGtkBase* gtkBase;

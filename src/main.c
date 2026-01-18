@@ -18,6 +18,7 @@
 #include "part_mime_open.h"
 #include "part_mime_list.h"
 #include "part_mime.h"
+#include "part_menu.h"
 #include "part_window.h"
 #include "part_option.h"
 #include "part_app.h"
