@@ -23,18 +23,20 @@ FvGtkMime(SaGtkBase* CsGtkBase)
 {
     SaGtkMime* CsGtkMime;
 
-    CsGtkMime = CsGtkBase->GtkMime;
+    CsGtkMime = g_new0(SaGtkMime, 1);
     CsGtkMime->list = g_new0(SaGtkMimeList, 1);
     CsGtkMime->box = g_new0(SaGtkMimeBox, 1);
     CsGtkMime->button = g_new0(SaGtkMimeButton, 1);
-
-    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
-            "CsGtkMime", CsGtkMime, (GDestroyNotify)FvGtkMimeFree);
 
     CsGtkBase->scroll->mimeList = gtk_scrolled_window_new();
     CsGtkBase->scroll->mimeOpen = gtk_scrolled_window_new();
     CsGtkBase->grid->mimeList = gtk_grid_new();
     CsGtkBase->grid->mimeOpen = gtk_grid_new();
+
+    CsGtkBase->GtkMime = CsGtkMime;
+
+    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
+            "CsGtkMime", CsGtkMime, (GDestroyNotify)FvGtkMimeFree);
 
     gtk_paned_set_start_child(GTK_PANED(CsGtkBase->paned->baseRight),
             CsGtkBase->scroll->mimeList);

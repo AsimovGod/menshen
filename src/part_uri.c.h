@@ -45,18 +45,20 @@ FvGtkUri(SaGtkBase* CsGtkBase, char* AcUri)
 {
     SaGtkUri* CsGtkUri;
 
-    CsGtkUri = CsGtkBase->GtkUri;
+    CsGtkUri = g_new0(SaGtkUri, 1);
     CsGtkUri->entry = g_new0(SaGtkUriEntry, 1);
     CsGtkUri->spin = g_new0(SaGtkUriSpin, 1);
     CsGtkUri->parse = g_new0(SaGuriParse, 1);
-
-    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
-            "CsGtkUri", CsGtkUri, (GDestroyNotify)FvGtkUriFree);
 
     CsGtkBase->scroll->uriBuild = gtk_scrolled_window_new();
     CsGtkBase->scroll->uriParse = gtk_scrolled_window_new();
     CsGtkBase->grid->uriBuild = gtk_grid_new();
     CsGtkBase->grid->uriParse = gtk_grid_new();
+
+    CsGtkBase->GtkUri = CsGtkUri;
+
+    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
+            "CsGtkUri", CsGtkUri, (GDestroyNotify)FvGtkUriFree);
 
     gtk_paned_set_start_child(GTK_PANED(CsGtkBase->paned->baseLeft),
             CsGtkBase->scroll->uriBuild);

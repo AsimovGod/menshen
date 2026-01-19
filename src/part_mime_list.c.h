@@ -23,7 +23,7 @@ FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
     gtk_list_box_append(GTK_LIST_BOX(EgListbox), EgListrow);
 
     g_object_set_data_full(G_OBJECT(EgListrow),
-            "EgListrow", g_object_ref(EgAppinfo), g_object_unref);
+            "EgAppinfo", g_object_ref(EgAppinfo), g_object_unref);
 
     if (EgIcon) {
         gtk_image_set_from_gicon(GTK_IMAGE(EgImage), EgIcon);
@@ -74,9 +74,11 @@ FvGtkMimeList(SaGtkBase* CsGtkBase, SaGtkMime* CsGtkMime)
     for (EgLoop = CsGtkMime->list->all; EgLoop; EgLoop = EgLoop->next) {
         EgAppinfo = G_APP_INFO(EgLoop->data);
         AcAppid = g_app_info_get_id(EgAppinfo);
+
         if (g_hash_table_contains(EgHashtable, AcAppid)) continue;
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
+
         FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->box->list), EgAppinfo);
     }
 

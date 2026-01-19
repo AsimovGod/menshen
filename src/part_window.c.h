@@ -12,7 +12,6 @@ FvGtkBaseFree(void* PvFree)
     if (! CsGtkBase) return;
 
     g_free(CsGtkBase->window);
-    g_free(CsGtkBase->overlay);
     g_free(CsGtkBase->headerbar);
     g_free(CsGtkBase->control);
     g_free(CsGtkBase->paned);
@@ -27,40 +26,34 @@ FvGtkBase(GtkApplication* EgApplication, SaMap* CsMap, char* AcUri)
 {
     SaGtkBase* CsGtkBase;
 
-    CsMap->GtkBase = CsGtkBase;
     CsGtkBase = g_new0(SaGtkBase, 1);
     CsGtkBase->application = CsMap->application;
     CsGtkBase->window = g_new0(SaGtkWindow, 1);
-    CsGtkBase->overlay = g_new0(SaGtkOverlay, 1);
     CsGtkBase->headerbar = g_new0(SaGtkHeaderbar, 1);
     CsGtkBase->control = g_new0(SaGtkControl, 1);
     CsGtkBase->paned = g_new0(SaGtkPaned, 1);
     CsGtkBase->grid = g_new0(SaGtkGrid, 1);
     CsGtkBase->scroll = g_new0(SaGtkScroll, 1);
-    CsGtkBase->GtkMenu = g_new0(SaGtkMenu, 1);
-    CsGtkBase->GtkUri = g_new0(SaGtkUri, 1);
-    CsGtkBase->GtkMime = g_new0(SaGtkMime, 1);
-    CsGtkBase->Info = CsMap->Info;
-    CsGtkBase->Option = CsMap->Option;
-
-    g_object_set_data_full(G_OBJECT(CsGtkBase->application),
-            "CsGtkBase", CsGtkBase, (GDestroyNotify)FvGtkBaseFree);
 
     CsGtkBase->window->base = gtk_application_window_new(EgApplication);
-    CsGtkBase->overlay->base = gtk_overlay_new();
     CsGtkBase->headerbar->base = gtk_header_bar_new();
     CsGtkBase->control->base = gtk_window_controls_new(GTK_PACK_END);
     CsGtkBase->paned->base = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
     CsGtkBase->paned->baseLeft = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
     CsGtkBase->paned->baseRight = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
 
+    CsMap->GtkBase = CsGtkBase;
+    CsGtkBase->Info = CsMap->Info;
+    CsGtkBase->Option = CsMap->Option;
+
+    g_object_set_data_full(G_OBJECT(CsGtkBase->window->base),
+            "CsGtkBase", CsGtkBase, (GDestroyNotify)FvGtkBaseFree);
+
     gtk_window_set_titlebar(GTK_WINDOW(CsGtkBase->window->base),
             CsGtkBase->headerbar->base);
     gtk_header_bar_pack_end(GTK_HEADER_BAR(CsGtkBase->headerbar->base),
             CsGtkBase->control->base);
     gtk_window_set_child(GTK_WINDOW(CsGtkBase->window->base),
-            CsGtkBase->overlay->base);
-    gtk_overlay_add_overlay(GTK_OVERLAY(CsGtkBase->overlay->base),
             CsGtkBase->paned->base);
     gtk_paned_set_start_child(GTK_PANED(CsGtkBase->paned->base),
             CsGtkBase->paned->baseLeft);

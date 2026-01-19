@@ -82,10 +82,15 @@ typedef struct SaGtkMenuButton {
     GtkWidget* base;
 } SaGtkMenuButton;
 
+typedef struct SaGtkMenuDialog {
+    GtkAlertDialog* about;
+} SaGtkMenuDialog;
+
 typedef struct SaGtkMenu {
     GMenu* base;
     SaGtkMenuAction* action;
     SaGtkMenuButton* button;
+    SaGtkMenuDialog* dialog;
 } SaGtkMenu;
 
 

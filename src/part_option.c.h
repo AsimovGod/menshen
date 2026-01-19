@@ -8,10 +8,11 @@ FsOptionInit()
     int DiOption;
     SaOption* CsOption;
 
-    DiOption = 0;
     CsOption = g_new0(SaOption, 1);
-    CsOption->optionN = 3;
     CsOption->option = g_new0(GOptionEntry, CsOption->optionN +1);
+
+    DiOption = 0;
+    CsOption->optionN = 3;
 
     CsOption->version = FALSE;
     CsOption->option[DiOption].long_name = "version";
@@ -55,7 +56,6 @@ FdOptionGlib(int DiArgs, char** TcArgs,
     int DiLoop;
     int DiArgument;
     char** TcArgument;
-
     GOptionContext* EgOptioncontext;
 
     DiArgument = DiArgs;
