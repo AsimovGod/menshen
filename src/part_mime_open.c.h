@@ -20,7 +20,7 @@ FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
     if (! EgListrow) return;
 
     EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgListrow");
-    AcUri = FaGtkUriEntryGet(CsMap->GtkUri->entry->uri);
+    AcUri = FaGtkUriEntryGet(CsMap->GtkUri->Entry->uri);
     EgFile = AcUri ? g_file_new_for_uri(AcUri) : NULL;
     EgList = g_list_append(NULL, EgFile);
 
@@ -35,16 +35,16 @@ FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
     void
 FvGtkMimeOpen(SaMap* CsMap)
 {
-    SaGtkStack* CsGtkStack;
+    SaGtkTab* CsGtkTab;
     SaGtkUri* CsGtkUri;
     GtkWidget* EgButton;
 
-    CsGtkStack = CsMap->GtkStack;
+    CsGtkTab = CsMap->GtkTab;
     CsGtkUri = CsMap->GtkUri;
 
     EgButton = gtk_button_new_with_label("OPEN");
 
-    gtk_grid_attach(GTK_GRID(CsGtkStack->grid->mimeOpen),
+    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeOpen),
             EgButton, 0, 0, 1, 1);
 
     g_signal_connect(EgButton,

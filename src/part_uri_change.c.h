@@ -28,30 +28,30 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->entry || CsGtkUri->change) return;
+    if (! CsGtkUri->Entry || CsGtkUri->change) return;
 
     CsGtkUri->change = TRUE;
 
-    if (CsGtkUri->parse->scheme) g_free(CsGtkUri->parse->scheme);
-    if (CsGtkUri->parse->userinfo) g_free(CsGtkUri->parse->userinfo);
-    if (CsGtkUri->parse->host) g_free(CsGtkUri->parse->host);
-    if (CsGtkUri->parse->path) g_free(CsGtkUri->parse->path);
-    if (CsGtkUri->parse->query) g_free(CsGtkUri->parse->query);
-    if (CsGtkUri->parse->fragment) g_free(CsGtkUri->parse->fragment);
+    if (CsGtkUri->Parse->scheme) g_free(CsGtkUri->Parse->scheme);
+    if (CsGtkUri->Parse->userinfo) g_free(CsGtkUri->Parse->userinfo);
+    if (CsGtkUri->Parse->host) g_free(CsGtkUri->Parse->host);
+    if (CsGtkUri->Parse->path) g_free(CsGtkUri->Parse->path);
+    if (CsGtkUri->Parse->query) g_free(CsGtkUri->Parse->query);
+    if (CsGtkUri->Parse->fragment) g_free(CsGtkUri->Parse->fragment);
 
-    CsGtkUri->parse->scheme = FaGtkUriEntryGet(CsGtkUri->entry->scheme);
-    CsGtkUri->parse->userinfo = FaGtkUriEntryGet(CsGtkUri->entry->userinfo);
-    CsGtkUri->parse->host = FaGtkUriEntryGet(CsGtkUri->entry->host);
-    CsGtkUri->parse->path = FaGtkUriEntryGet(CsGtkUri->entry->path);
-    CsGtkUri->parse->query = FaGtkUriEntryGet(CsGtkUri->entry->query);
-    CsGtkUri->parse->fragment = FaGtkUriEntryGet(CsGtkUri->entry->fragment);
+    CsGtkUri->Parse->scheme = FaGtkUriEntryGet(CsGtkUri->Entry->scheme);
+    CsGtkUri->Parse->userinfo = FaGtkUriEntryGet(CsGtkUri->Entry->userinfo);
+    CsGtkUri->Parse->host = FaGtkUriEntryGet(CsGtkUri->Entry->host);
+    CsGtkUri->Parse->path = FaGtkUriEntryGet(CsGtkUri->Entry->path);
+    CsGtkUri->Parse->query = FaGtkUriEntryGet(CsGtkUri->Entry->query);
+    CsGtkUri->Parse->fragment = FaGtkUriEntryGet(CsGtkUri->Entry->fragment);
 
     DiPort = (int)gtk_spin_button_get_value(
-            GTK_SPIN_BUTTON(CsGtkUri->entry->port));
-    CsGtkUri->parse->port = DiPort ? DiPort : -1;
+            GTK_SPIN_BUTTON(CsGtkUri->Entry->port));
+    CsGtkUri->Parse->port = DiPort ? DiPort : -1;
 
-    AcText = FaGuriBuild(CsGtkUri->parse);
-    gtk_editable_set_text(GTK_EDITABLE(CsGtkUri->entry->uri),
+    AcText = FaGuriBuild(CsGtkUri->Parse);
+    gtk_editable_set_text(GTK_EDITABLE(CsGtkUri->Entry->uri),
             AcText ? AcText : "");
 
     if (AcText) g_free(AcText);
@@ -69,25 +69,25 @@ FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->entry || CsGtkUri->change) return;
+    if (! CsGtkUri->Entry || CsGtkUri->change) return;
 
     CsGtkUri->change = TRUE;
 
-    if (CsGtkUri->parse) g_free(CsGtkUri->parse);
+    if (CsGtkUri->Parse) g_free(CsGtkUri->Parse);
 
     AcText = gtk_editable_get_text(EgEditable);
     CsUriParse = FsGuriParse(AcText ? AcText : NULL);
-    CsGtkUri->parse = CsUriParse ? CsUriParse : g_new0(SaGuriParse, 1);
+    CsGtkUri->Parse = CsUriParse ? CsUriParse : g_new0(SaGuriParse, 1);
 
-    FvGtkUriEntrySet(CsGtkUri->entry->scheme, CsGtkUri->parse->scheme);
-    FvGtkUriEntrySet(CsGtkUri->entry->userinfo, CsGtkUri->parse->userinfo);
-    FvGtkUriEntrySet(CsGtkUri->entry->host, CsGtkUri->parse->host);
-    FvGtkUriEntrySet(CsGtkUri->entry->path, CsGtkUri->parse->path);
-    FvGtkUriEntrySet(CsGtkUri->entry->query, CsGtkUri->parse->query);
-    FvGtkUriEntrySet(CsGtkUri->entry->fragment, CsGtkUri->parse->fragment);
+    FvGtkUriEntrySet(CsGtkUri->Entry->scheme, CsGtkUri->Parse->scheme);
+    FvGtkUriEntrySet(CsGtkUri->Entry->userinfo, CsGtkUri->Parse->userinfo);
+    FvGtkUriEntrySet(CsGtkUri->Entry->host, CsGtkUri->Parse->host);
+    FvGtkUriEntrySet(CsGtkUri->Entry->path, CsGtkUri->Parse->path);
+    FvGtkUriEntrySet(CsGtkUri->Entry->query, CsGtkUri->Parse->query);
+    FvGtkUriEntrySet(CsGtkUri->Entry->fragment, CsGtkUri->Parse->fragment);
 
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(CsGtkUri->entry->port),
-            CsGtkUri->parse->port ? CsGtkUri->parse->port : -1);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(CsGtkUri->Entry->port),
+            CsGtkUri->Parse->port ? CsGtkUri->Parse->port : -1);
 
     CsGtkUri->change = FALSE;
 }

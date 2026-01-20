@@ -26,8 +26,8 @@ typedef struct SaGtkUriEntry {
 } SaGtkUriEntry;
 
 typedef struct SaGtkUri {
-    SaGuriParse* parse;
-    SaGtkUriEntry* entry;
+    SaGuriParse* Parse;
+    SaGtkUriEntry* Entry;
     bool change;
 } SaGtkUri;
 
@@ -43,8 +43,8 @@ typedef struct SaGtkMimeButton {
 } SaGtkMimeButton;
 
 typedef struct SaGtkMime {
-    SaGtkMimeList* list;
-    SaGtkMimeButton* button;
+    SaGtkMimeList* List;
+    SaGtkMimeButton* Button;
     GtkWidget* listbox;
 } SaGtkMime;
 
@@ -59,6 +59,7 @@ typedef struct SaGtkPaned {
 } SaGtkPaned;
 
 typedef struct SaGtkGrid {
+    GtkWidget* tabTitle;
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
@@ -72,14 +73,18 @@ typedef struct SaGtkScroll {
     GtkWidget* mimeOpen;
 } SaGtkScroll;
 
-typedef struct SaGtkStack {
-    SaGtkPaned* paned;
-    SaGtkGrid* grid;
-    SaGtkScroll* scroll;
-    GtkStack* base;
-    GtkBox* tabber;
-    int counter;
-} SaGtkStack;
+typedef struct SaGtkButton {
+    GtkWidget* title;
+    GtkWidget* close;
+} SaGtkButton;
+
+typedef struct SaGtkTab {
+    SaGtkPaned* Paned;
+    SaGtkGrid* Grid;
+    SaGtkScroll* Scroll;
+    SaGtkButton* Button;
+    char* name;
+} SaGtkTab;
 
 
 typedef struct SaGtkMenuAction {
@@ -88,14 +93,22 @@ typedef struct SaGtkMenuAction {
 } SaGtkMenuAction;
 
 typedef struct SaGtkMenu {
-    SaGtkMenuAction* action;
+    SaGtkMenuAction* Action;
     GMenu* base;
     GtkWidget* button;
     GtkAlertDialog* about;
 } SaGtkMenu;
 
 
+typedef struct SaGtkStack {
+    GtkWidget* base;
+    GtkWidget* tabbar;
+    GtkWidget* button;
+    int counter;
+} SaGtkStack;
+
 typedef struct SaGtkWindow {
+    SaGtkStack* Stack;
     GtkWidget* base;
     char* baseT;
     int baseH;
@@ -124,7 +137,7 @@ typedef struct SaOption {
 typedef struct SaMap {
     SaGtkMime* GtkMime;
     SaGtkUri* GtkUri;
-    SaGtkStack* GtkStack;
+    SaGtkTab* GtkTab;
     SaGtkMenu* GtkMenu;
     SaGtkWindow* GtkWindow;
     SaOption* Option;

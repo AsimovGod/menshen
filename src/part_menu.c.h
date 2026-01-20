@@ -43,18 +43,18 @@ FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
     void
 FvGtkMenu(SaMap* CsMap)
 {
-    SaGtkStack* CsGtkStack;
+    SaGtkTab* CsGtkTab;
     SaGtkMenu* CsGtkMenu;
 
-    CsGtkStack = CsMap->GtkStack;
+    CsGtkTab = CsMap->GtkTab;
 
     CsGtkMenu = g_new0(SaGtkMenu, 1);
-    CsGtkMenu->action = g_new0(SaGtkMenuAction, 1);
+    CsGtkMenu->Action = g_new0(SaGtkMenuAction, 1);
 
     CsGtkMenu->base = g_menu_new();
     CsGtkMenu->button = gtk_menu_button_new();
-    CsGtkMenu->action->newwindow = g_simple_action_new("newwindow", NULL);
-    CsGtkMenu->action->about = g_simple_action_new("about", NULL);
+    CsGtkMenu->Action->newwindow = g_simple_action_new("newwindow", NULL);
+    CsGtkMenu->Action->about = g_simple_action_new("about", NULL);
 
     CsMap->GtkMenu = CsGtkMenu;
 
@@ -64,17 +64,17 @@ FvGtkMenu(SaMap* CsMap)
     g_menu_append(CsGtkMenu->base, "New Window", "win.newwindow");
     g_menu_append(CsGtkMenu->base, "About", "win.about");
     g_action_map_add_action(G_ACTION_MAP(CsMap->GtkWindow->base),
-            G_ACTION(CsGtkMenu->action->newwindow));
+            G_ACTION(CsGtkMenu->Action->newwindow));
     g_action_map_add_action(G_ACTION_MAP(CsMap->GtkWindow->base),
-            G_ACTION(CsGtkMenu->action->about));
+            G_ACTION(CsGtkMenu->Action->about));
     gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(CsGtkMenu->button),
             G_MENU_MODEL(CsGtkMenu->base));
     gtk_header_bar_pack_end(GTK_HEADER_BAR(CsMap->GtkWindow->headerbar),
             CsGtkMenu->button);
 
-    g_signal_connect(CsGtkMenu->action->newwindow,
+    g_signal_connect(CsGtkMenu->Action->newwindow,
             "activate", G_CALLBACK(FvGtkMenuNewwindow), CsMap);
-    g_signal_connect(CsGtkMenu->action->about,
+    g_signal_connect(CsGtkMenu->Action->about,
             "activate", G_CALLBACK(FvGtkMenuAbout), CsMap);
 
     gtk_menu_button_set_icon_name(GTK_MENU_BUTTON(CsGtkMenu->button),

@@ -48,7 +48,7 @@ FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
     void
 FvGtkMimeList(SaMap* CsMap)
 {
-    SaGtkStack* CsGtkStack;
+    SaGtkTab* CsGtkTab;
     SaGtkMime* CsGtkMime;
     SaGtkUri* CsGtkUri;
     const char* AcAppid;
@@ -56,29 +56,29 @@ FvGtkMimeList(SaMap* CsMap)
     GAppInfo* EgAppinfo;
     GHashTable *EgHashtable;
 
-    CsGtkStack = CsMap->GtkStack;
+    CsGtkTab = CsMap->GtkTab;
     CsGtkMime = CsMap->GtkMime;
     CsGtkUri = CsMap->GtkUri;
 
-    CsGtkMime->listbox = gtk_list_box_new();
+    CsGtkMime->Listbox = gtk_list_box_new();
 
-    gtk_grid_attach(GTK_GRID(CsGtkStack->grid->mimeList),
-            CsGtkMime->listbox, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeList),
+            CsGtkMime->Listbox, 0, 0, 1, 1);
 
-    gtk_widget_set_vexpand(CsGtkMime->listbox, TRUE);
-    gtk_widget_set_hexpand(CsGtkMime->listbox, TRUE);
-    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->listbox),
+    gtk_widget_set_vexpand(CsGtkMime->Listbox, TRUE);
+    gtk_widget_set_hexpand(CsGtkMime->Listbox, TRUE);
+    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->Listbox),
             GTK_SELECTION_SINGLE);
 
-    CsGtkMime->list->http = g_app_info_get_all_for_type(
+    CsGtkMime->List->http = g_app_info_get_all_for_type(
             "x-scheme-handler/http");
-    CsGtkMime->list->https = g_app_info_get_all_for_type(
+    CsGtkMime->List->https = g_app_info_get_all_for_type(
             "x-scheme-handler/https");
-    CsGtkMime->list->all = g_list_concat(CsGtkMime->list->http,
-            CsGtkMime->list->https);
+    CsGtkMime->List->all = g_list_concat(CsGtkMime->List->http,
+            CsGtkMime->List->https);
     EgHashtable = g_hash_table_new(g_str_hash, g_str_equal);
 
-    for (EgLoop = CsGtkMime->list->all; EgLoop; EgLoop = EgLoop->next) {
+    for (EgLoop = CsGtkMime->List->all; EgLoop; EgLoop = EgLoop->next) {
         EgAppinfo = G_APP_INFO(EgLoop->data);
         AcAppid = g_app_info_get_id(EgAppinfo);
 
@@ -86,10 +86,10 @@ FvGtkMimeList(SaMap* CsMap)
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
 
-        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo);
+        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->Listbox), EgAppinfo);
     }
 
-    g_list_free_full(CsGtkMime->list->all, g_object_unref);
+    g_list_free_full(CsGtkMime->List->all, g_object_unref);
     g_hash_table_destroy(EgHashtable);
 }
 
