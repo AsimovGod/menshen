@@ -11,16 +11,16 @@ FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
     GAppInfo* EgAppinfo;
     GList* EgList;
     GFile* EgFile;
-    SaGtkBase* CsGtkBase;
+    SaMap* CsMap;
 
-    CsGtkBase = PvUserdata;
-    EgListbox = GTK_LIST_BOX(CsGtkBase->GtkMime->box->list);
+    CsMap = PvUserdata;
+    EgListbox = GTK_LIST_BOX(CsMap->GtkMime->listbox);
     EgListrow = gtk_list_box_get_selected_row(EgListbox);
 
     if (! EgListrow) return;
 
     EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgListrow");
-    AcUri = FaGtkUriEntryGet(CsGtkBase->GtkUri->entry->uri);
+    AcUri = FaGtkUriEntryGet(CsMap->GtkUri->entry->uri);
     EgFile = AcUri ? g_file_new_for_uri(AcUri) : NULL;
     EgList = g_list_append(NULL, EgFile);
 
@@ -33,17 +33,22 @@ FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
 
 
     void
-FvGtkMimeOpen(SaGtkBase* CsGtkBase, SaGtkMime* CsGtkMime)
+FvGtkMimeOpen(SaMap* CsMap)
 {
+    SaGtkStack* CsGtkStack;
+    SaGtkUri* CsGtkUri;
     GtkWidget* EgButton;
+
+    CsGtkStack = CsMap->GtkStack;
+    CsGtkUri = CsMap->GtkUri;
 
     EgButton = gtk_button_new_with_label("OPEN");
 
-    gtk_grid_attach(GTK_GRID(CsGtkBase->grid->mimeOpen),
+    gtk_grid_attach(GTK_GRID(CsGtkStack->grid->mimeOpen),
             EgButton, 0, 0, 1, 1);
 
     g_signal_connect(EgButton,
-            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsGtkBase);
+            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsMap);
 
     gtk_widget_set_vexpand(EgButton, TRUE);
     gtk_widget_set_hexpand(EgButton, TRUE);

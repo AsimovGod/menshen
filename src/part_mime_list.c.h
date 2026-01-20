@@ -46,21 +46,28 @@ FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
 
 
     void
-FvGtkMimeList(SaGtkBase* CsGtkBase, SaGtkMime* CsGtkMime)
+FvGtkMimeList(SaMap* CsMap)
 {
+    SaGtkStack* CsGtkStack;
+    SaGtkMime* CsGtkMime;
+    SaGtkUri* CsGtkUri;
     const char* AcAppid;
     GList* EgLoop;
     GAppInfo* EgAppinfo;
     GHashTable *EgHashtable;
 
-    CsGtkMime->box->list = gtk_list_box_new();
+    CsGtkStack = CsMap->GtkStack;
+    CsGtkMime = CsMap->GtkMime;
+    CsGtkUri = CsMap->GtkUri;
 
-    gtk_grid_attach(GTK_GRID(CsGtkBase->grid->mimeList),
-            CsGtkMime->box->list, 0, 0, 1, 1);
+    CsGtkMime->listbox = gtk_list_box_new();
 
-    gtk_widget_set_vexpand(CsGtkMime->box->list, TRUE);
-    gtk_widget_set_hexpand(CsGtkMime->box->list, TRUE);
-    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->box->list),
+    gtk_grid_attach(GTK_GRID(CsGtkStack->grid->mimeList),
+            CsGtkMime->listbox, 0, 0, 1, 1);
+
+    gtk_widget_set_vexpand(CsGtkMime->listbox, TRUE);
+    gtk_widget_set_hexpand(CsGtkMime->listbox, TRUE);
+    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->listbox),
             GTK_SELECTION_SINGLE);
 
     CsGtkMime->list->http = g_app_info_get_all_for_type(
@@ -79,7 +86,7 @@ FvGtkMimeList(SaGtkBase* CsGtkBase, SaGtkMime* CsGtkMime)
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
 
-        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->box->list), EgAppinfo);
+        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo);
     }
 
     g_list_free_full(CsGtkMime->list->all, g_object_unref);

@@ -18,6 +18,7 @@
 #include "part_mime_open.c.h"
 #include "part_mime_list.c.h"
 #include "part_mime.c.h"
+#include "part_stack.c.h"
 #include "part_menu.c.h"
 #include "part_window.c.h"
 #include "part_option.c.h"
@@ -28,22 +29,23 @@
     int
 main(int DiArgs, char** TcArgs)
 {
-    int DiExit;
     SaMap* CsMap;
     SaInfo* CsInfo;
     SaOption* CsOption;
+    int DiExit;
 
     CsMap = g_new0(SaMap, 1);
     CsInfo = FsInfoInit();
     CsOption = FsOptionInit();
+
     CsMap->Info = CsInfo;
     CsMap->Option = CsOption;
 
-    DiExit = FdOptionGlib(DiArgs, TcArgs, CsMap, CsInfo, CsOption);
-    DiExit = FdGtkApp(DiArgs, TcArgs, CsMap, CsInfo, CsOption);
+    DiExit = FdOptionGlib(CsMap, DiArgs, TcArgs);
+    DiExit = FdGtkApp(CsMap, DiArgs, TcArgs);
 
-    FvInfoFree(CsInfo);
     FvOptionFree(CsOption);
+    if (CsInfo) g_free(CsInfo);
     if (CsMap) g_free(CsMap);
 
     return DiExit;

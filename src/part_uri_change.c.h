@@ -22,15 +22,15 @@ FvGtkUriEntrySet(GtkWidget* EgEntry, char* AcUriEntry)
     void
 FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
 {
+    SaGtkUri* CsGtkUri;
     int DiPort;
     char* AcText;
-    SaGtkUri* CsGtkUri;
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->entry || CsGtkUri->boolean) return;
+    if (! CsGtkUri->entry || CsGtkUri->change) return;
 
-    CsGtkUri->boolean = TRUE;
+    CsGtkUri->change = TRUE;
 
     if (CsGtkUri->parse->scheme) g_free(CsGtkUri->parse->scheme);
     if (CsGtkUri->parse->userinfo) g_free(CsGtkUri->parse->userinfo);
@@ -47,7 +47,7 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
     CsGtkUri->parse->fragment = FaGtkUriEntryGet(CsGtkUri->entry->fragment);
 
     DiPort = (int)gtk_spin_button_get_value(
-            GTK_SPIN_BUTTON(CsGtkUri->spin->port));
+            GTK_SPIN_BUTTON(CsGtkUri->entry->port));
     CsGtkUri->parse->port = DiPort ? DiPort : -1;
 
     AcText = FaGuriBuild(CsGtkUri->parse);
@@ -56,22 +56,22 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
 
     if (AcText) g_free(AcText);
 
-    CsGtkUri->boolean = FALSE;
+    CsGtkUri->change = FALSE;
 }
 
 
     void
 FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
 {
-    const char* AcText;
-    SaGuriParse* CsUriParse;
     SaGtkUri* CsGtkUri;
+    SaGuriParse* CsUriParse;
+    const char* AcText;
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->entry || CsGtkUri->boolean) return;
+    if (! CsGtkUri->entry || CsGtkUri->change) return;
 
-    CsGtkUri->boolean = TRUE;
+    CsGtkUri->change = TRUE;
 
     if (CsGtkUri->parse) g_free(CsGtkUri->parse);
 
@@ -86,9 +86,9 @@ FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
     FvGtkUriEntrySet(CsGtkUri->entry->query, CsGtkUri->parse->query);
     FvGtkUriEntrySet(CsGtkUri->entry->fragment, CsGtkUri->parse->fragment);
 
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(CsGtkUri->spin->port),
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(CsGtkUri->entry->port),
             CsGtkUri->parse->port ? CsGtkUri->parse->port : -1);
 
-    CsGtkUri->boolean = FALSE;
+    CsGtkUri->change = FALSE;
 }
 

@@ -5,8 +5,8 @@
     SaOption*
 FsOptionInit()
 {
-    int DiOption;
     SaOption* CsOption;
+    int DiOption;
 
     CsOption = g_new0(SaOption, 1);
     CsOption->option = g_new0(GOptionEntry, CsOption->optionN +1);
@@ -50,14 +50,19 @@ FvOptionFree(void* PvFree)
 
 
     int
-FdOptionGlib(int DiArgs, char** TcArgs,
-        SaMap* CsMap, SaInfo* CsInfo, SaOption* CsOption)
+FdOptionGlib(SaMap* CsMap, int DiArgs, char** TcArgs)
 {
-    int DiLoop;
+    SaInfo* CsInfo;
+    SaOption* CsOption;
+    bool DbExit;
     int DiArgument;
     char** TcArgument;
     GOptionContext* EgOptioncontext;
 
+    CsInfo = CsMap->Info;
+    CsOption = CsMap->Option;
+
+    DbExit = FALSE;
     DiArgument = DiArgs;
     TcArgument = g_strdupv((char**)TcArgs);
     EgOptioncontext = g_option_context_new(NULL);
@@ -68,20 +73,22 @@ FdOptionGlib(int DiArgs, char** TcArgs,
 
     if (CsOption->version) {
         printf("\n%s\n", CsInfo->version);
-        FvOptionFree(CsOption);
+        DbExit = TRUE;
+    }
+
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "0") == 0) {
+        FvUriPrint(DiArgument, TcArgument);
+        DbExit = TRUE;
+    }
+
+    g_strfreev(TcArgument);
+
+    if (DbExit) {
         exit(EXIT_SUCCESS);
     }
-
-    if (CsOption->mode && g_strcmp0(CsOption->mode, "0") != 0) {
-        g_strfreev(TcArgument);
+    else {
         return EXIT_SUCCESS;
     }
-
-    for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
-        FvUriPrint(TcArgument[DiLoop]);
-    }
-
-    exit(EXIT_SUCCESS);
 }
 
 
@@ -89,12 +96,11 @@ FdOptionGlib(int DiArgs, char** TcArgs,
 FdOptionGtk(GApplication* EgApplication,
         GApplicationCommandLine* EgCommandline, void* PvUserdata)
 {
-    int DiLoop;
-    int DiArgument;
-    char** TcArgument;
     SaMap* CsMap;
     SaInfo* CsInfo;
     SaOption* CsOption;
+    int DiArgument;
+    char** TcArgument;
 
     CsMap = PvUserdata;
     CsInfo = CsMap->Info;
@@ -103,16 +109,8 @@ FdOptionGtk(GApplication* EgApplication,
     TcArgument = g_application_command_line_get_arguments(EgCommandline,
             &DiArgument);
 
-    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") != 0) {
-        return EXIT_SUCCESS;
-    }
-
-    if ((! TcArgument) || (DiArgument < 2)) {
-        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, NULL);
-    }
-
-    for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
-        FvGtkBase(GTK_APPLICATION(EgApplication), CsMap, TcArgument[DiLoop]);
+    if (CsOption->mode && g_strcmp0(CsOption->mode, "1") == 0) {
+        FvGtkWindow(CsMap, DiArgument, TcArgument);
     }
 
     return EXIT_SUCCESS;

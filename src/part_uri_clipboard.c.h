@@ -5,9 +5,9 @@
     void
 FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
 {
+    const char* AcText;
     GtkEntry* EgEntry;
     GdkClipboard* EgClipboard;
-    const char* AcText;
 
     EgEntry = PvUserdata;
     AcText = gtk_editable_get_text(GTK_EDITABLE(EgEntry));
@@ -23,10 +23,10 @@ FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
 FvGtkUriEntryPasteReceived(GObject* EgObject, GAsyncResult* EgResult,
         void* PvUserdata)
 {
+    const char* AcText;
     GtkEntry* EgEntry;
     GdkClipboard* EgClipboard;
     const GValue* EgValue;
-    const char* AcText;
 
     EgEntry = GTK_ENTRY(PvUserdata);
     EgClipboard = GDK_CLIPBOARD(EgObject);
