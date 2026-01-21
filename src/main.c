@@ -47,9 +47,5 @@ main(int DiArgs, char** TcArgs)
     DiExit = FdOptionGlib(CsMap, DiArgs, TcArgs);
     DiExit = FdGtkInstance(CsMap, DiArgs, TcArgs);
 
-    FvOptionFree(CsOption);
-    if (CsInfo) g_free(CsInfo);
-    if (CsMap) g_free(CsMap);
-
     return DiExit;
 }

@@ -36,3 +36,29 @@ FsInfoInit()
     return CsInfo;
 }
 
+
+    void
+FvMapFree(void* PvFree)
+{
+    SaMap* CsMap;
+
+    CsMap = PvFree;
+
+    if (CsMap) return;
+
+    g_free(CsMap);
+}
+
+
+    void
+FvInfoFree(void* PvFree)
+{
+    SaInfo* CsInfo;
+
+    CsInfo = PvFree;
+
+    if (CsInfo) return;
+
+    g_free(CsInfo);
+}
+

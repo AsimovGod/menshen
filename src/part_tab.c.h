@@ -70,14 +70,19 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     CsMap->GtkTab = CsGtkTab;
 
-    g_object_set_data_full(G_OBJECT(CsMap->GtkWindow->base),
+    g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkTab", CsGtkTab, (GDestroyNotify)FvGtkTabFree);
+
+    g_object_set_data(G_OBJECT(CsGtkTab->Button->title),
+            "CsGtkTab", CsGtkTab);
+    g_object_set_data(G_OBJECT(CsGtkTab->Button->close),
+            "CsGtkTab", CsGtkTab);
 
     gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->tabTitle), CsGtkTab->Button->title,
             0, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->tabTitle), CsGtkTab->Button->close,
             1, 0, 1, 1);
-    gtk_box_prepend(GTK_BOX(CsGtkWindow->Stack->barTab),
+    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
             CsGtkTab->Grid->tabTitle);
     gtk_stack_add_named(GTK_STACK(CsGtkWindow->Stack->base), 
             CsGtkTab->Paned->base, CsGtkTab->name);
@@ -111,6 +116,20 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     FvGtkUri(CsMap, AcUri);
     FvGtkMime(CsMap);
+
+    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
+            CsGtkTab->name);
+}
+
+
+    void
+FvGtkTabNew(GtkWidget* EgButton, void* PvUserdata)
+{
+    SaMap* CsMap;
+
+    CsMap = PvUserdata;
+
+    FvGtkTab(CsMap, NULL);
 }
 
 
@@ -123,10 +142,12 @@ FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
 
     CsMap = PvUserdata;
     CsGtkWindow = CsMap->GtkWindow;
-    CsGtkTab = CsMap->GtkTab;
+    CsGtkTab = g_object_get_data(G_OBJECT(EgButton), "CsGtkTab");
+
+    if ((! CsGtkTab) || (! CsGtkTab->name)) return;
 
     gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
-            CsMap->GtkTab->name);
+            CsGtkTab->name);
 }
 
 
@@ -140,16 +161,18 @@ FvGtkTabClose(GtkWidget* EgButton, void* PvUserdata)
 
     CsMap = PvUserdata;
     CsGtkWindow = CsMap->GtkWindow;
-    CsGtkTab = CsMap->GtkTab;
+    CsGtkTab = g_object_get_data(G_OBJECT(EgButton), "CsGtkTab");
+
+    if ((! CsGtkTab) || (! CsGtkTab->name)) return;
 
     EgPage = gtk_stack_get_child_by_name(GTK_STACK(CsGtkWindow->Stack->base),
             CsGtkTab->name);
 
-    gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->barTab),
+    gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->tabbar),
             CsGtkTab->Grid->tabTitle);
 
-    if (! CsMap->GtkTab->name) return;
-    gtk_stack_remove(GTK_STACK(CsMap->GtkWindow->Stack->base), EgPage);
+    gtk_stack_remove(GTK_STACK(CsGtkWindow->Stack->base),
+            EgPage);
 }
 
 

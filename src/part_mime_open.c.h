@@ -30,13 +30,13 @@ FvGtkMimeOpen(SaMap* CsMap)
     void
 FvGtkMimeListOpen(GtkWidget* EgBotton, void* PvUserdata)
 {
+    SaMap* CsMap;
     const char* AcUri;
     GtkListBox* EgListbox;
     GtkListBoxRow* EgListrow;
     GAppInfo* EgAppinfo;
     GList* EgList;
     GFile* EgFile;
-    SaMap* CsMap;
 
     CsMap = PvUserdata;
     EgListbox = GTK_LIST_BOX(CsMap->GtkMime->listbox);
@@ -44,7 +44,7 @@ FvGtkMimeListOpen(GtkWidget* EgBotton, void* PvUserdata)
 
     if (! EgListrow) return;
 
-    EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgListrow");
+    EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgAppinfo");
     AcUri = FaGtkUriEntryGet(CsMap->GtkUri->Entry->uri);
     EgFile = AcUri ? g_file_new_for_uri(AcUri) : NULL;
     EgList = g_list_append(NULL, EgFile);

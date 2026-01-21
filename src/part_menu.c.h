@@ -65,8 +65,13 @@ FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
         void* PvUserdata)
 {
     SaMap* CsMap;
+    SaMap* CsMapOld;
 
-    CsMap = PvUserdata;
+    CsMapOld = PvUserdata;
+    CsMap = g_new0(SaMap, 1);
+    CsMap->Info = CsMapOld->Info;
+    CsMap->Option = CsMapOld->Option;
+    CsMap->application = CsMapOld->application;
 
     FvGtkWindow(CsMap, 0, NULL);
 }

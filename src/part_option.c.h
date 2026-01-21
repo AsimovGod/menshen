@@ -6,7 +6,6 @@ struct SaOption {
     GOptionEntry* option;
     int optionN;
     bool version;
-    bool help;
     char* mode;
 };
 
@@ -19,10 +18,10 @@ FsOptionInit()
     int DiOption;
 
     CsOption = g_new0(SaOption, 1);
+    CsOption->optionN = 3;
     CsOption->option = g_new0(GOptionEntry, CsOption->optionN +1);
 
     DiOption = 0;
-    CsOption->optionN = 3;
 
     CsOption->version = FALSE;
     CsOption->option[DiOption].long_name = "version";
@@ -39,6 +38,8 @@ FsOptionInit()
     CsOption->option[DiOption].arg_data = &CsOption->mode;
     CsOption->option[DiOption].description = "Mode";
     DiOption = DiOption + 1;
+
+    CsOption->option[DiOption].long_name = NULL;
 
     return CsOption;
 }
@@ -76,9 +77,13 @@ FdOptionGlib(SaMap* CsMap, int DiArgs, char** TcArgs)
         DbExit = TRUE;
     }
 
+    g_option_context_free(EgOptioncontext);
     g_strfreev(TcArgument);
 
     if (DbExit) {
+        FvOptionFree(CsOption);
+        FvInfoFree(CsInfo);
+        FvMapFree(CsMap);
         exit(EXIT_SUCCESS);
     }
     else {

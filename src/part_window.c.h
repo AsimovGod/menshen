@@ -16,8 +16,10 @@ struct SaGtkWindow {
 
 struct SaGtkStack {
     GtkWidget* base;
-    GtkWidget* barTab;
-    GtkWidget* buttonAdd;
+    GtkWidget* tabbar;
+    GtkWidget* newtab;
+    GtkWidget* separator;
+    GtkWidget* frame;
     int counter;
 };
 
@@ -40,8 +42,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     CsGtkWindow->control = gtk_window_controls_new(GTK_PACK_END);
     CsGtkWindow->grid = gtk_grid_new();
     CsGtkWindow->Stack->base = gtk_stack_new();
-    CsGtkWindow->Stack->barTab = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-    CsGtkWindow->Stack->buttonAdd = gtk_button_new_from_icon_name("list-add");
+    CsGtkWindow->Stack->tabbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    CsGtkWindow->Stack->newtab = gtk_button_new_from_icon_name("list-add");
+    CsGtkWindow->Stack->frame = gtk_frame_new(NULL);
+    CsGtkWindow->Stack->separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 
     CsGtkWindow->baseT = CsMap->Info->name;
     CsGtkWindow->baseW = 960;
@@ -57,11 +61,27 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
             CsGtkWindow->headerbar);
     gtk_header_bar_pack_end(GTK_HEADER_BAR(CsGtkWindow->headerbar),
             CsGtkWindow->control);
-    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->barTab),
-            CsGtkWindow->Stack->buttonAdd);
+    gtk_window_set_child(GTK_WINDOW(CsGtkWindow->base),
+            CsGtkWindow->grid);
+    gtk_frame_set_child(GTK_FRAME(CsGtkWindow->Stack->frame),
+            CsGtkWindow->Stack->tabbar);
+    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
+            CsGtkWindow->Stack->newtab);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->frame,
+            0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->base,
+            0, 1, 1, 1);
 
-    g_signal_connect(CsGtkWindow->Stack->buttonAdd,
-            "clicked", G_CALLBACK(FvGtkMenu), CsMap);
+    g_signal_connect(CsGtkWindow->Stack->newtab,
+            "clicked", G_CALLBACK(FvGtkTabNew), CsMap);
+
+    gtk_window_controls_set_decoration_layout(
+            GTK_WINDOW_CONTROLS(CsGtkWindow->control),
+            "minimize,maximize");
+    gtk_window_set_title(GTK_WINDOW(CsGtkWindow->base),
+            CsGtkWindow->baseT);
+    gtk_window_set_default_size(GTK_WINDOW(CsGtkWindow->base),
+            CsGtkWindow->baseW, CsGtkWindow->baseH);
 
     FvGtkMenu(CsMap);
 

@@ -15,6 +15,8 @@ void FvOptionFree(void*);
 
 // part_default.c.h
 SaInfo* FsInfoInit();
+void FvMapFree(void*);
+void FvInfoFree(void*);
 
 
 // part_file.c.h
@@ -45,6 +47,7 @@ void FvGtkMenuAbout(GSimpleAction*, GVariant*, void*);
 
 // part_tab.c.h
 void FvGtkTab(SaMap*, char*);
+void FvGtkTabNew(GtkWidget*, void*);
 void FvGtkTabSwitch(GtkWidget*, void*);
 void FvGtkTabClose(GtkWidget*, void*);
 void FvGtkTabFree(void*);

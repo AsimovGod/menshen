@@ -72,7 +72,6 @@ case "${VsCase}" in
                         --libs
                         "gtk4"
                         "libadwaita-1"
-                        "argtable2"
                 )
 
                 IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"

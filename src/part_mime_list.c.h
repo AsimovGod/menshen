@@ -72,10 +72,12 @@ FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
     gtk_list_box_append(GTK_LIST_BOX(EgListbox), EgListrow);
 
     g_object_set_data_full(G_OBJECT(EgListrow),
-            "EgAppinfo", g_object_ref(EgAppinfo), g_object_unref);
+            "EgAppinfo", g_object_ref(EgAppinfo),
+            (GDestroyNotify)g_object_unref);
 
     if (EgIcon) {
-        gtk_image_set_from_gicon(GTK_IMAGE(EgImage), EgIcon);
+        gtk_image_set_from_gicon(GTK_IMAGE(EgImage),
+                EgIcon);
     }
     else {
         gtk_image_set_from_icon_name(GTK_IMAGE(EgImage),

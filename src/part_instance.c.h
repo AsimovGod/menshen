@@ -19,6 +19,13 @@ FdGtkInstance(SaMap* CsMap, int DiArgs, char** TcArgs)
 
     CsMap->application = EgApplication;
 
+    g_object_set_data_full(G_OBJECT(EgApplication),
+            "CsOption", CsOption, (GDestroyNotify)FvOptionFree);
+    g_object_set_data_full(G_OBJECT(EgApplication),
+            "CsInfo", CsInfo, (GDestroyNotify)FvInfoFree);
+    g_object_set_data_full(G_OBJECT(EgApplication),
+            "CsMap", CsMap, (GDestroyNotify)FvMapFree);
+
     g_application_add_main_option_entries(G_APPLICATION(EgApplication),
             CsOption->option);
 
