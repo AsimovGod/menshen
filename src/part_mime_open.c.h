@@ -1,5 +1,30 @@
-// part_mime_open.h
+// part_mime_open.c.h
 
+
+
+    void
+FvGtkMimeOpen(SaMap* CsMap)
+{
+    SaGtkTab* CsGtkTab;
+    SaGtkUri* CsGtkUri;
+    GtkWidget* EgButton;
+
+    CsGtkTab = CsMap->GtkTab;
+    CsGtkUri = CsMap->GtkUri;
+
+    EgButton = gtk_button_new_with_label("OPEN");
+
+    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeOpen),
+            EgButton, 0, 0, 1, 1);
+
+    g_signal_connect(EgButton,
+            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsMap);
+
+    gtk_widget_set_vexpand(EgButton, TRUE);
+    gtk_widget_set_hexpand(EgButton, TRUE);
+    gtk_widget_set_valign(EgButton, GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(EgButton, GTK_ALIGN_FILL);
+}
 
 
     void
@@ -29,30 +54,5 @@ FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
     g_app_info_launch(EgAppinfo, EgList, NULL, NULL);
 
     g_list_free_full(EgList, g_object_unref);
-}
-
-
-    void
-FvGtkMimeOpen(SaMap* CsMap)
-{
-    SaGtkTab* CsGtkTab;
-    SaGtkUri* CsGtkUri;
-    GtkWidget* EgButton;
-
-    CsGtkTab = CsMap->GtkTab;
-    CsGtkUri = CsMap->GtkUri;
-
-    EgButton = gtk_button_new_with_label("OPEN");
-
-    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeOpen),
-            EgButton, 0, 0, 1, 1);
-
-    g_signal_connect(EgButton,
-            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsMap);
-
-    gtk_widget_set_vexpand(EgButton, TRUE);
-    gtk_widget_set_hexpand(EgButton, TRUE);
-    gtk_widget_set_valign(EgButton, GTK_ALIGN_CENTER);
-    gtk_widget_set_halign(EgButton, GTK_ALIGN_FILL);
 }
 

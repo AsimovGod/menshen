@@ -1,51 +1,5 @@
-// part_window.h
+// part_tab.c.h
 
-
-
-    void
-FvGtkTabFree(void* PvFree)
-{
-    SaGtkTab* CsGtkTab;
-
-    CsGtkTab = PvFree;
-
-    if (! CsGtkTab) return;
-
-    g_free(CsGtkTab->name);
-    g_free(CsGtkTab->Paned);
-    g_free(CsGtkTab->Grid);
-    g_free(CsGtkTab->Scroll);
-    g_free(CsGtkTab->Button);
-    g_free(CsGtkTab);
-}
-
-
-    void
-FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
-{
-    SaMap* CsMap;
-
-    CsMap = PvUserdata;
-
-    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkTab->Stack->base),
-            CsMap->GtkTab->name);
-}
-
-    void
-FvGtkTabClose(GtkWidget* EgButton, void* PvUserdata)
-{
-    SaMap* CsMap;
-    GtkWidget* EgPage;
-
-    CsMap = PvUserdata;
-    EgPage = gtk_stack_get_child_by_name(GtkMap->GtkWindow->Stack->base,
-            CsMap->CsTab->name);
-
-    gtk_box_remove(GTK_BOX(CsMap->GtkWindow->tabbar), CsMap->GtkTab->tabTitle);
-
-    if (! CsMap->GtkTab->name) return;
-    gtk_stack_remove(GTK_STACK(CsMap->GtkWindow->Stack->base), EgPage);
-}
 
 
     void
@@ -114,5 +68,52 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     FvGtkUri(CsMap, AcUri);
     FvGtkMime(CsMap);
+}
+
+
+    void
+FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
+{
+    SaMap* CsMap;
+
+    CsMap = PvUserdata;
+
+    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkTab->Stack->base),
+            CsMap->GtkTab->name);
+}
+
+
+    void
+FvGtkTabClose(GtkWidget* EgButton, void* PvUserdata)
+{
+    SaMap* CsMap;
+    GtkWidget* EgPage;
+
+    CsMap = PvUserdata;
+    EgPage = gtk_stack_get_child_by_name(GtkMap->GtkWindow->Stack->base,
+            CsMap->CsTab->name);
+
+    gtk_box_remove(GTK_BOX(CsMap->GtkWindow->tabbar), CsMap->GtkTab->tabTitle);
+
+    if (! CsMap->GtkTab->name) return;
+    gtk_stack_remove(GTK_STACK(CsMap->GtkWindow->Stack->base), EgPage);
+}
+
+
+    void
+FvGtkTabFree(void* PvFree)
+{
+    SaGtkTab* CsGtkTab;
+
+    CsGtkTab = PvFree;
+
+    if (! CsGtkTab) return;
+
+    g_free(CsGtkTab->name);
+    g_free(CsGtkTab->Paned);
+    g_free(CsGtkTab->Grid);
+    g_free(CsGtkTab->Scroll);
+    g_free(CsGtkTab->Button);
+    g_free(CsGtkTab);
 }
 

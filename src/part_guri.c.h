@@ -1,5 +1,49 @@
-// part_guri.h
+// part_guri.c.h
 
+
+
+    SaGuriParse*
+FsGuriParse(const char* AcBuild)
+{
+    SaGuriParse* CsParse;
+    const char* AcParse;
+    GUri* EgGuri;
+
+    EgGuri = g_uri_parse(AcBuild, G_URI_FLAGS_NONE, NULL);
+
+    if (! EgGuri) return NULL;
+
+    CsParse = g_new0(SaGuriParse, 1);
+    CsParse->string = g_strdup(AcBuild);
+
+    AcParse = g_uri_get_scheme(EgGuri);
+    CsParse->scheme = AcParse ? g_strdup(AcParse) : NULL;
+
+    AcParse = g_uri_get_userinfo(EgGuri);
+    CsParse->userinfo = AcParse ? g_strdup(AcParse) : NULL;
+
+    AcParse = g_uri_get_host(EgGuri);
+    CsParse->host = AcParse ? g_strdup(AcParse) : NULL;
+
+    CsParse->port = g_uri_get_port(EgGuri) ;
+
+    AcParse = g_uri_get_path(EgGuri);
+    CsParse->path = AcParse && *AcParse == '/'
+        ? g_strdup(AcParse + 1) : g_strdup("");
+
+    AcParse = g_uri_get_query(EgGuri);
+    CsParse->query = AcParse ? g_strdup(AcParse) : NULL;
+
+    AcParse = g_uri_get_fragment(EgGuri);
+    CsParse->fragment = AcParse ? g_strdup(AcParse) : NULL;
+
+    AcParse = FaGuriBuild(CsParse);
+    CsParse->uri = AcParse ? g_strdup(AcParse) : NULL;
+
+    if (EgGuri) g_uri_unref(EgGuri);
+
+    return CsParse;
+}
 
 
     char*
@@ -48,71 +92,6 @@ FaGuriBuild(SaGuriParse* CsParse)
 }
 
 
-    SaGuriParse*
-FsGuriParse(const char* AcBuild)
-{
-    SaGuriParse* CsParse;
-    const char* AcParse;
-    GUri* EgGuri;
-
-    EgGuri = g_uri_parse(AcBuild, G_URI_FLAGS_NONE, NULL);
-
-    if (! EgGuri) return NULL;
-
-    CsParse = g_new0(SaGuriParse, 1);
-    CsParse->string = g_strdup(AcBuild);
-
-    AcParse = g_uri_get_scheme(EgGuri);
-    CsParse->scheme = AcParse ? g_strdup(AcParse) : NULL;
-
-    AcParse = g_uri_get_userinfo(EgGuri);
-    CsParse->userinfo = AcParse ? g_strdup(AcParse) : NULL;
-
-    AcParse = g_uri_get_host(EgGuri);
-    CsParse->host = AcParse ? g_strdup(AcParse) : NULL;
-
-    CsParse->port = g_uri_get_port(EgGuri) ;
-
-    AcParse = g_uri_get_path(EgGuri);
-    CsParse->path = AcParse && *AcParse == '/'
-        ? g_strdup(AcParse + 1) : g_strdup("");
-
-    AcParse = g_uri_get_query(EgGuri);
-    CsParse->query = AcParse ? g_strdup(AcParse) : NULL;
-
-    AcParse = g_uri_get_fragment(EgGuri);
-    CsParse->fragment = AcParse ? g_strdup(AcParse) : NULL;
-
-    AcParse = FaGuriBuild(CsParse);
-    CsParse->uri = AcParse ? g_strdup(AcParse) : NULL;
-
-    if (EgGuri) g_uri_unref(EgGuri);
-
-    return CsParse;
-}
-
-
-    void
-FvGuriFree(void* PvFree)
-{
-    SaGuriParse* CsParse;
-
-    CsParse = PvFree;
-
-    if (! CsParse) return;
-
-    g_free(CsParse->string);
-    g_free(CsParse->scheme);
-    g_free(CsParse->userinfo);
-    g_free(CsParse->host);
-    g_free(CsParse->path);
-    g_free(CsParse->query);
-    g_free(CsParse->fragment);
-    g_free(CsParse->uri);
-    g_free(CsParse);
-}
-
-
     void
 FvUriPrint(int DiArgument, char** TcArgument)
 {
@@ -136,5 +115,26 @@ FvUriPrint(int DiArgument, char** TcArgument)
 
         FvGuriFree(CsUri);
     }
+}
+
+
+    void
+FvGuriFree(void* PvFree)
+{
+    SaGuriParse* CsParse;
+
+    CsParse = PvFree;
+
+    if (! CsParse) return;
+
+    g_free(CsParse->string);
+    g_free(CsParse->scheme);
+    g_free(CsParse->userinfo);
+    g_free(CsParse->host);
+    g_free(CsParse->path);
+    g_free(CsParse->query);
+    g_free(CsParse->fragment);
+    g_free(CsParse->uri);
+    g_free(CsParse);
 }
 

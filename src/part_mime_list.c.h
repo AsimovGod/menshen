@@ -1,48 +1,5 @@
-// part_mime_list.h
+// part_mime_list.c.h
 
-
-
-    void
-FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
-{
-    GtkWidget* EgGrid;
-    GtkWidget* EgImage;
-    GtkWidget* EgLabel;
-    GtkWidget* EgListrow;
-    GIcon* EgIcon;
-
-    EgGrid = gtk_grid_new();
-    EgListrow = gtk_list_box_row_new();
-    EgImage = gtk_image_new();
-    EgIcon = g_app_info_get_icon(EgAppinfo);
-    EgLabel = gtk_label_new(g_app_info_get_name(EgAppinfo));
-
-    gtk_grid_attach(GTK_GRID(EgGrid), EgImage, 0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(EgGrid), EgLabel, 1, 0, 1, 1);
-    gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(EgListrow), EgGrid);
-    gtk_list_box_append(GTK_LIST_BOX(EgListbox), EgListrow);
-
-    g_object_set_data_full(G_OBJECT(EgListrow),
-            "EgAppinfo", g_object_ref(EgAppinfo), g_object_unref);
-
-    if (EgIcon) {
-        gtk_image_set_from_gicon(GTK_IMAGE(EgImage), EgIcon);
-    }
-    else {
-        gtk_image_set_from_icon_name(GTK_IMAGE(EgImage),
-                "application-x-executable");
-    }
-
-    gtk_widget_set_size_request(EgListrow, -1, 32);
-    gtk_widget_set_margin_top(EgListrow, 4);
-    gtk_widget_set_margin_bottom(EgListrow, 4);
-    gtk_image_set_pixel_size(GTK_IMAGE(EgImage), 24);
-    gtk_widget_set_halign(EgLabel, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign(EgLabel, GTK_ALIGN_CENTER);
-    gtk_widget_set_vexpand(EgLabel, TRUE);
-    gtk_widget_set_hexpand(EgLabel, TRUE);
-    gtk_label_set_xalign(GTK_LABEL(EgLabel), 0.5);
-}
 
 
     void
@@ -91,5 +48,48 @@ FvGtkMimeList(SaMap* CsMap)
 
     g_list_free_full(CsGtkMime->List->all, g_object_unref);
     g_hash_table_destroy(EgHashtable);
+}
+
+
+    void
+FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
+{
+    GtkWidget* EgGrid;
+    GtkWidget* EgImage;
+    GtkWidget* EgLabel;
+    GtkWidget* EgListrow;
+    GIcon* EgIcon;
+
+    EgGrid = gtk_grid_new();
+    EgListrow = gtk_list_box_row_new();
+    EgImage = gtk_image_new();
+    EgIcon = g_app_info_get_icon(EgAppinfo);
+    EgLabel = gtk_label_new(g_app_info_get_name(EgAppinfo));
+
+    gtk_grid_attach(GTK_GRID(EgGrid), EgImage, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(EgGrid), EgLabel, 1, 0, 1, 1);
+    gtk_list_box_row_set_child(GTK_LIST_BOX_ROW(EgListrow), EgGrid);
+    gtk_list_box_append(GTK_LIST_BOX(EgListbox), EgListrow);
+
+    g_object_set_data_full(G_OBJECT(EgListrow),
+            "EgAppinfo", g_object_ref(EgAppinfo), g_object_unref);
+
+    if (EgIcon) {
+        gtk_image_set_from_gicon(GTK_IMAGE(EgImage), EgIcon);
+    }
+    else {
+        gtk_image_set_from_icon_name(GTK_IMAGE(EgImage),
+                "application-x-executable");
+    }
+
+    gtk_widget_set_size_request(EgListrow, -1, 32);
+    gtk_widget_set_margin_top(EgListrow, 4);
+    gtk_widget_set_margin_bottom(EgListrow, 4);
+    gtk_image_set_pixel_size(GTK_IMAGE(EgImage), 24);
+    gtk_widget_set_halign(EgLabel, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(EgLabel, GTK_ALIGN_CENTER);
+    gtk_widget_set_vexpand(EgLabel, TRUE);
+    gtk_widget_set_hexpand(EgLabel, TRUE);
+    gtk_label_set_xalign(GTK_LABEL(EgLabel), 0.5);
 }
 

@@ -1,15 +1,5 @@
-// part_uri_widget.h
+// part_uri_widget.c.h
 
-
-
-    void
-FvGtkUriEntryClear(GtkEntry* EgEntry, GtkEntryIconPosition EgPosition,
-        GdkEvent* EgEvent, void* PvUserdata)
-{
-    if (EgPosition == GTK_ENTRY_ICON_SECONDARY) {
-        gtk_editable_delete_text(GTK_EDITABLE(EgEntry), 0, -1);
-    }
-}
 
 
     GtkWidget*
@@ -115,5 +105,15 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     gtk_widget_set_tooltip_text(EgButtonCopy, "Copy");
 
     return EgEntry;
+}
+
+
+    void
+FvGtkUriEntryClear(GtkEntry* EgEntry, GtkEntryIconPosition EgPosition,
+        GdkEvent* EgEvent, void* PvUserdata)
+{
+    if (EgPosition == GTK_ENTRY_ICON_SECONDARY) {
+        gtk_editable_delete_text(GTK_EDITABLE(EgEntry), 0, -1);
+    }
 }
 

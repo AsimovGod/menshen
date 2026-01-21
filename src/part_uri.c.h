@@ -1,48 +1,5 @@
-// part_uri.h
+// part_uri.c.h
 
-
-
-    void
-FvGtkUriWidget(SaMap* CsMap)
-{
-    SaGtkTab* CsGtkTab;
-    SaGtkUri* CsGtkUri;
-
-    CsGtkTab = CsMap->GtkTab;
-    CsGtkUri = CsMap->GtkUri;
-
-    CsGtkUri->Entry->uri = FeGtkUriEntry(CsGtkUri, "build",
-            CsGtkTab->Grid->uriBuild, 0, "URI");
-    CsGtkUri->Entry->scheme = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 0, "Scheme");
-    CsGtkUri->Entry->host = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 1, "Host");
-    CsGtkUri->Entry->userinfo = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 2, "Userinfo");
-    CsGtkUri->Entry->port = FeGtkUriSpin(CsGtkUri, "buttonPort",
-            CsGtkTab->Grid->uriParse, 3, "Port");
-    CsGtkUri->Entry->path = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 4, "Path");
-    CsGtkUri->Entry->query = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 5, "Query");
-    CsGtkUri->Entry->fragment = FeGtkUriEntry(CsGtkUri, "parse",
-            CsGtkTab->Grid->uriParse, 6, "Fragment");
-}
-
-
-    void
-FvGtkUriFree(void* PvFree)
-{
-    SaGtkUri* CsGtkUri;
-
-    CsGtkUri = PvFree;
-
-    if (! CsGtkUri) return;
-
-    g_free(CsGtkUri->parse);
-    g_free(CsGtkUri->Entry);
-    g_free(CsGtkUri);
-}
 
 
     void
@@ -115,5 +72,48 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     gtk_editable_set_text(GTK_EDITABLE(CsGtkUri->Entry->uri),
             AcUri ? AcUri : "");
     FvGtkUriEntryParse(GTK_EDITABLE(CsGtkUri->Entry->uri), CsGtkUri);
+}
+
+
+    void
+FvGtkUriWidget(SaMap* CsMap)
+{
+    SaGtkTab* CsGtkTab;
+    SaGtkUri* CsGtkUri;
+
+    CsGtkTab = CsMap->GtkTab;
+    CsGtkUri = CsMap->GtkUri;
+
+    CsGtkUri->Entry->uri = FeGtkUriEntry(CsGtkUri, "build",
+            CsGtkTab->Grid->uriBuild, 0, "URI");
+    CsGtkUri->Entry->scheme = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 0, "Scheme");
+    CsGtkUri->Entry->host = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 1, "Host");
+    CsGtkUri->Entry->userinfo = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 2, "Userinfo");
+    CsGtkUri->Entry->port = FeGtkUriSpin(CsGtkUri, "buttonPort",
+            CsGtkTab->Grid->uriParse, 3, "Port");
+    CsGtkUri->Entry->path = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 4, "Path");
+    CsGtkUri->Entry->query = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 5, "Query");
+    CsGtkUri->Entry->fragment = FeGtkUriEntry(CsGtkUri, "parse",
+            CsGtkTab->Grid->uriParse, 6, "Fragment");
+}
+
+
+    void
+FvGtkUriFree(void* PvFree)
+{
+    SaGtkUri* CsGtkUri;
+
+    CsGtkUri = PvFree;
+
+    if (! CsGtkUri) return;
+
+    g_free(CsGtkUri->parse);
+    g_free(CsGtkUri->Entry);
+    g_free(CsGtkUri);
 }
 

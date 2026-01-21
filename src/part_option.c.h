@@ -1,4 +1,4 @@
-// part_option.h
+// part_option.c.h
 
 
 
@@ -31,21 +31,6 @@ FsOptionInit()
     DiOption = DiOption + 1;
 
     return CsOption;
-}
-
-
-    void
-FvOptionFree(void* PvFree)
-{
-    SaOption* CsOption;
-
-    CsOption = PvFree;
-
-    if (! CsOption) return;
-
-    g_free(CsOption->mode);
-    g_free(CsOption->option);
-    g_free(CsOption);
 }
 
 
@@ -114,5 +99,20 @@ FdOptionGtk(GApplication* EgApplication,
     }
 
     return EXIT_SUCCESS;
+}
+
+
+    void
+FvOptionFree(void* PvFree)
+{
+    SaOption* CsOption;
+
+    CsOption = PvFree;
+
+    if (! CsOption) return;
+
+    g_free(CsOption->mode);
+    g_free(CsOption->option);
+    g_free(CsOption);
 }
 

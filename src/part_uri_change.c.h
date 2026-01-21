@@ -1,22 +1,5 @@
-// part_uri_change.h
+// part_uri_change.c.h
 
-
-
-    char*
-FaGtkUriEntryGet(GtkWidget* EgEntry)
-{
-    const char* AcParse;
-
-    AcParse = gtk_editable_get_text(GTK_EDITABLE(EgEntry));
-    return AcParse && *AcParse ? g_strdup(AcParse) : g_strdup("");
-}
-
-
-    void
-FvGtkUriEntrySet(GtkWidget* EgEntry, char* AcUriEntry)
-{
-    gtk_editable_set_text(GTK_EDITABLE(EgEntry), AcUriEntry ? AcUriEntry : "");
-}
 
 
     void
@@ -90,5 +73,22 @@ FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
             CsGtkUri->Parse->port ? CsGtkUri->Parse->port : -1);
 
     CsGtkUri->change = FALSE;
+}
+
+
+    char*
+FaGtkUriEntryGet(GtkWidget* EgEntry)
+{
+    const char* AcParse;
+
+    AcParse = gtk_editable_get_text(GTK_EDITABLE(EgEntry));
+    return AcParse && *AcParse ? g_strdup(AcParse) : g_strdup("");
+}
+
+
+    void
+FvGtkUriEntrySet(GtkWidget* EgEntry, char* AcUriEntry)
+{
+    gtk_editable_set_text(GTK_EDITABLE(EgEntry), AcUriEntry ? AcUriEntry : "");
 }
 

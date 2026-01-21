@@ -1,19 +1,6 @@
-// part_window.h
+// part_window.c.h
 
 
-
-    void
-FvGtkWindowFree(void* PvFree)
-{
-    SaGtkWindow* CsGtkWindow;
-
-    CsGtkWindow = PvFree;
-
-    if (! CsGtkWindow) return;
-
-    g_free(CsGtkWindow->Stack);
-    g_free(CsGtkWindow);
-}
 
     void
 FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
@@ -63,5 +50,19 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
 
     gtk_window_present(GTK_WINDOW(CsGtkWindow->base));
     gtk_window_set_focus(GTK_WINDOW(CsGtkWindow->base), NULL);
+}
+
+
+    void
+FvGtkWindowFree(void* PvFree)
+{
+    SaGtkWindow* CsGtkWindow;
+
+    CsGtkWindow = PvFree;
+
+    if (! CsGtkWindow) return;
+
+    g_free(CsGtkWindow->Stack);
+    g_free(CsGtkWindow);
 }
 

@@ -1,43 +1,5 @@
-// part_menu.h
+// part_menu.c.h
 
-
-
-void FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument);
-
-
-    void
-FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
-        void* PvUserdata)
-{
-    SaMap* CsMap;
-
-    CsMap = PvUserdata;
-
-    FvGtkWindow(CsMap, 0, NULL);
-}
-
-
-    void
-FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
-        void* PvUserdata)
-{
-    SaMap* CsMap;
-    SaGtkMenu* CsGtkMenu;
-
-    CsMap = PvUserdata;
-    CsGtkMenu = CsMap->GtkMenu;
-
-    const char* TcButton[] = { "Close", NULL };
-
-    CsGtkMenu->about = gtk_alert_dialog_new("About");
-
-    gtk_alert_dialog_set_detail(CsGtkMenu->about,
-            "Help and About");
-    gtk_alert_dialog_set_buttons(CsGtkMenu->about,
-            TcButton);
-    gtk_alert_dialog_choose(CsGtkMenu->about,
-            GTK_WINDOW(CsMap->GtkWindow->base), NULL, NULL, NULL);
-}
 
 
     void
@@ -79,4 +41,39 @@ FvGtkMenu(SaMap* CsMap)
 
     gtk_menu_button_set_icon_name(GTK_MENU_BUTTON(CsGtkMenu->button),
             "open-menu-symbolic");
+}
+
+
+    void
+FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
+        void* PvUserdata)
+{
+    SaMap* CsMap;
+
+    CsMap = PvUserdata;
+
+    FvGtkWindow(CsMap, 0, NULL);
+}
+
+
+    void
+FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
+        void* PvUserdata)
+{
+    SaMap* CsMap;
+    SaGtkMenu* CsGtkMenu;
+
+    CsMap = PvUserdata;
+    CsGtkMenu = CsMap->GtkMenu;
+
+    const char* TcButton[] = { "Close", NULL };
+
+    CsGtkMenu->about = gtk_alert_dialog_new("About");
+
+    gtk_alert_dialog_set_detail(CsGtkMenu->about,
+            "Help and About");
+    gtk_alert_dialog_set_buttons(CsGtkMenu->about,
+            TcButton);
+    gtk_alert_dialog_choose(CsGtkMenu->about,
+            GTK_WINDOW(CsMap->GtkWindow->base), NULL, NULL, NULL);
 }

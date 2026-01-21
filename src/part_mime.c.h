@@ -1,20 +1,5 @@
-// part_mime.h
+// part_mime.c.h
 
-
-
-    void
-FvGtkMimeFree(void* PvFree)
-{
-    SaGtkMime* CsGtkMime;
-
-    CsGtkMime = PvFree;
-
-    if (! CsGtkMime) return;
-
-    g_free(CsGtkMime->List);
-    g_free(CsGtkMime->Button);
-    g_free(CsGtkMime);
-}
 
 
     void
@@ -86,5 +71,20 @@ FvGtkMime(SaMap* CsMap)
 
     FvGtkMimeList(CsMap);
     FvGtkMimeOpen(CsMap);
+}
+
+
+    void
+FvGtkMimeFree(void* PvFree)
+{
+    SaGtkMime* CsGtkMime;
+
+    CsGtkMime = PvFree;
+
+    if (! CsGtkMime) return;
+
+    g_free(CsGtkMime->List);
+    g_free(CsGtkMime->Button);
+    g_free(CsGtkMime);
 }
 

@@ -1,4 +1,4 @@
-// part_uri_clipboard.h
+// part_uri_clipboard.c.h
 
 
 
@@ -16,6 +16,22 @@ FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
 
     EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
     gdk_clipboard_set_text(EgClipboard, AcText);
+}
+
+
+    void
+FvGtkUriEntryPaste(GtkButton *EgButton, void* PvUserdata)
+{
+    GtkEntry* EgEntry;
+    GdkClipboard* EgClipboard;
+
+    EgEntry = GTK_ENTRY(PvUserdata);
+    EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
+
+    if (! EgClipboard) return;
+
+    gdk_clipboard_read_value_async(EgClipboard, G_TYPE_STRING,
+            G_PRIORITY_DEFAULT, NULL, FvGtkUriEntryPasteReceived, EgEntry);
 }
 
 
@@ -40,21 +56,5 @@ FvGtkUriEntryPasteReceived(GObject* EgObject, GAsyncResult* EgResult,
     if (! AcText) return;
 
     gtk_editable_set_text(GTK_EDITABLE(EgEntry), AcText);
-}
-
-
-    void
-FvGtkUriEntryPaste(GtkButton *EgButton, void* PvUserdata)
-{
-    GtkEntry* EgEntry;
-    GdkClipboard* EgClipboard;
-
-    EgEntry = GTK_ENTRY(PvUserdata);
-    EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
-
-    if (! EgClipboard) return;
-
-    gdk_clipboard_read_value_async(EgClipboard, G_TYPE_STRING,
-            G_PRIORITY_DEFAULT, NULL, FvGtkUriEntryPasteReceived, EgEntry);
 }
 
