@@ -3,10 +3,10 @@
 
 
     void
-FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
+FvGtkUriEntryCopy(GtkWidget* EgButton, void* PvUserdata)
 {
     const char* AcText;
-    GtkEntry* EgEntry;
+    GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
 
     EgEntry = PvUserdata;
@@ -20,12 +20,12 @@ FvGtkUriEntryCopy(GtkButton *EgButton, void* PvUserdata)
 
 
     void
-FvGtkUriEntryPaste(GtkButton *EgButton, void* PvUserdata)
+FvGtkUriEntryPaste(GtkWidget* EgButton, void* PvUserdata)
 {
-    GtkEntry* EgEntry;
+    GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
 
-    EgEntry = GTK_ENTRY(PvUserdata);
+    EgEntry = PvUserdata;
     EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
 
     if (! EgClipboard) return;
@@ -40,11 +40,11 @@ FvGtkUriEntryPasteReceived(GObject* EgObject, GAsyncResult* EgResult,
         void* PvUserdata)
 {
     const char* AcText;
-    GtkEntry* EgEntry;
+    GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
     const GValue* EgValue;
 
-    EgEntry = GTK_ENTRY(PvUserdata);
+    EgEntry = PvUserdata;
     EgClipboard = GDK_CLIPBOARD(EgObject);
     EgValue = gdk_clipboard_read_value_finish(EgClipboard, EgResult, NULL);
 

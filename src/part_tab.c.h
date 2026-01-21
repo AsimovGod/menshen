@@ -2,6 +2,49 @@
 
 
 
+struct SaGtkTab {
+    SaGtkPaned* Paned;
+    SaGtkGrid* Grid;
+    SaGtkScroll* Scroll;
+    SaGtkButton* Button;
+    char* name;
+};
+
+
+struct SaGtkPaned {
+    GtkWidget* base;
+    double baseR;
+    GtkWidget* baseLeft;
+    double baseLeftR;
+    GtkWidget* baseRight;
+    double baseRightR;
+};
+
+
+struct SaGtkGrid {
+    GtkWidget* tabTitle;
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
+};
+
+
+struct SaGtkScroll {
+    GtkWidget* uriParse;
+    GtkWidget* uriBuild;
+    GtkWidget* mimeList;
+    GtkWidget* mimeOpen;
+};
+
+
+struct SaGtkButton {
+    GtkWidget* title;
+    GtkWidget* close;
+};
+
+
+
     void
 FvGtkTab(SaMap* CsMap, char* AcUri)
 {
@@ -16,11 +59,11 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     CsGtkTab->Scroll = g_new0(SaGtkScroll, 1);
     CsGtkTab->Button = g_new0(SaGtkButton, 1);
 
-    CsGtkWindow->Stack->counter = CsGtkWindow->stack->counter + 1;
-    CsGtkTab->name = g_strdup_printf("Page %d", CsGtkWindow->Stack->contuner);
+    CsGtkWindow->Stack->counter = CsGtkWindow->Stack->counter + 1;
+    CsGtkTab->name = g_strdup_printf("Page %d", CsGtkWindow->Stack->counter);
     CsGtkTab->Grid->tabTitle = gtk_grid_new();
     CsGtkTab->Button->title = gtk_button_new_with_label(CsGtkTab->name);
-    CsGtkTab->Button->close = gtk_button_new_with_label("x");
+    CsGtkTab->Button->close = gtk_button_new_from_icon_name("window-close");
     CsGtkTab->Paned->base = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
     CsGtkTab->Paned->baseLeft = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
     CsGtkTab->Paned->baseRight = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
@@ -34,7 +77,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
             0, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->tabTitle), CsGtkTab->Button->close,
             1, 0, 1, 1);
-    gtk_box_prepend(GTK_BOX(CsGtkWindow->tabbar),
+    gtk_box_prepend(GTK_BOX(CsGtkWindow->Stack->barTab),
             CsGtkTab->Grid->tabTitle);
     gtk_stack_add_named(GTK_STACK(CsGtkWindow->Stack->base), 
             CsGtkTab->Paned->base, CsGtkTab->name);
@@ -43,10 +86,10 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     gtk_paned_set_end_child(GTK_PANED(CsGtkTab->Paned->base),
             CsGtkTab->Paned->baseRight);
 
-    g_signal_connect(CsGtkTab->title,
-            "clicked", C_CALLBACK(FvGtkTabSwitch), CsMap);
-    g_signal_connect(CsGtkTab->close,
-            "clicked", C_CALLBACK(FvGtkTabClose), CsMap);
+    g_signal_connect(CsGtkTab->Button->title,
+            "clicked", G_CALLBACK(FvGtkTabSwitch), CsMap);
+    g_signal_connect(CsGtkTab->Button->close,
+            "clicked", G_CALLBACK(FvGtkTabClose), CsMap);
 
     CsGtkTab->Paned->baseR = 0.8;
     CsGtkTab->Paned->baseLeftR = 0.2;
@@ -75,10 +118,14 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
 {
     SaMap* CsMap;
+    SaGtkWindow* CsGtkWindow;
+    SaGtkTab* CsGtkTab;
 
     CsMap = PvUserdata;
+    CsGtkWindow = CsMap->GtkWindow;
+    CsGtkTab = CsMap->GtkTab;
 
-    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkTab->Stack->base),
+    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
             CsMap->GtkTab->name);
 }
 
@@ -87,13 +134,19 @@ FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
 FvGtkTabClose(GtkWidget* EgButton, void* PvUserdata)
 {
     SaMap* CsMap;
+    SaGtkWindow* CsGtkWindow;
+    SaGtkTab* CsGtkTab;
     GtkWidget* EgPage;
 
     CsMap = PvUserdata;
-    EgPage = gtk_stack_get_child_by_name(GtkMap->GtkWindow->Stack->base,
-            CsMap->CsTab->name);
+    CsGtkWindow = CsMap->GtkWindow;
+    CsGtkTab = CsMap->GtkTab;
 
-    gtk_box_remove(GTK_BOX(CsMap->GtkWindow->tabbar), CsMap->GtkTab->tabTitle);
+    EgPage = gtk_stack_get_child_by_name(GTK_STACK(CsGtkWindow->Stack->base),
+            CsGtkTab->name);
+
+    gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->barTab),
+            CsGtkTab->Grid->tabTitle);
 
     if (! CsMap->GtkTab->name) return;
     gtk_stack_remove(GTK_STACK(CsMap->GtkWindow->Stack->base), EgPage);

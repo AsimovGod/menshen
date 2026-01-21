@@ -2,6 +2,27 @@
 
 
 
+struct SaGtkWindow {
+    SaGtkStack* Stack;
+    GtkWidget* base;
+    char* baseT;
+    int baseH;
+    int baseW;
+    GtkWidget* headerbar;
+    GtkWidget* control;
+    GtkWidget* grid;
+};
+
+
+struct SaGtkStack {
+    GtkWidget* base;
+    GtkWidget* barTab;
+    GtkWidget* buttonAdd;
+    int counter;
+};
+
+
+
     void
 FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
 {
@@ -17,9 +38,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     CsGtkWindow->base = gtk_application_window_new(EgApplication);
     CsGtkWindow->headerbar = gtk_header_bar_new();
     CsGtkWindow->control = gtk_window_controls_new(GTK_PACK_END);
+    CsGtkWindow->grid = gtk_grid_new();
     CsGtkWindow->Stack->base = gtk_stack_new();
-    CsGtkWindow->Stack->tabbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-    CsGtkWindow->Stack->button = gtk_button_new_with_label("+");
+    CsGtkWindow->Stack->barTab = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    CsGtkWindow->Stack->buttonAdd = gtk_button_new_from_icon_name("list-add");
 
     CsGtkWindow->baseT = CsMap->Info->name;
     CsGtkWindow->baseW = 960;
@@ -35,8 +57,11 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
             CsGtkWindow->headerbar);
     gtk_header_bar_pack_end(GTK_HEADER_BAR(CsGtkWindow->headerbar),
             CsGtkWindow->control);
-    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
-            CsGtkWindow->Stack->button);
+    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->barTab),
+            CsGtkWindow->Stack->buttonAdd);
+
+    g_signal_connect(CsGtkWindow->Stack->buttonAdd,
+            "clicked", G_CALLBACK(FvGtkMenu), CsMap);
 
     FvGtkMenu(CsMap);
 

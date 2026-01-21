@@ -2,6 +2,22 @@
 
 
 
+
+struct SaGtkMenu {
+    SaGtkMenuAction* Action;
+    GMenu* base;
+    GtkWidget* button;
+    GtkAlertDialog* about;
+};
+
+
+struct SaGtkMenuAction {
+    GSimpleAction* newwindow;
+    GSimpleAction* about;
+};
+
+
+
     void
 FvGtkMenu(SaMap* CsMap)
 {

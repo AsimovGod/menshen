@@ -2,6 +2,26 @@
 
 
 
+struct SaGtkUri {
+    SaGuriParse* Parse;
+    SaGtkUriEntry* Entry;
+    bool change;
+};
+
+
+struct SaGtkUriEntry {
+    GtkWidget* uri;
+    GtkWidget* scheme;
+    GtkWidget* userinfo;
+    GtkWidget* host;
+    GtkWidget* port;
+    GtkWidget* path;
+    GtkWidget* query;
+    GtkWidget* fragment;
+};
+
+
+
     void
 FvGtkUri(SaMap* CsMap, char* AcUri)
 {
@@ -12,7 +32,7 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
 
     CsGtkUri = g_new0(SaGtkUri, 1);
     CsGtkUri->Entry = g_new0(SaGtkUriEntry, 1);
-    CsGtkUri->parse = g_new0(SaGuriParse, 1);
+    CsGtkUri->Parse = g_new0(SaGuriParse, 1);
 
     CsGtkTab->Scroll->uriBuild = gtk_scrolled_window_new();
     CsGtkTab->Scroll->uriParse = gtk_scrolled_window_new();
@@ -112,7 +132,7 @@ FvGtkUriFree(void* PvFree)
 
     if (! CsGtkUri) return;
 
-    g_free(CsGtkUri->parse);
+    g_free(CsGtkUri->Parse);
     g_free(CsGtkUri->Entry);
     g_free(CsGtkUri);
 }

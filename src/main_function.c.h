@@ -3,22 +3,14 @@
 
 
 // main.c
-int main(int DiArgs,
-        char** TcArgs);
+int main(int, char**);
 
 
 // part_option.c.h
 SaOption* FsOptionInit();
-
-int FdOptionGlib(SaMap* CsMap,
-        int DiArgs,
-        char** TcArgs);
-
-int FdOptionGtk(GApplication* EgApplication,
-        GApplicationCommandLine* EgCommandline,
-        void* PvUserdata);
-
-void FvOptionFree(void* PvFree);
+int FdOptionGlib(SaMap*, int, char**);
+int FdOptionGtk(GApplication*, GApplicationCommandLine*, void*);
+void FvOptionFree(void*);
 
 
 // part_default.c.h
@@ -26,128 +18,74 @@ SaInfo* FsInfoInit();
 
 
 // part_file.c.h
-void FvFileRead(char* TcArgs);
+void FvFileRead(char*);
 
 
 // part_guri.c.h
-SaGuriParse* FsGuriParse(const char* AcBuild);
-
-char* FaGuriBuild(SaGuriParse* CsParse);
-
-void FvUriPrint(int DiArgument,
-        char** TcArgument);
-
-void FvGuriFree(void* PvFree);
+SaGuriParse* FsGuriParse(const char*);
+char* FaGuriBuild(SaGuriParse*);
+void FvUriPrint(int, char**);
+void FvGuriFree(void*);
 
 
 // part_instance.c.h
-int FdGtkInstance(SaMap* CsMap,
-        int DiArgs,
-        char** TcArgs);
+int FdGtkInstance(SaMap*, int, char**);
 
 
 // part_window.c.h
-void FvGtkWindow(SaMap* CsMap,
-        int DiArgument,
-        char** TcArgument);
-
-void FvGtkWindowFree(void* PvFree);
+void FvGtkWindow(SaMap*, int, char**);
+void FvGtkWindowFree(void*);
 
 
 // part_menu.c.h
-void FvGtkMenu(SaMap* CsMap);
-
-void FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction,
-        GVariant* EgVariant,
-        void* PvUserdata);
-
-void FvGtkMenuAbout(GSimpleAction* EgSimpleaction,
-        GVariant* EgVariant,
-        void* PvUserdata);
+void FvGtkMenu(SaMap*);
+void FvGtkMenuNewwindow(GSimpleAction*, GVariant*, void*);
+void FvGtkMenuAbout(GSimpleAction*, GVariant*, void*);
 
 
 // part_tab.c.h
-void FvGtkTab(SaMap* CsMap,
-        char* AcUri);
-
-void FvGtkTabSwitch(GtkWidget* EgButton,
-        void* PvUserdata);
-
-void FvGtkTabClose(GtkWidget* EgButton,
-        void* PvUserdata);
-
-void FvGtkTabFree(void* PvFree);
+void FvGtkTab(SaMap*, char*);
+void FvGtkTabSwitch(GtkWidget*, void*);
+void FvGtkTabClose(GtkWidget*, void*);
+void FvGtkTabFree(void*);
 
 
 // part_uri.c.h
-void FvGtkUri(SaMap* CsMap,
-        char* AcUri);
-
-void FvGtkUriWidget(SaMap* CsMap);
-
-void FvGtkUriFree(void* PvFree);
+void FvGtkUri(SaMap*, char*);
+void FvGtkUriWidget(SaMap*);
+void FvGtkUriFree(void*);
 
 
 // part_uri_widget.c.h
-GtkWidget* FeGtkUriEntry(SaGtkUri* CsGtkUri,
-        const char* AcType,
-        GtkWidget* EgParent,
-        int DiRow,
-        char* AcLabel);
-
-GtkWidget* FeGtkUriSpin(SaGtkUri* CsGtkUri,
-        const char* AcType,
-        GtkWidget* EgParent,
-        int DiRow,
-        char* AcLabel);
-
-void FvGtkUriEntryClear(GtkEntry* EgEntry,
-        GtkEntryIconPosition EgPosition,
-        GdkEvent* EgEvent,
-        void* PvUserdata);
+GtkWidget* FeGtkUriEntry(SaGtkUri*, const char*, GtkWidget*, int, char*);
+GtkWidget* FeGtkUriSpin(SaGtkUri*, const char*, GtkWidget*, int, char*);
+void FvGtkUriEntryClear(GtkWidget*, GtkEntryIconPosition, GdkEvent*, void*);
 
 
 // part_uri_change.c.h
-void FvGtkUriEntryBuild(GtkEditable* EgEditable,
-        void* PvUserdata);
-
-void FvGtkUriEntryParse(GtkEditable* EgEditable,
-        void* PvUserdata);
-
-char* FaGtkUriEntryGet(GtkWidget* EgEntry);
-
-void FvGtkUriEntrySet(GtkWidget* EgEntry,
-        char* AcUriEntry);
+void FvGtkUriEntryBuild(GtkEditable*, void*);
+void FvGtkUriEntryParse(GtkEditable*, void*);
+char* FaGtkUriEntryGet(GtkWidget*);
+void FvGtkUriEntrySet(GtkWidget*, char*);
 
 
 // part_uri_clipboard.c.h
-void FvGtkUriEntryCopy(GtkButton *EgButton,
-        void* PvUserdata);
-
-void FvGtkUriEntryPaste(GtkButton *EgButton,
-        void* PvUserdata);
-
-void FvGtkUriEntryPasteReceived(GObject* EgObject,
-        GAsyncResult* EgResult,
-        void* PvUserdata);
+void FvGtkUriEntryCopy(GtkWidget*, void*);
+void FvGtkUriEntryPaste(GtkWidget*, void*);
+void FvGtkUriEntryPasteReceived(GObject*, GAsyncResult*, void*);
 
 
 // part_mime.c.h
-void FvGtkMime(SaMap* CsMap);
-
-void FvGtkMimeFree(void* PvFree);
+void FvGtkMime(SaMap*);
+void FvGtkMimeFree(void*);
 
 
 // part_mime_list.c.h
-void FvGtkMimeList(SaMap* CsMap);
-
-void FvGtkMimeListAdd(GtkListBox* EgListbox,
-        GAppInfo* EgAppinfo);
+void FvGtkMimeList(SaMap*);
+void FvGtkMimeListAdd(GtkListBox*, GAppInfo*);
 
 
 // part_mime_open.c.h
-void FvGtkMimeOpen(SaMap* CsMap);
-
-void FvGtkMimeListOpen(GtkButton *EgBotton,
-        void* PvUserdata);
+void FvGtkMimeOpen(SaMap*);
+void FvGtkMimeListOpen(GtkWidget*, void*);
 

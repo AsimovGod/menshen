@@ -2,6 +2,26 @@
 
 
 
+struct SaGtkMime {
+    SaGtkMimeList* List;
+    SaGtkMimeButton* Button;
+    GtkWidget* listbox;
+};
+
+
+struct SaGtkMimeList {
+    GList* http;
+    GList* https;
+    GList* all;
+};
+
+
+struct SaGtkMimeButton {
+    GtkWidget* open;
+};
+
+
+
     void
 FvGtkMime(SaMap* CsMap)
 {

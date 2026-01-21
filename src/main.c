@@ -8,10 +8,11 @@
 #include <gtk/gtk.h>
 #include <adwaita.h>
 
+
 #include "main_struct.c.h"
 #include "main_function.c.h"
-#include "part_option.c.h"
 #include "part_default.c.h"
+#include "part_option.c.h"
 #include "part_instance.c.h"
 #include "part_file.c.h"
 #include "part_guri.c.h"

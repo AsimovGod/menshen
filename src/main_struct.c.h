@@ -1,146 +1,44 @@
 // main_struct.c.h
 
 
+// part_default.c.h
+typedef struct SaMap SaMap;
 
-typedef struct SaGuriParse {
-    char* string;
-    char* scheme;
-    char* userinfo;
-    char* host;
-    int port;
-    char* path;
-    char* query;
-    char* fragment;
-    char* uri;
-} SaGuriParse;
-
-typedef struct SaGtkUriEntry {
-    GtkWidget* uri;
-    GtkWidget* scheme;
-    GtkWidget* userinfo;
-    GtkWidget* host;
-    GtkWidget* port;
-    GtkWidget* path;
-    GtkWidget* query;
-    GtkWidget* fragment;
-} SaGtkUriEntry;
-
-typedef struct SaGtkUri {
-    SaGuriParse* Parse;
-    SaGtkUriEntry* Entry;
-    bool change;
-} SaGtkUri;
+typedef struct SaInfo SaInfo;
 
 
-typedef struct SaGtkMimeList {
-    GList* http;
-    GList* https;
-    GList* all;
-} SaGtkMimeList;
-
-typedef struct SaGtkMimeButton {
-    GtkWidget* open;
-} SaGtkMimeButton;
-
-typedef struct SaGtkMime {
-    SaGtkMimeList* List;
-    SaGtkMimeButton* Button;
-    GtkWidget* listbox;
-} SaGtkMime;
+// part_option.c.h
+typedef struct SaOption SaOption;
 
 
-typedef struct SaGtkPaned {
-    GtkWidget* base;
-    double baseR;
-    GtkWidget* baseLeft;
-    double baseLeftR;
-    GtkWidget* baseRight;
-    double baseRightR;
-} SaGtkPaned;
-
-typedef struct SaGtkGrid {
-    GtkWidget* tabTitle;
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-    GtkWidget* mimeList;
-    GtkWidget* mimeOpen;
-} SaGtkGrid;
-
-typedef struct SaGtkScroll {
-    GtkWidget* uriParse;
-    GtkWidget* uriBuild;
-    GtkWidget* mimeList;
-    GtkWidget* mimeOpen;
-} SaGtkScroll;
-
-typedef struct SaGtkButton {
-    GtkWidget* title;
-    GtkWidget* close;
-} SaGtkButton;
-
-typedef struct SaGtkTab {
-    SaGtkPaned* Paned;
-    SaGtkGrid* Grid;
-    SaGtkScroll* Scroll;
-    SaGtkButton* Button;
-    char* name;
-} SaGtkTab;
+// part_guri.c.h
+typedef struct SaGuriParse SaGuriParse;
 
 
-typedef struct SaGtkMenuAction {
-    GSimpleAction* newwindow;
-    GSimpleAction* about;
-} SaGtkMenuAction;
-
-typedef struct SaGtkMenu {
-    SaGtkMenuAction* Action;
-    GMenu* base;
-    GtkWidget* button;
-    GtkAlertDialog* about;
-} SaGtkMenu;
+// part_window.c.h
+typedef struct SaGtkWindow SaGtkWindow;
+typedef struct SaGtkStack SaGtkStack;
 
 
-typedef struct SaGtkStack {
-    GtkWidget* base;
-    GtkWidget* tabbar;
-    GtkWidget* button;
-    int counter;
-} SaGtkStack;
-
-typedef struct SaGtkWindow {
-    SaGtkStack* Stack;
-    GtkWidget* base;
-    char* baseT;
-    int baseH;
-    int baseW;
-    GtkWidget* headerbar;
-    GtkWidget* control;
-} SaGtkWindow;
+// part_menu.c.h
+typedef struct SaGtkMenu SaGtkMenu;
+typedef struct SaGtkMenuAction SaGtkMenuAction;
 
 
-typedef struct SaInfo {
-    char* name;
-    char* id;
-    char* version;
-} SaInfo;
+// part_tab.c.h
+typedef struct SaGtkTab SaGtkTab;
+typedef struct SaGtkPaned SaGtkPaned;
+typedef struct SaGtkGrid SaGtkGrid;
+typedef struct SaGtkScroll SaGtkScroll;
+typedef struct SaGtkButton SaGtkButton;
 
 
-typedef struct SaOption {
-    GOptionEntry* option;
-    int optionN;
-    bool version;
-    bool help;
-    char* mode;
-} SaOption;
+// part_uri.c.h
+typedef struct SaGtkUri SaGtkUri;
+typedef struct SaGtkUriEntry SaGtkUriEntry;
 
 
-typedef struct SaMap {
-    SaGtkMime* GtkMime;
-    SaGtkUri* GtkUri;
-    SaGtkTab* GtkTab;
-    SaGtkMenu* GtkMenu;
-    SaGtkWindow* GtkWindow;
-    SaOption* Option;
-    SaInfo* Info;
-    GtkApplication* application;
-} SaMap;
+// part_mime.c.h
+typedef struct SaGtkMime SaGtkMime;
+typedef struct SaGtkMimeList SaGtkMimeList;
+typedef struct SaGtkMimeButton SaGtkMimeButton;

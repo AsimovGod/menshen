@@ -2,6 +2,16 @@
 
 
 
+struct SaOption {
+    GOptionEntry* option;
+    int optionN;
+    bool version;
+    bool help;
+    char* mode;
+};
+
+
+
     SaOption*
 FsOptionInit()
 {

@@ -109,7 +109,7 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
 
 
     void
-FvGtkUriEntryClear(GtkEntry* EgEntry, GtkEntryIconPosition EgPosition,
+FvGtkUriEntryClear(GtkWidget* EgEntry, GtkEntryIconPosition EgPosition,
         GdkEvent* EgEvent, void* PvUserdata)
 {
     if (EgPosition == GTK_ENTRY_ICON_SECONDARY) {

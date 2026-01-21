@@ -28,7 +28,7 @@ FvGtkMimeOpen(SaMap* CsMap)
 
 
     void
-FvGtkMimeListOpen(GtkButton *EgBotton, void* PvUserdata)
+FvGtkMimeListOpen(GtkWidget* EgBotton, void* PvUserdata)
 {
     const char* AcUri;
     GtkListBox* EgListbox;

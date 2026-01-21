@@ -2,6 +2,20 @@
 
 
 
+struct SaGuriParse {
+    char* string;
+    char* scheme;
+    char* userinfo;
+    char* host;
+    int port;
+    char* path;
+    char* query;
+    char* fragment;
+    char* uri;
+};
+
+
+
     SaGuriParse*
 FsGuriParse(const char* AcBuild)
 {

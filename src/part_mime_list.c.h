@@ -17,14 +17,14 @@ FvGtkMimeList(SaMap* CsMap)
     CsGtkMime = CsMap->GtkMime;
     CsGtkUri = CsMap->GtkUri;
 
-    CsGtkMime->Listbox = gtk_list_box_new();
+    CsGtkMime->listbox = gtk_list_box_new();
 
     gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeList),
-            CsGtkMime->Listbox, 0, 0, 1, 1);
+            CsGtkMime->listbox, 0, 0, 1, 1);
 
-    gtk_widget_set_vexpand(CsGtkMime->Listbox, TRUE);
-    gtk_widget_set_hexpand(CsGtkMime->Listbox, TRUE);
-    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->Listbox),
+    gtk_widget_set_vexpand(CsGtkMime->listbox, TRUE);
+    gtk_widget_set_hexpand(CsGtkMime->listbox, TRUE);
+    gtk_list_box_set_selection_mode(GTK_LIST_BOX(CsGtkMime->listbox),
             GTK_SELECTION_SINGLE);
 
     CsGtkMime->List->http = g_app_info_get_all_for_type(
@@ -43,7 +43,7 @@ FvGtkMimeList(SaMap* CsMap)
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
 
-        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->Listbox), EgAppinfo);
+        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo);
     }
 
     g_list_free_full(CsGtkMime->List->all, g_object_unref);
