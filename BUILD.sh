@@ -80,8 +80,7 @@ case "${VsCase}" in
                 AsCmdGcc=(
                         gcc
                         -g
-                        -O0
-                        "./src/main.c"
+                        "./src/Main.c"
                         -o
                         "./build/bin/menshen"
                         "${AsArgLib[@]}"

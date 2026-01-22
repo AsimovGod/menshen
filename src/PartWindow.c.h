@@ -1,9 +1,9 @@
-// part_window.c.h
+// PartWindow.c.h
 
 
 
 struct SaGtkWindow {
-    SaGtkStack* Stack;
+    SaGtkWindowStack* Stack;
     GtkWidget* base;
     char* baseT;
     int baseH;
@@ -14,10 +14,11 @@ struct SaGtkWindow {
 };
 
 
-struct SaGtkStack {
+struct SaGtkWindowStack {
     GtkWidget* base;
     GtkWidget* tabbar;
     GtkWidget* newtab;
+    GtkWidget* switcher;
     GtkWidget* separator;
     GtkWidget* frame;
     int counter;
@@ -35,7 +36,7 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     EgApplication = CsMap->application;
 
     CsGtkWindow = g_new0(SaGtkWindow, 1);
-    CsGtkWindow->Stack = g_new0(SaGtkStack, 1);
+    CsGtkWindow->Stack = g_new0(SaGtkWindowStack, 1);
 
     CsGtkWindow->base = gtk_application_window_new(EgApplication);
     CsGtkWindow->headerbar = gtk_header_bar_new();
@@ -44,6 +45,7 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     CsGtkWindow->Stack->base = gtk_stack_new();
     CsGtkWindow->Stack->tabbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
     CsGtkWindow->Stack->newtab = gtk_button_new_from_icon_name("list-add");
+    CsGtkWindow->Stack->switcher = gtk_stack_switcher_new();
     CsGtkWindow->Stack->frame = gtk_frame_new(NULL);
     CsGtkWindow->Stack->separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 
@@ -67,6 +69,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
             CsGtkWindow->Stack->tabbar);
     gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
             CsGtkWindow->Stack->newtab);
+    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
+            CsGtkWindow->Stack->switcher);
+    gtk_stack_switcher_set_stack(GTK_STACK_SWITCHER(CsGtkWindow->Stack->switcher),
+            GTK_STACK(CsGtkWindow->Stack->base));
     gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->frame,
             0, 0, 1, 1);
     gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->base,

@@ -1,4 +1,4 @@
-// main.c
+// Main.c
 
 
 
@@ -9,23 +9,24 @@
 #include <adwaita.h>
 
 
-#include "main_struct.c.h"
-#include "main_function.c.h"
-#include "part_default.c.h"
-#include "part_option.c.h"
-#include "part_instance.c.h"
-#include "part_file.c.h"
-#include "part_guri.c.h"
-#include "part_window.c.h"
-#include "part_menu.c.h"
-#include "part_tab.c.h"
-#include "part_uri.c.h"
-#include "part_uri_widget.c.h"
-#include "part_uri_change.c.h"
-#include "part_uri_clipboard.c.h"
-#include "part_mime.c.h"
-#include "part_mime_list.c.h"
-#include "part_mime_open.c.h"
+#include "MainStruct.c.h"
+#include "MainFunction.c.h"
+#include "PartDefault.c.h"
+#include "PartOption.c.h"
+#include "PartInstance.c.h"
+#include "PartFile.c.h"
+#include "PartGuri.c.h"
+#include "PartWindow.c.h"
+#include "PartMenu.c.h"
+#include "PartTab.c.h"
+#include "PartTabPage.c.h"
+#include "PartUri.c.h"
+#include "PartUriWidget.c.h"
+#include "PartUriChange.c.h"
+#include "PartUriClipboard.c.h"
+#include "PartMime.c.h"
+#include "PartMimeList.c.h"
+#include "PartMimeOpen.c.h"
 
 
 

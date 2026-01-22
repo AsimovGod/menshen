@@ -1,4 +1,4 @@
-// part_mime_list.c.h
+// PartMimeList.c.h
 
 
 

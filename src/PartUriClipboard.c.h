@@ -1,4 +1,4 @@
-// part_uri_clipboard.c.h
+// PartUriClipboard.c.h
 
 
 

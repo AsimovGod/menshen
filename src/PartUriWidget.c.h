@@ -1,4 +1,4 @@
-// part_uri_widget.c.h
+// PartUriWidget.c.h
 
 
 

@@ -1,4 +1,4 @@
-// part_mime.c.h
+// PartMime.c.h
 
 
 
