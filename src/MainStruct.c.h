@@ -1,32 +1,36 @@
 // Main_struct.c.h
 
 
-// Part_default.c.h
+// PartDefault.c.h
 typedef struct SaMap SaMap;
 
 typedef struct SaInfo SaInfo;
 
 
-// Part_option.c.h
+// PartOption.c.h
 typedef struct SaOption SaOption;
 
 
-// Part_guri.c.h
+// PartGuri.c.h
 typedef struct SaGuriParse SaGuriParse;
 
 
-// Part_window.c.h
+// PartWindow.c.h
 typedef struct SaGtkWindow SaGtkWindow;
 typedef struct SaGtkWindowStack SaGtkWindowStack;
 
 
-// Part_menu.c.h
+// PartMenu.c.h
 typedef struct SaGtkMenu SaGtkMenu;
 typedef struct SaGtkMenuAction SaGtkMenuAction;
 
 
-// Part_tab.c.h
+// PartTab.c.h
 typedef struct SaGtkTab SaGtkTab;
+typedef struct SaGtkTabStack SaGtkTabStack;
+
+
+// PartTabPage.c.h
 typedef struct SaGtkTabPaned SaGtkTabPaned;
 typedef struct SaGtkTabGrid SaGtkTabGrid;
 typedef struct SaGtkTabScroll SaGtkTabScroll;

@@ -6,17 +6,17 @@
 int main(int, char**);
 
 
+// PartDefault.c.h
+SaInfo* FsInfoInit();
+void FvMapFree(void*);
+void FvInfoFree(void*);
+
+
 // PartOption.c.h
 SaOption* FsOptionInit();
 int FdOptionGlib(SaMap*, int, char**);
 int FdOptionGtk(GApplication*, GApplicationCommandLine*, void*);
 void FvOptionFree(void*);
-
-
-// PartDefault.c.h
-SaInfo* FsInfoInit();
-void FvMapFree(void*);
-void FvInfoFree(void*);
 
 
 // PartFile.c.h
@@ -47,14 +47,14 @@ void FvGtkMenuAbout(GSimpleAction*, GVariant*, void*);
 
 // PartTab.c.h
 void FvGtkTab(SaMap*, char*);
-void FvGtkTabNew(GtkWidget*, void*);
 void FvGtkTabFree(void*);
 
 
 // PartTabPage.c.h
-void FvGtkTabWidget(SaMap*, char*);
+void FvGtkTabPage(SaMap*, char*);
+void FvGtkTabNew(GtkWidget*, void*);
 void FvGtkTabSwitch(GtkWidget*, void*);
-void FvGtkTabClose(GtkWidget*, void*);
+void FvGtkTabRemove(GtkWidget*, void*);
 
 
 // PartUri.c.h

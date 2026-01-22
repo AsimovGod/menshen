@@ -16,11 +16,11 @@ struct SaGtkWindow {
 
 struct SaGtkWindowStack {
     GtkWidget* base;
+    GtkWidget* scroll;
+    GtkWidget* hsep;
+    GtkWidget* vsep;
     GtkWidget* tabbar;
     GtkWidget* newtab;
-    GtkWidget* switcher;
-    GtkWidget* separator;
-    GtkWidget* frame;
     int counter;
 };
 
@@ -32,6 +32,8 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     SaGtkWindow* CsGtkWindow;
     int DiLoop;
     GtkApplication* EgApplication;
+    GtkWidget* EgFirstGrid;
+    GtkWidget* EgFirstButton;
 
     EgApplication = CsMap->application;
 
@@ -43,11 +45,11 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     CsGtkWindow->control = gtk_window_controls_new(GTK_PACK_END);
     CsGtkWindow->grid = gtk_grid_new();
     CsGtkWindow->Stack->base = gtk_stack_new();
+    CsGtkWindow->Stack->scroll = gtk_scrolled_window_new();
+    CsGtkWindow->Stack->hsep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+    CsGtkWindow->Stack->vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
     CsGtkWindow->Stack->tabbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
     CsGtkWindow->Stack->newtab = gtk_button_new_from_icon_name("list-add");
-    CsGtkWindow->Stack->switcher = gtk_stack_switcher_new();
-    CsGtkWindow->Stack->frame = gtk_frame_new(NULL);
-    CsGtkWindow->Stack->separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 
     CsGtkWindow->baseT = CsMap->Info->name;
     CsGtkWindow->baseW = 960;
@@ -65,18 +67,18 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
             CsGtkWindow->control);
     gtk_window_set_child(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->grid);
-    gtk_frame_set_child(GTK_FRAME(CsGtkWindow->Stack->frame),
-            CsGtkWindow->Stack->tabbar);
-    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
-            CsGtkWindow->Stack->newtab);
-    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
-            CsGtkWindow->Stack->switcher);
-    gtk_stack_switcher_set_stack(GTK_STACK_SWITCHER(CsGtkWindow->Stack->switcher),
-            GTK_STACK(CsGtkWindow->Stack->base));
-    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->frame,
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->newtab,
             0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->vsep,
+            1, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->scroll,
+            2, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->hsep,
+            0, 1, 3, 1);
     gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->base,
-            0, 1, 1, 1);
+            0, 2, 3, 1);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
+                CsGtkWindow->Stack->scroll), CsGtkWindow->Stack->tabbar);
 
     g_signal_connect(CsGtkWindow->Stack->newtab,
             "clicked", G_CALLBACK(FvGtkTabNew), CsMap);
@@ -89,6 +91,15 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     gtk_window_set_default_size(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->baseW, CsGtkWindow->baseH);
 
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
+                CsGtkWindow->Stack->scroll),
+            GTK_POLICY_AUTOMATIC, GTK_POLICY_NEVER);
+
+    gtk_widget_set_hexpand(CsGtkWindow->Stack->tabbar, TRUE);
+    gtk_widget_set_valign(CsGtkWindow->Stack->tabbar, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_start(CsGtkWindow->Stack->vsep, 4);
+    gtk_widget_set_margin_end(CsGtkWindow->Stack->vsep, 4);
+
     FvGtkMenu(CsMap);
 
     if ((! TcArgument) || (DiArgument < 2)) {
@@ -98,6 +109,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
         FvGtkTab(CsMap, TcArgument[DiLoop]);
     }
+
+    EgFirstGrid = gtk_widget_get_first_child(CsGtkWindow->Stack->tabbar);
+    EgFirstButton = gtk_grid_get_child_at(GTK_GRID(EgFirstGrid), 0, 0);
+    FvGtkTabSwitch(EgFirstButton, CsMap);
 
     gtk_window_present(GTK_WINDOW(CsGtkWindow->base));
     gtk_window_set_focus(GTK_WINDOW(CsGtkWindow->base), NULL);

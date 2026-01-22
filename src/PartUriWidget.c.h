@@ -8,7 +8,6 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
 {
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
-    GtkWidget* EgEmpty;
     GtkWidget* EgButtonCopy;
     GtkWidget* EgButtonPaste;
 
@@ -25,6 +24,9 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
             2, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgButtonCopy,
             3, DiRow, 1, 1);
+
+    gtk_entry_set_icon_from_icon_name(GTK_ENTRY(EgEntry),
+            GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
 
     if (strcmp(AcType, "build") == 0)
     {
@@ -43,9 +45,6 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
             "clicked", G_CALLBACK(FvGtkUriEntryCopy), EgEntry);
     g_signal_connect(EgButtonPaste,
             "clicked", G_CALLBACK(FvGtkUriEntryPaste), EgEntry);
-
-    gtk_entry_set_icon_from_icon_name(GTK_ENTRY(EgEntry),
-            GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
 
     gtk_widget_set_size_request(EgLabel, 96, -1);
 
@@ -71,7 +70,6 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
 {
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
-    GtkWidget* EgEmpty;
     GtkWidget* EgButtonCopy;
 
     EgEntry = gtk_spin_button_new_with_range(-1, 65535, 1);
@@ -91,7 +89,7 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
             "clicked", G_CALLBACK(FvGtkUriEntryCopy), EgEntry);
 
     gtk_widget_set_size_request(EgLabel, 96, -1);
-    gtk_widget_set_size_request(EgEmpty, 16, -1);
+    gtk_widget_set_size_request(EgEntry, 16, -1);
 
     gtk_widget_set_halign(EgLabel, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(EgLabel, GTK_ALIGN_CENTER);

@@ -11,7 +11,7 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->Entry || CsGtkUri->change) return;
+    if ((! CsGtkUri->Entry) || CsGtkUri->change) return;
 
     CsGtkUri->change = TRUE;
 
@@ -52,7 +52,7 @@ FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
 
     CsGtkUri = PvUserdata;
 
-    if (! CsGtkUri->Entry || CsGtkUri->change) return;
+    if ((! CsGtkUri->Entry) || CsGtkUri->change) return;
 
     CsGtkUri->change = TRUE;
 
