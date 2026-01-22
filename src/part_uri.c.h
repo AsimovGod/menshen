@@ -34,6 +34,7 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     CsGtkUri->Entry = g_new0(SaGtkUriEntry, 1);
     CsGtkUri->Parse = g_new0(SaGuriParse, 1);
 
+    CsGtkTab->GtkUri = CsGtkUri;
     CsGtkTab->Scroll->uriBuild = gtk_scrolled_window_new();
     CsGtkTab->Scroll->uriParse = gtk_scrolled_window_new();
     CsGtkTab->Grid->uriBuild = gtk_grid_new();
@@ -41,7 +42,7 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
 
     CsMap->GtkUri = CsGtkUri;
 
-    g_object_set_data_full(G_OBJECT(CsMap->GtkWindow->base),
+    g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkUri", CsGtkUri, (GDestroyNotify)FvGtkUriFree);
 
     gtk_paned_set_start_child(GTK_PANED(CsGtkTab->Paned->baseLeft),

@@ -18,7 +18,7 @@ FvGtkMimeOpen(SaMap* CsMap)
             EgButton, 0, 0, 1, 1);
 
     g_signal_connect(EgButton,
-            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsMap);
+            "clicked", G_CALLBACK(FvGtkMimeListOpen), CsGtkTab);
 
     gtk_widget_set_vexpand(EgButton, TRUE);
     gtk_widget_set_hexpand(EgButton, TRUE);
@@ -28,9 +28,12 @@ FvGtkMimeOpen(SaMap* CsMap)
 
 
     void
-FvGtkMimeListOpen(GtkWidget* EgBotton, void* PvUserdata)
+FvGtkMimeListOpen(GtkWidget* EgButton, void* PvUserdata)
 {
-    SaMap* CsMap;
+    SaGtkTab* CsGtkTab;
+    SaGtkTab* CsGtkTabOld;
+    SaGtkUri* CsGtkUri;
+    SaGtkMime* CsGtkMime;
     const char* AcUri;
     GtkListBox* EgListbox;
     GtkListBoxRow* EgListrow;
@@ -38,14 +41,21 @@ FvGtkMimeListOpen(GtkWidget* EgBotton, void* PvUserdata)
     GList* EgList;
     GFile* EgFile;
 
-    CsMap = PvUserdata;
-    EgListbox = GTK_LIST_BOX(CsMap->GtkMime->listbox);
+    CsGtkTabOld = PvUserdata;
+    CsGtkTab = g_new0(SaGtkTab, 1);
+    CsGtkTab->Paned = CsGtkTabOld->Paned;
+    CsGtkTab->GtkUri = g_object_get_data(G_OBJECT(CsGtkTab->Paned->base),
+            "CsGtkUri");
+    CsGtkTab->GtkMime = g_object_get_data(G_OBJECT(CsGtkTab->Paned->base),
+            "CsGtkMime");
+
+    EgListbox = GTK_LIST_BOX(CsGtkTab->GtkMime->listbox);
     EgListrow = gtk_list_box_get_selected_row(EgListbox);
 
     if (! EgListrow) return;
 
     EgAppinfo = g_object_get_data(G_OBJECT(EgListrow), "EgAppinfo");
-    AcUri = FaGtkUriEntryGet(CsMap->GtkUri->Entry->uri);
+    AcUri = FaGtkUriEntryGet(CsGtkTab->GtkUri->Entry->uri);
     EgFile = AcUri ? g_file_new_for_uri(AcUri) : NULL;
     EgList = g_list_append(NULL, EgFile);
 

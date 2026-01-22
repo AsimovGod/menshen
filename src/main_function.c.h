@@ -85,7 +85,7 @@ void FvGtkMimeFree(void*);
 
 // part_mime_list.c.h
 void FvGtkMimeList(SaMap*);
-void FvGtkMimeListAdd(GtkListBox*, GAppInfo*);
+void FvGtkMimeListAdd(GtkListBox*, GAppInfo*, void*);
 
 
 // part_mime_open.c.h

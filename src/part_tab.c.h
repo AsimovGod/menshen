@@ -3,6 +3,8 @@
 
 
 struct SaGtkTab {
+    SaGtkUri* GtkUri;
+    SaGtkMime* GtkMime;
     SaGtkPaned* Paned;
     SaGtkGrid* Grid;
     SaGtkScroll* Scroll;
@@ -60,7 +62,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     CsGtkTab->Button = g_new0(SaGtkButton, 1);
 
     CsGtkWindow->Stack->counter = CsGtkWindow->Stack->counter + 1;
-    CsGtkTab->name = g_strdup_printf("Page %d", CsGtkWindow->Stack->counter);
+    CsGtkTab->name = g_strdup_printf("PAGE %d", CsGtkWindow->Stack->counter);
     CsGtkTab->Grid->tabTitle = gtk_grid_new();
     CsGtkTab->Button->title = gtk_button_new_with_label(CsGtkTab->name);
     CsGtkTab->Button->close = gtk_button_new_from_icon_name("window-close");
@@ -116,9 +118,6 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     FvGtkUri(CsMap, AcUri);
     FvGtkMime(CsMap);
-
-    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
-            CsGtkTab->name);
 }
 
 
@@ -137,17 +136,29 @@ FvGtkTabNew(GtkWidget* EgButton, void* PvUserdata)
 FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
 {
     SaMap* CsMap;
+    SaMap* CsMapOld;
     SaGtkWindow* CsGtkWindow;
     SaGtkTab* CsGtkTab;
+    SaGtkUri* CsGtkUri;
+    SaGtkMime* CsGtkMime;
 
-    CsMap = PvUserdata;
-    CsGtkWindow = CsMap->GtkWindow;
+    CsMapOld = PvUserdata;
+    CsGtkWindow = CsMapOld->GtkWindow;
     CsGtkTab = g_object_get_data(G_OBJECT(EgButton), "CsGtkTab");
+    CsGtkUri = g_object_get_data(G_OBJECT(CsGtkTab->Paned->base), "CsGtkUri");
+    CsGtkMime = g_object_get_data(G_OBJECT(CsGtkTab->Paned->base), "CsGtkMime");
+
+    CsMap = g_new0(SaMap, 1);
+    CsMap->Info = CsMapOld->Info;
+    CsMap->GtkWindow = CsGtkWindow;
+    CsMap->GtkTab = CsGtkTab;
+    CsMap->GtkUri = CsGtkUri;
+    CsMap->GtkMime = CsGtkMime;
 
     if ((! CsGtkTab) || (! CsGtkTab->name)) return;
 
-    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
-            CsGtkTab->name);
+    gtk_stack_set_visible_child(GTK_STACK(CsGtkWindow->Stack->base),
+            CsGtkTab->Paned->base);
 }
 
 
@@ -168,11 +179,11 @@ FvGtkTabClose(GtkWidget* EgButton, void* PvUserdata)
     EgPage = gtk_stack_get_child_by_name(GTK_STACK(CsGtkWindow->Stack->base),
             CsGtkTab->name);
 
-    gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->tabbar),
-            CsGtkTab->Grid->tabTitle);
-
     gtk_stack_remove(GTK_STACK(CsGtkWindow->Stack->base),
             EgPage);
+
+    gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->tabbar),
+            CsGtkTab->Grid->tabTitle);
 }
 
 
@@ -185,11 +196,11 @@ FvGtkTabFree(void* PvFree)
 
     if (! CsGtkTab) return;
 
-    g_free(CsGtkTab->name);
     g_free(CsGtkTab->Paned);
     g_free(CsGtkTab->Grid);
     g_free(CsGtkTab->Scroll);
     g_free(CsGtkTab->Button);
+    g_free(CsGtkTab->name);
     g_free(CsGtkTab);
 }
 

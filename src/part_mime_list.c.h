@@ -43,7 +43,7 @@ FvGtkMimeList(SaMap* CsMap)
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
 
-        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo);
+        FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo, CsMap);
     }
 
     g_list_free_full(CsGtkMime->List->all, g_object_unref);
@@ -52,14 +52,16 @@ FvGtkMimeList(SaMap* CsMap)
 
 
     void
-FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo)
+FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo, void* PvUserdata)
 {
+    SaMap* CsMap;
     GtkWidget* EgGrid;
     GtkWidget* EgImage;
     GtkWidget* EgLabel;
     GtkWidget* EgListrow;
     GIcon* EgIcon;
 
+    CsMap = PvUserdata;
     EgGrid = gtk_grid_new();
     EgListrow = gtk_list_box_row_new();
     EgImage = gtk_image_new();

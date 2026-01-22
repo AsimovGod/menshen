@@ -34,6 +34,7 @@ FvGtkMime(SaMap* CsMap)
     CsGtkMime->List = g_new0(SaGtkMimeList, 1);
     CsGtkMime->Button = g_new0(SaGtkMimeButton, 1);
 
+    CsGtkTab->GtkMime = CsGtkMime;
     CsGtkTab->Scroll->mimeList = gtk_scrolled_window_new();
     CsGtkTab->Scroll->mimeOpen = gtk_scrolled_window_new();
     CsGtkTab->Grid->mimeList = gtk_grid_new();
@@ -41,7 +42,7 @@ FvGtkMime(SaMap* CsMap)
 
     CsMap->GtkMime = CsGtkMime;
 
-    g_object_set_data_full(G_OBJECT(CsMap->GtkWindow->base),
+    g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkMime", CsGtkMime, (GDestroyNotify)FvGtkMimeFree);
 
     gtk_paned_set_start_child(GTK_PANED(CsGtkTab->Paned->baseRight),
