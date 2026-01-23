@@ -3,6 +3,7 @@
 
 
 struct SaGtkTab {
+    // link
     SaGtkUri* GtkUri;
     SaGtkMime* GtkMime;
     SaGtkTabStack* Stack;
@@ -13,25 +14,32 @@ struct SaGtkTab {
 
 
 struct SaGtkTabStack {
+    // declaration property
     char* name;
+    // declaration lock
     bool toggle;
+    // gtk.h widget grid
     GtkWidget* gridTitle;
+    // gtk.h widget button
     GtkWidget* buttonSwitch;
     GtkWidget* buttonRemove;
 };
 
 
 struct SaGtkTabPaned {
+    // gtk.h widget paned
     GtkWidget* base;
-    double baseR;
     GtkWidget* baseLeft;
-    double baseLeftR;
     GtkWidget* baseRight;
+    // declaration
+    double baseR;
+    double baseLeftR;
     double baseRightR;
 };
 
 
 struct SaGtkTabScroll {
+    // gtk.h widget scroll
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
@@ -40,6 +48,7 @@ struct SaGtkTabScroll {
 
 
 struct SaGtkTabGrid {
+    // gtk.h widget grid
     GtkWidget* uriParse;
     GtkWidget* uriBuild;
     GtkWidget* mimeList;
@@ -51,21 +60,27 @@ struct SaGtkTabGrid {
     void
 FvGtkTab(SaMap* CsMap, char* AcUri)
 {
+    // declaration
     SaGtkWindow* CsGtkWindow;
     SaGtkTab* CsGtkTab;
 
+    // inherit
     CsGtkWindow = CsMap->GtkWindow;
 
+    // malloc
     CsGtkTab = g_new0(SaGtkTab, 1);
     CsGtkTab->Stack = g_new0(SaGtkTabStack, 1);
     CsGtkTab->Grid = g_new0(SaGtkTabGrid, 1);
     CsGtkTab->Paned = g_new0(SaGtkTabPaned, 1);
     CsGtkTab->Scroll = g_new0(SaGtkTabScroll, 1);
 
+    // variable
     CsGtkWindow->Stack->counter = CsGtkWindow->Stack->counter + 1;
+    CsGtkTab->Stack->toggle = FALSE;
     CsGtkTab->Stack->name = g_strdup_printf("PAGE %d",
             CsGtkWindow->Stack->counter);
-    CsGtkTab->Stack->toggle = FALSE;
+
+    // gtk.h new
     CsGtkTab->Stack->gridTitle = gtk_grid_new();
     CsGtkTab->Stack->buttonSwitch = gtk_toggle_button_new_with_label(
             CsGtkTab->Stack->name);
@@ -73,8 +88,10 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
             "window-close");
     CsGtkTab->Paned->base = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
 
+    // bequeath
     CsMap->GtkTab = CsGtkTab;
 
+    // gobject.h data
     g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkTab", CsGtkTab, (GDestroyNotify)FvGtkTabFree);
 
@@ -83,6 +100,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     g_object_set_data(G_OBJECT(CsGtkTab->Stack->buttonRemove),
             "CsGtkTab", CsGtkTab);
 
+    // gtk.h layout
     gtk_stack_add_named(GTK_STACK(CsGtkWindow->Stack->base),
             CsGtkTab->Paned->base, CsGtkTab->Stack->name);
     gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
@@ -94,16 +112,19 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
             CsGtkTab->Stack->buttonRemove,
             1, 0, 1, 1);
 
+    // gobject.h signal
     g_signal_connect(CsGtkTab->Stack->buttonSwitch,
             "toggled", G_CALLBACK(FvGtkTabSwitch), CsMap);
     g_signal_connect(CsGtkTab->Stack->buttonRemove,
             "clicked", G_CALLBACK(FvGtkTabRemove), CsMap);
 
+    // gtk.h property
     gtk_widget_add_css_class(CsGtkTab->Stack->buttonSwitch, "linked");
     gtk_widget_add_css_class(CsGtkTab->Stack->buttonRemove, "linked");
     gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(CsGtkTab->Stack->buttonSwitch), TRUE);
 
+    // PartTabPage.h
     FvGtkTabSwitch(CsGtkTab->Stack->buttonSwitch, CsMap);
     FvGtkTabPage(CsMap, AcUri);
 }
@@ -112,12 +133,15 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     void
 FvGtkTabFree(void* PvFree)
 {
+    // declaration
     SaGtkTab* CsGtkTab;
 
+    // inherit
     CsGtkTab = PvFree;
 
     if (! CsGtkTab) return;
 
+    // free
     g_free(CsGtkTab->Stack->name);
     g_free(CsGtkTab->Stack);
     g_free(CsGtkTab->Paned);

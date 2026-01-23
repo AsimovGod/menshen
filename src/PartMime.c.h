@@ -3,13 +3,16 @@
 
 
 struct SaGtkMime {
+    // link
     SaGtkMimeList* List;
     SaGtkMimeButton* Button;
+    // gtk.h widget listbox
     GtkWidget* listbox;
 };
 
 
 struct SaGtkMimeList {
+    // glib.h
     GList* http;
     GList* https;
     GList* all;
@@ -17,6 +20,7 @@ struct SaGtkMimeList {
 
 
 struct SaGtkMimeButton {
+    // gtk.h widget button
     GtkWidget* open;
 };
 
@@ -25,26 +29,33 @@ struct SaGtkMimeButton {
     void
 FvGtkMime(SaMap* CsMap)
 {
+    // declaration
     SaGtkTab* CsGtkTab;
     SaGtkMime* CsGtkMime;
 
+    // inherit
     CsGtkTab = CsMap->GtkTab;
 
+    // malloc
     CsGtkMime = g_new0(SaGtkMime, 1);
     CsGtkMime->List = g_new0(SaGtkMimeList, 1);
     CsGtkMime->Button = g_new0(SaGtkMimeButton, 1);
 
-    CsGtkTab->GtkMime = CsGtkMime;
+    // gtk.h new
     CsGtkTab->Scroll->mimeList = gtk_scrolled_window_new();
     CsGtkTab->Scroll->mimeOpen = gtk_scrolled_window_new();
     CsGtkTab->Grid->mimeList = gtk_grid_new();
     CsGtkTab->Grid->mimeOpen = gtk_grid_new();
 
+    // bequeath
+    CsGtkTab->GtkMime = CsGtkMime;
     CsMap->GtkMime = CsGtkMime;
 
+    // gobject.h data
     g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkMime", CsGtkMime, (GDestroyNotify)FvGtkMimeFree);
 
+    // gtk.h layout
     gtk_paned_set_start_child(GTK_PANED(CsGtkTab->Paned->baseRight),
             CsGtkTab->Scroll->mimeList);
     gtk_paned_set_end_child(GTK_PANED(CsGtkTab->Paned->baseRight),
@@ -54,6 +65,7 @@ FvGtkMime(SaMap* CsMap)
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 CsGtkTab->Scroll->mimeOpen), CsGtkTab->Grid->mimeOpen);
 
+    // gtk.h property
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
                 CsGtkTab->Scroll->mimeList),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -90,7 +102,10 @@ FvGtkMime(SaMap* CsMap)
     gtk_grid_set_row_spacing(GTK_GRID(CsGtkTab->Grid->mimeOpen), 4);
     gtk_grid_set_column_spacing(GTK_GRID(CsGtkTab->Grid->mimeOpen), 4);
 
+    // PartMimeList.c.h
     FvGtkMimeList(CsMap);
+
+    // PartMimeOpen.c.h
     FvGtkMimeOpen(CsMap);
 }
 
@@ -98,12 +113,15 @@ FvGtkMime(SaMap* CsMap)
     void
 FvGtkMimeFree(void* PvFree)
 {
+    // declaration
     SaGtkMime* CsGtkMime;
 
+    // inherit
     CsGtkMime = PvFree;
 
     if (! CsGtkMime) return;
 
+    // free
     g_free(CsGtkMime->List);
     g_free(CsGtkMime->Button);
     g_free(CsGtkMime);

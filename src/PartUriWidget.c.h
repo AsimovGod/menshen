@@ -6,16 +6,19 @@
 FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
         int DiRow, char* AcLabel)
 {
+    // declaration
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
     GtkWidget* EgButtonCopy;
     GtkWidget* EgButtonPaste;
 
+    // gtk.h new
     EgEntry = gtk_entry_new();
     EgLabel = gtk_label_new(AcLabel);
     EgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
     EgButtonPaste = gtk_button_new_from_icon_name("edit-paste-symbolic");
 
+    // gtk.h layout
     gtk_grid_attach(GTK_GRID(EgParent), EgLabel,
             0, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgEntry,
@@ -28,6 +31,7 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(EgEntry),
             GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
 
+    // gobject.h signal
     if (strcmp(AcType, "build") == 0)
     {
         g_signal_connect(EgEntry,
@@ -46,6 +50,7 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     g_signal_connect(EgButtonPaste,
             "clicked", G_CALLBACK(FvGtkUriEntryPaste), EgEntry);
 
+    // gtk.h property
     gtk_widget_set_size_request(EgLabel, 96, -1);
 
     gtk_widget_set_halign(EgLabel, GTK_ALIGN_CENTER);
@@ -60,6 +65,7 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     gtk_widget_set_tooltip_text(EgButtonCopy, "Copy");
     gtk_widget_set_tooltip_text(EgButtonPaste, "Paste");
 
+    // return
     return EgEntry;
 }
 
@@ -68,14 +74,17 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
 FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
         int DiRow, char* AcLabel)
 {
+    // declaration
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
     GtkWidget* EgButtonCopy;
 
+    // gtk.h new
     EgEntry = gtk_spin_button_new_with_range(-1, 65535, 1);
     EgLabel = gtk_label_new(AcLabel);
     EgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
 
+    // gtk.h layout
     gtk_grid_attach(GTK_GRID(EgParent), EgLabel,
             0, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgEntry,
@@ -83,11 +92,13 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     gtk_grid_attach(GTK_GRID(EgParent), EgButtonCopy,
             3, DiRow, 1, 1);
 
+    // gobject.h signal
     g_signal_connect(EgEntry,
             "value-changed", G_CALLBACK(FvGtkUriEntryBuild), CsGtkUri);
     g_signal_connect(EgButtonCopy,
             "clicked", G_CALLBACK(FvGtkUriEntryCopy), EgEntry);
 
+    // gtk.h property
     gtk_widget_set_size_request(EgLabel, 96, -1);
     gtk_widget_set_size_request(EgEntry, 16, -1);
 
@@ -102,6 +113,7 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
 
     gtk_widget_set_tooltip_text(EgButtonCopy, "Copy");
 
+    // return
     return EgEntry;
 }
 
@@ -111,6 +123,7 @@ FvGtkUriEntryClear(GtkWidget* EgEntry, GtkEntryIconPosition EgPosition,
         GdkEvent* EgEvent, void* PvUserdata)
 {
     if (EgPosition == GTK_ENTRY_ICON_SECONDARY) {
+        // gtk.h widget
         gtk_editable_delete_text(GTK_EDITABLE(EgEntry), 0, -1);
     }
 }

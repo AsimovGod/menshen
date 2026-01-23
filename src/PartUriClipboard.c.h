@@ -5,11 +5,15 @@
     void
 FvGtkUriEntryCopy(GtkWidget* EgButton, void* PvUserdata)
 {
+    // declaration
     const char* AcText;
     GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
 
+    // inherit
     EgEntry = PvUserdata;
+
+    // gtk.h clipboard
     AcText = gtk_editable_get_text(GTK_EDITABLE(EgEntry));
 
     if (! AcText) return;
@@ -22,10 +26,14 @@ FvGtkUriEntryCopy(GtkWidget* EgButton, void* PvUserdata)
     void
 FvGtkUriEntryPaste(GtkWidget* EgButton, void* PvUserdata)
 {
+    // declaration
     GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
 
+    // inherit
     EgEntry = PvUserdata;
+
+    // gtk.h clipboard
     EgClipboard = gtk_widget_get_clipboard(GTK_WIDGET(EgEntry));
 
     if (! EgClipboard) return;
@@ -39,12 +47,16 @@ FvGtkUriEntryPaste(GtkWidget* EgButton, void* PvUserdata)
 FvGtkUriEntryPasteReceived(GObject* EgObject, GAsyncResult* EgResult,
         void* PvUserdata)
 {
+    // declaration
     const char* AcText;
     GtkWidget* EgEntry;
     GdkClipboard* EgClipboard;
     const GValue* EgValue;
 
+    // inherit
     EgEntry = PvUserdata;
+
+    // gtk.h clipboard
     EgClipboard = GDK_CLIPBOARD(EgObject);
     EgValue = gdk_clipboard_read_value_finish(EgClipboard, EgResult, NULL);
 

@@ -33,20 +33,29 @@
     int
 main(int DiArgs, char** TcArgs)
 {
+    // declaration
     SaMap* CsMap;
     SaInfo* CsInfo;
     SaOption* CsOption;
     int DiExit;
 
+    // malloc
     CsMap = g_new0(SaMap, 1);
+
+    // variable
     CsInfo = FsInfoInit();
     CsOption = FsOptionInit();
 
+    // bequeath
     CsMap->Info = CsInfo;
     CsMap->Option = CsOption;
 
+    // PartOption.c.h
     DiExit = FdOptionGlib(CsMap, DiArgs, TcArgs);
+
+    // PartInstance.c.h
     DiExit = FdGtkInstance(CsMap, DiArgs, TcArgs);
 
+    // return
     return DiExit;
 }

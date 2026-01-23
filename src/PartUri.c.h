@@ -3,21 +3,25 @@
 
 
 struct SaGtkUri {
+    // link
     SaGuriParse* Parse;
     SaGtkUriEntry* Entry;
+    // declaration lock
     bool change;
 };
 
 
 struct SaGtkUriEntry {
+    // gtk.h widget entry
     GtkWidget* uri;
     GtkWidget* scheme;
     GtkWidget* userinfo;
     GtkWidget* host;
-    GtkWidget* port;
     GtkWidget* path;
     GtkWidget* query;
     GtkWidget* fragment;
+    // gtk.h widget spin
+    GtkWidget* port;
 };
 
 
@@ -25,26 +29,33 @@ struct SaGtkUriEntry {
     void
 FvGtkUri(SaMap* CsMap, char* AcUri)
 {
+    // declaration
     SaGtkTab* CsGtkTab;
     SaGtkUri* CsGtkUri;
 
+    // inherit
     CsGtkTab = CsMap->GtkTab;
 
+    // malloc
     CsGtkUri = g_new0(SaGtkUri, 1);
     CsGtkUri->Entry = g_new0(SaGtkUriEntry, 1);
     CsGtkUri->Parse = g_new0(SaGuriParse, 1);
 
-    CsGtkTab->GtkUri = CsGtkUri;
+    // gtk.h new
     CsGtkTab->Scroll->uriBuild = gtk_scrolled_window_new();
     CsGtkTab->Scroll->uriParse = gtk_scrolled_window_new();
     CsGtkTab->Grid->uriBuild = gtk_grid_new();
     CsGtkTab->Grid->uriParse = gtk_grid_new();
 
+    // bequeath
+    CsGtkTab->GtkUri = CsGtkUri;
     CsMap->GtkUri = CsGtkUri;
 
+    // gobject.h data
     g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkUri", CsGtkUri, (GDestroyNotify)FvGtkUriFree);
 
+    // gtk.h layout
     gtk_paned_set_start_child(GTK_PANED(CsGtkTab->Paned->baseLeft),
             CsGtkTab->Scroll->uriBuild);
     gtk_paned_set_end_child(GTK_PANED(CsGtkTab->Paned->baseLeft),
@@ -54,6 +65,7 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 CsGtkTab->Scroll->uriParse), CsGtkTab->Grid->uriParse);
 
+    // gtk.h property
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
                 CsGtkTab->Scroll->uriBuild),
             GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -88,10 +100,14 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     gtk_grid_set_row_spacing(GTK_GRID(CsGtkTab->Grid->uriParse), 4);
     gtk_grid_set_column_spacing(GTK_GRID(CsGtkTab->Grid->uriParse), 4);
 
+    // PartUri.c.h
     FvGtkUriWidget(CsMap);
 
+    // gtk.h widget
     gtk_editable_set_text(GTK_EDITABLE(CsGtkUri->Entry->uri),
             AcUri ? AcUri : "");
+
+    // PartUriChabge.c.h
     FvGtkUriEntryParse(GTK_EDITABLE(CsGtkUri->Entry->uri), CsGtkUri);
 }
 
@@ -99,12 +115,15 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     void
 FvGtkUriWidget(SaMap* CsMap)
 {
+    // declaration
     SaGtkTab* CsGtkTab;
     SaGtkUri* CsGtkUri;
 
+    // inherit
     CsGtkTab = CsMap->GtkTab;
     CsGtkUri = CsMap->GtkUri;
 
+    // PartUriWidget.c.h
     CsGtkUri->Entry->uri = FeGtkUriEntry(CsGtkUri, "build",
             CsGtkTab->Grid->uriBuild, 0, "URI");
     CsGtkUri->Entry->scheme = FeGtkUriEntry(CsGtkUri, "parse",
@@ -127,12 +146,15 @@ FvGtkUriWidget(SaMap* CsMap)
     void
 FvGtkUriFree(void* PvFree)
 {
+    // declaration
     SaGtkUri* CsGtkUri;
 
+    // inherit
     CsGtkUri = PvFree;
 
     if (! CsGtkUri) return;
 
+    // free
     g_free(CsGtkUri->Parse);
     g_free(CsGtkUri->Entry);
     g_free(CsGtkUri);

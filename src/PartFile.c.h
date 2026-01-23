@@ -5,9 +5,13 @@
     void
 FvFileRead(char* TcArgs)
 {
-    char AcRead[2048];
+    // declaration
     FILE* PfRead;
 
+    // malloc
+    char AcRead[2048];
+
+    // stdio.h file
     PfRead = fopen(TcArgs, "r");
 
     if (PfRead == NULL) {
