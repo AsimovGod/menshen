@@ -20,6 +20,7 @@ struct SaGtkTabStack {
     bool toggle;
     // gtk.h widget grid
     GtkWidget* gridTitle;
+    GtkWidget* frameTitle;
     // gtk.h widget button
     GtkWidget* buttonSwitch;
     GtkWidget* buttonRemove;
@@ -70,9 +71,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     // malloc
     CsGtkTab = g_new0(SaGtkTab, 1);
     CsGtkTab->Stack = g_new0(SaGtkTabStack, 1);
-    CsGtkTab->Grid = g_new0(SaGtkTabGrid, 1);
     CsGtkTab->Paned = g_new0(SaGtkTabPaned, 1);
-    CsGtkTab->Scroll = g_new0(SaGtkTabScroll, 1);
 
     // variable
     CsGtkWindow->Stack->counter = CsGtkWindow->Stack->counter + 1;
@@ -82,6 +81,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     // gtk.h new
     CsGtkTab->Stack->gridTitle = gtk_grid_new();
+    CsGtkTab->Stack->frameTitle = gtk_frame_new(NULL);
     CsGtkTab->Stack->buttonSwitch = gtk_toggle_button_new_with_label(
             CsGtkTab->Stack->name);
     CsGtkTab->Stack->buttonRemove = gtk_button_new_from_icon_name(
@@ -104,6 +104,8 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     gtk_stack_add_named(GTK_STACK(CsGtkWindow->Stack->base),
             CsGtkTab->Paned->base, CsGtkTab->Stack->name);
     gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
+            CsGtkTab->Stack->frameTitle);
+    gtk_frame_set_child(GTK_FRAME(CsGtkTab->Stack->frameTitle),
             CsGtkTab->Stack->gridTitle);
     gtk_grid_attach(GTK_GRID(CsGtkTab->Stack->gridTitle),
             CsGtkTab->Stack->buttonSwitch,
@@ -119,13 +121,12 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
             "clicked", G_CALLBACK(FvGtkTabRemove), CsMap);
 
     // gtk.h property
-    gtk_widget_add_css_class(CsGtkTab->Stack->buttonSwitch, "linked");
-    gtk_widget_add_css_class(CsGtkTab->Stack->buttonRemove, "linked");
+    gtk_button_set_has_frame(GTK_BUTTON(CsGtkTab->Stack->buttonSwitch), FALSE);
+    gtk_button_set_has_frame(GTK_BUTTON(CsGtkTab->Stack->buttonRemove), FALSE);
     gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(CsGtkTab->Stack->buttonSwitch), TRUE);
 
     // PartTabPage.h
-    FvGtkTabSwitch(CsGtkTab->Stack->buttonSwitch, CsMap);
     FvGtkTabPage(CsMap, AcUri);
 }
 

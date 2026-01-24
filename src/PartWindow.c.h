@@ -86,16 +86,16 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
             CsGtkWindow->control);
     gtk_window_set_child(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->grid);
-    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->newtab,
-            0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->vsep,
-            1, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->scroll,
-            2, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->base,
+            0, 0, 3, 1);
     gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->hsep,
             0, 1, 3, 1);
-    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->base,
-            0, 2, 3, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->scroll,
+            0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->vsep,
+            1, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(CsGtkWindow->grid), CsGtkWindow->Stack->newtab,
+            2, 2, 1, 1);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 CsGtkWindow->Stack->scroll), CsGtkWindow->Stack->tabbar);
 
@@ -118,8 +118,16 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
 
     gtk_widget_set_hexpand(CsGtkWindow->Stack->tabbar, TRUE);
     gtk_widget_set_valign(CsGtkWindow->Stack->tabbar, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_start(CsGtkWindow->Stack->vsep, 4);
-    gtk_widget_set_margin_end(CsGtkWindow->Stack->vsep, 4);
+    gtk_widget_set_margin_start(CsGtkWindow->Stack->tabbar, 8);
+    gtk_widget_set_margin_end(CsGtkWindow->Stack->tabbar, 8);
+    gtk_widget_set_margin_top(CsGtkWindow->Stack->tabbar, 8);
+    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->tabbar, 8);
+    gtk_widget_set_margin_start(CsGtkWindow->Stack->newtab, 8);
+    gtk_widget_set_margin_end(CsGtkWindow->Stack->newtab, 8);
+    gtk_widget_set_margin_top(CsGtkWindow->Stack->newtab, 8);
+    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->newtab, 8);
+
+    gtk_button_set_has_frame(GTK_BUTTON(CsGtkWindow->Stack->newtab), FALSE);
 
     // PartMenu.c.h
     FvGtkMenu(CsMap);
@@ -132,13 +140,6 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
         FvGtkTab(CsMap, TcArgument[DiLoop]);
     }
-
-    // variable gtk.h
-    EgFirstGrid = gtk_widget_get_first_child(CsGtkWindow->Stack->tabbar);
-    EgFirstButton = gtk_grid_get_child_at(GTK_GRID(EgFirstGrid), 0, 0);
-
-    // PartTabPage.c.h
-    FvGtkTabSwitch(EgFirstButton, CsMap);
 
     // gtk.h property window
     gtk_window_present(GTK_WINDOW(CsGtkWindow->base));

@@ -1,4 +1,4 @@
-// PartUriWidget.c.h
+// PartUriEdit.c.h
 
 
 

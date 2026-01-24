@@ -52,6 +52,9 @@ void FvGtkTabFree(void*);
 
 // PartTabPage.c.h
 void FvGtkTabPage(SaMap*, char*);
+
+
+// PartTabManage.c.h
 void FvGtkTabNew(GtkWidget*, void*);
 void FvGtkTabSwitch(GtkWidget*, void*);
 void FvGtkTabRemove(GtkWidget*, void*);
@@ -63,7 +66,7 @@ void FvGtkUriWidget(SaMap*);
 void FvGtkUriFree(void*);
 
 
-// PartUriWidget.c.h
+// PartUriEdit.c.h
 GtkWidget* FeGtkUriEntry(SaGtkUri*, const char*, GtkWidget*, int, char*);
 GtkWidget* FeGtkUriSpin(SaGtkUri*, const char*, GtkWidget*, int, char*);
 void FvGtkUriEntryClear(GtkWidget*, GtkEntryIconPosition, GdkEvent*, void*);

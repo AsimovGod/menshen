@@ -85,6 +85,8 @@ FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
     // inherit
     CsMapOld = PvUserdata;
 
+    if (! CsMapOld) return;
+
     // malloc
     CsMap = g_new0(SaMap, 1);
 

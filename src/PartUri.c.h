@@ -123,7 +123,7 @@ FvGtkUriWidget(SaMap* CsMap)
     CsGtkTab = CsMap->GtkTab;
     CsGtkUri = CsMap->GtkUri;
 
-    // PartUriWidget.c.h
+    // PartUriEdit.c.h
     CsGtkUri->Entry->uri = FeGtkUriEntry(CsGtkUri, "build",
             CsGtkTab->Grid->uriBuild, 0, "URI");
     CsGtkUri->Entry->scheme = FeGtkUriEntry(CsGtkUri, "parse",
