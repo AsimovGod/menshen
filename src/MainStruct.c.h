@@ -18,6 +18,9 @@ typedef struct SaGuriParse SaGuriParse;
 
 // PartWindow.c.h
 typedef struct SaGtkWindow SaGtkWindow;
+
+
+// PartWindowStack.c.h
 typedef struct SaGtkWindowStack SaGtkWindowStack;
 
 
@@ -28,14 +31,13 @@ typedef struct SaGtkMenuAction SaGtkMenuAction;
 
 // PartTab.c.h
 typedef struct SaGtkTab SaGtkTab;
-typedef struct SaGtkTabStack SaGtkTabStack;
-
-
-// PartTabPage.c.h
 typedef struct SaGtkTabPaned SaGtkTabPaned;
 typedef struct SaGtkTabGrid SaGtkTabGrid;
 typedef struct SaGtkTabScroll SaGtkTabScroll;
-typedef struct SaGtkTabButton SaGtkTabButton;
+
+
+// PartTabStack.c.h
+typedef struct SaGtkTabStack SaGtkTabStack;
 
 
 // PartUri.c.h

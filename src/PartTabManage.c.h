@@ -40,7 +40,6 @@ FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
     CsGtkTab = g_object_get_data(G_OBJECT(EgButton), "CsGtkTab");
 
     if (! CsGtkTab) return;
-    if (! CsGtkTab->Stack->name) return;
     if (CsGtkTab->Stack->toggle) return;
 
     // bequeath
@@ -78,8 +77,8 @@ FvGtkTabSwitch(GtkWidget* EgButton, void* PvUserdata)
     }
 
     // gtk.h layout
-    gtk_stack_set_visible_child(GTK_STACK(CsGtkWindow->Stack->base),
-            CsGtkTab->Paned->base);
+    gtk_stack_set_visible_child_name(GTK_STACK(CsGtkWindow->Stack->base),
+            CsGtkTab->Stack->name);
 
     // lock off
     CsGtkTab->Stack->toggle = FALSE;
@@ -93,16 +92,12 @@ FvGtkTabRemove(GtkWidget* EgButton, void* PvUserdata)
     SaMap* CsMap;
     SaGtkWindow* CsGtkWindow;
     SaGtkTab* CsGtkTab;
-    SaGtkTabStack* CsStackFirst;
-    SaGtkTabStack* CsStackSecond;
-    SaGtkTabStack* CsStackLast;
-    GtkWidget* EgDelPaned;
-    GtkWidget* EgNowPaned;
-
-    // malloc
-    CsStackFirst = g_new0(SaGtkTabStack, 1);
-    CsStackSecond = g_new0(SaGtkTabStack, 1);
-    CsStackLast = g_new0(SaGtkTabStack, 1);
+    SaGtkTab* CsGtkTabPrev;
+    SaGtkTab* CsGtkTabNext;
+    GtkWidget* EgPanedDel;
+    GtkWidget* EgPanedNow;
+    GtkWidget* EgPanedPrev;
+    GtkWidget* EgPanedNext;
 
     // inherit
     CsMap = PvUserdata;
@@ -111,61 +106,50 @@ FvGtkTabRemove(GtkWidget* EgButton, void* PvUserdata)
 
     CsGtkWindow = CsMap->GtkWindow;
 
-    EgNowPaned = gtk_stack_get_visible_child(
-            GTK_STACK(CsGtkWindow->Stack->base));
-
-    // gobject.h data get
+    // branch inhert
     CsGtkTab = g_object_get_data(G_OBJECT(EgButton), "CsGtkTab");
 
     if (! CsGtkTab) return;
-    if (! CsGtkTab->Stack->name) return;
 
     // bequeath
     CsMap->GtkTab = CsGtkTab;
 
-    // variable gtk.h widget
-    CsStackFirst->frameTitle = gtk_widget_get_first_child(
-            CsGtkWindow->Stack->tabbar);
-    CsStackSecond->frameTitle = gtk_widget_get_next_sibling(
-            CsStackFirst->frameTitle);
-    CsStackLast->frameTitle = gtk_widget_get_last_child(
-            CsGtkWindow->Stack->tabbar);
-
     // variable gtk.h stack
-    EgDelPaned = gtk_stack_get_child_by_name(
+    EgPanedNow = gtk_stack_get_visible_child(
+            GTK_STACK(CsGtkWindow->Stack->base));
+    EgPanedDel = gtk_stack_get_child_by_name(
             GTK_STACK(CsGtkWindow->Stack->base), CsGtkTab->Stack->name);
+    EgPanedPrev = gtk_widget_get_prev_sibling(EgPanedNow);
+    EgPanedNext = gtk_widget_get_next_sibling(EgPanedNow);
+
+    // gobject.h data get
+    CsGtkTabPrev = EgPanedPrev
+        ? g_object_get_data(G_OBJECT(EgPanedPrev), "CsGtkTab") : NULL;
+    CsGtkTabNext = EgPanedNext
+        ? g_object_get_data(G_OBJECT(EgPanedNext), "CsGtkTab") : NULL;
 
     // gtk.h layout
     gtk_stack_remove(GTK_STACK(CsGtkWindow->Stack->base),
-            EgDelPaned);
+            EgPanedDel);
 
     gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->tabbar),
             CsGtkTab->Stack->frameTitle);
 
-    // gtk.h box
-    if (CsStackFirst->frameTitle && CsStackSecond->frameTitle) {
-        CsStackFirst->gridTitle = gtk_frame_get_child(
-                GTK_FRAME(CsStackFirst->frameTitle));
-        CsStackFirst->buttonSwitch = gtk_grid_get_child_at(
-                GTK_GRID(CsStackFirst->gridTitle), 0, 0);
-        CsStackSecond->gridTitle = gtk_frame_get_child(
-                GTK_FRAME(CsStackSecond->frameTitle));
-        CsStackSecond->buttonSwitch = gtk_grid_get_child_at(
-                GTK_GRID(CsStackSecond->gridTitle), 0, 0);
-    }
+    // PartWindowStack.c.h
+    FvGtkWindowStackCount(CsMap, -1);
 
     // PartTabPage.c.h
-    if (CsStackFirst->frameTitle == CsStackLast->frameTitle) {
+    if (CsMap->GtkWindow->Stack->counter < 1) {
         FvGtkTabNew(NULL, CsMap);
     }
-    else if (EgDelPaned != EgNowPaned) {
+    else if (EgPanedDel != EgPanedNow) {
         return;
     }
-    else if (CsGtkTab->Stack->gridTitle == CsStackFirst->gridTitle) {
-        FvGtkTabSwitch(CsStackSecond->buttonSwitch, CsMap);
+    else if (CsGtkTabPrev) {
+        FvGtkTabSwitch(CsGtkTabPrev->Stack->buttonSwitch, CsMap);
     }
-    else {
-        FvGtkTabSwitch(CsStackFirst->buttonSwitch, CsMap);
+    else if (CsGtkTabNext) {
+        FvGtkTabSwitch(CsGtkTabNext->Stack->buttonSwitch, CsMap);
     }
 }
 

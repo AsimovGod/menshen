@@ -13,20 +13,6 @@ struct SaGtkTab {
 };
 
 
-struct SaGtkTabStack {
-    // declaration property
-    char* name;
-    // declaration lock
-    bool toggle;
-    // gtk.h widget grid
-    GtkWidget* gridTitle;
-    GtkWidget* frameTitle;
-    // gtk.h widget button
-    GtkWidget* buttonSwitch;
-    GtkWidget* buttonRemove;
-};
-
-
 struct SaGtkTabPaned {
     // gtk.h widget paned
     GtkWidget* base;
@@ -70,23 +56,22 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     // malloc
     CsGtkTab = g_new0(SaGtkTab, 1);
-    CsGtkTab->Stack = g_new0(SaGtkTabStack, 1);
     CsGtkTab->Paned = g_new0(SaGtkTabPaned, 1);
-
-    // variable
-    CsGtkWindow->Stack->counter = CsGtkWindow->Stack->counter + 1;
-    CsGtkTab->Stack->toggle = FALSE;
-    CsGtkTab->Stack->name = g_strdup_printf("PAGE %d",
-            CsGtkWindow->Stack->counter);
+    CsGtkTab->Grid = g_new0(SaGtkTabGrid, 1);
+    CsGtkTab->Scroll = g_new0(SaGtkTabScroll, 1);
 
     // gtk.h new
-    CsGtkTab->Stack->gridTitle = gtk_grid_new();
-    CsGtkTab->Stack->frameTitle = gtk_frame_new(NULL);
-    CsGtkTab->Stack->buttonSwitch = gtk_toggle_button_new_with_label(
-            CsGtkTab->Stack->name);
-    CsGtkTab->Stack->buttonRemove = gtk_button_new_from_icon_name(
-            "window-close");
     CsGtkTab->Paned->base = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
+    CsGtkTab->Paned->baseLeft = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
+    CsGtkTab->Paned->baseRight = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
+
+    // variable
+    CsGtkTab->Paned->baseR = 0.8;
+    CsGtkTab->Paned->baseLeftR = 0.2;
+    CsGtkTab->Paned->baseRightR = 0.6;
+
+    // PartTabStack.c.h
+    CsGtkTab->Stack = FsGtkTabStack(CsMap, CsGtkTab);
 
     // bequeath
     CsMap->GtkTab = CsGtkTab;
@@ -95,39 +80,32 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     g_object_set_data_full(G_OBJECT(CsGtkTab->Paned->base),
             "CsGtkTab", CsGtkTab, (GDestroyNotify)FvGtkTabFree);
 
-    g_object_set_data(G_OBJECT(CsGtkTab->Stack->buttonSwitch),
-            "CsGtkTab", CsGtkTab);
-    g_object_set_data(G_OBJECT(CsGtkTab->Stack->buttonRemove),
-            "CsGtkTab", CsGtkTab);
-
     // gtk.h layout
-    gtk_stack_add_named(GTK_STACK(CsGtkWindow->Stack->base),
-            CsGtkTab->Paned->base, CsGtkTab->Stack->name);
-    gtk_box_append(GTK_BOX(CsGtkWindow->Stack->tabbar),
-            CsGtkTab->Stack->frameTitle);
-    gtk_frame_set_child(GTK_FRAME(CsGtkTab->Stack->frameTitle),
-            CsGtkTab->Stack->gridTitle);
-    gtk_grid_attach(GTK_GRID(CsGtkTab->Stack->gridTitle),
-            CsGtkTab->Stack->buttonSwitch,
-            0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(CsGtkTab->Stack->gridTitle),
-            CsGtkTab->Stack->buttonRemove,
-            1, 0, 1, 1);
-
-    // gobject.h signal
-    g_signal_connect(CsGtkTab->Stack->buttonSwitch,
-            "toggled", G_CALLBACK(FvGtkTabSwitch), CsMap);
-    g_signal_connect(CsGtkTab->Stack->buttonRemove,
-            "clicked", G_CALLBACK(FvGtkTabRemove), CsMap);
+    gtk_paned_set_start_child(GTK_PANED(CsGtkTab->Paned->base),
+            CsGtkTab->Paned->baseLeft);
+    gtk_paned_set_end_child(GTK_PANED(CsGtkTab->Paned->base),
+            CsGtkTab->Paned->baseRight);
 
     // gtk.h property
-    gtk_button_set_has_frame(GTK_BUTTON(CsGtkTab->Stack->buttonSwitch), FALSE);
-    gtk_button_set_has_frame(GTK_BUTTON(CsGtkTab->Stack->buttonRemove), FALSE);
-    gtk_toggle_button_set_active(
-            GTK_TOGGLE_BUTTON(CsGtkTab->Stack->buttonSwitch), TRUE);
+    gtk_paned_set_position(GTK_PANED(CsGtkTab->Paned->base),
+            CsGtkTab->Paned->baseR * CsMap->GtkWindow->baseW);
+    gtk_paned_set_position(GTK_PANED(CsGtkTab->Paned->baseLeft),
+            CsGtkTab->Paned->baseLeftR * CsMap->GtkWindow->baseH);
+    gtk_paned_set_position(GTK_PANED(CsGtkTab->Paned->baseRight),
+            CsGtkTab->Paned->baseRightR * CsMap->GtkWindow->baseH);
 
-    // PartTabPage.h
-    FvGtkTabPage(CsMap, AcUri);
+    gtk_widget_set_valign(CsGtkTab->Paned->base, GTK_ALIGN_FILL);
+    gtk_widget_set_halign(CsGtkTab->Paned->base, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(CsGtkTab->Paned->baseLeft, GTK_ALIGN_FILL);
+    gtk_widget_set_halign(CsGtkTab->Paned->baseLeft, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(CsGtkTab->Paned->baseRight, GTK_ALIGN_FILL);
+    gtk_widget_set_halign(CsGtkTab->Paned->baseRight, GTK_ALIGN_FILL);
+
+    // PartUri.c.h
+    FvGtkUri(CsMap, AcUri);
+
+    // PartMime.c.h
+    FvGtkMime(CsMap);
 }
 
 
@@ -143,7 +121,6 @@ FvGtkTabFree(void* PvFree)
     if (! CsGtkTab) return;
 
     // free
-    g_free(CsGtkTab->Stack->name);
     g_free(CsGtkTab->Stack);
     g_free(CsGtkTab->Paned);
     g_free(CsGtkTab->Grid);

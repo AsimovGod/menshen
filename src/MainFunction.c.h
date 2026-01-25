@@ -39,6 +39,11 @@ void FvGtkWindow(SaMap*, int, char**);
 void FvGtkWindowFree(void*);
 
 
+// PartWindowStack.c.h
+SaGtkWindowStack* FsGtkWindowStack(SaMap*, SaGtkWindow*);
+void FvGtkWindowStackCount(SaMap*, int);
+
+
 // PartMenu.c.h
 void FvGtkMenu(SaMap*);
 void FvGtkMenuNewwindow(GSimpleAction*, GVariant*, void*);
@@ -50,8 +55,8 @@ void FvGtkTab(SaMap*, char*);
 void FvGtkTabFree(void*);
 
 
-// PartTabPage.c.h
-void FvGtkTabPage(SaMap*, char*);
+// PartTabStack.c.h
+SaGtkTabStack* FsGtkTabStack(SaMap*, SaGtkTab*);
 
 
 // PartTabManage.c.h
