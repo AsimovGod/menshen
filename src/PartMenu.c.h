@@ -10,8 +10,7 @@ struct SaGtkMenu {
     GMenu* base;
     // gtk.h widget button
     GtkWidget* button;
-    // gtk.h
-    GtkAlertDialog* about;
+    GtkWidget* about;
 };
 
 
@@ -112,17 +111,28 @@ FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
     CsMap = PvUserdata;
     CsGtkMenu = CsMap->GtkMenu;
 
-    // malloc
-    const char* TcButton[] = { "Close", NULL };
-
     // gtk.h new
-    CsGtkMenu->about = gtk_alert_dialog_new("About");
+    CsGtkMenu->about = gtk_about_dialog_new();
 
     // gtk.h layout
-    gtk_alert_dialog_set_detail(CsGtkMenu->about,
-            "Help and About");
-    gtk_alert_dialog_set_buttons(CsGtkMenu->about,
-            TcButton);
-    gtk_alert_dialog_choose(CsGtkMenu->about,
-            GTK_WINDOW(CsMap->GtkWindow->base), NULL, NULL, NULL);
+    gtk_window_set_transient_for(GTK_WINDOW(CsGtkMenu->about),
+            GTK_WINDOW(CsMap->GtkWindow->base));
+    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->name);
+    gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->comment);
+    gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->license);
+    gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->website);
+    gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->websiteL);
+    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->version);
+    gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            CsMap->Info->authors);
+
+    // gtk.h property
+    gtk_window_set_modal(GTK_WINDOW(CsGtkMenu->about), TRUE);
+    gtk_window_present(GTK_WINDOW(CsGtkMenu->about));
 }

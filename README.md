@@ -25,8 +25,3 @@
 
 #### Wiki
 - https://toshiocp.github.io/Gtk4-tutorial
-
-
-### Zenity
-#### Source Code
-- https://gitlab.gnome.org/GNOME/zenity

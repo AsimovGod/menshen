@@ -17,9 +17,16 @@ struct SaMap {
 
 
 struct SaInfo {
+    // declaration
     char* name;
     char* id;
+    char* comment;
+    char* website;
+    char* websiteL;
     char* version;
+    const char* authors[2];
+    // gtk.h
+    GtkLicense license;
 };
 
 
@@ -36,7 +43,15 @@ FsInfoInit()
     // variable
     CsInfo->name = "MenShen";
     CsInfo->id = "com.AsimovGod.menshen";
+    CsInfo->comment = "MenShen";
+    CsInfo->website = "https://github.com/AsimovGod/menshen";
+    CsInfo->websiteL = "Source Code";
     CsInfo->version = "0.1.0";
+
+    CsInfo->authors[0] = "AsimovGod";
+    CsInfo->authors[1] = NULL;
+
+    CsInfo->license = GTK_LICENSE_LGPL_2_1;
 
     // return
     return CsInfo;
