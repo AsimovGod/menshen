@@ -100,6 +100,7 @@ void FvGtkMimeFree(void*);
 // PartMimeList.c.h
 void FvGtkMimeList(SaMap*);
 void FvGtkMimeListAdd(GtkListBox*, GAppInfo*, void*);
+void FvGtkMimeListPress(GtkGestureClick*, double, double, unsigned int, void*);
 
 
 // PartMimeOpen.c.h

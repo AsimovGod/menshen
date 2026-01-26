@@ -2,13 +2,22 @@
 
 
 
+struct SaGtkMimeList {
+    // glib.h
+    GList* http;
+    GList* https;
+    GList* all;
+};
+
+
+
     void
 FvGtkMimeList(SaMap* CsMap)
 {
     //declaration
     SaGtkTab* CsGtkTab;
-    SaGtkMime* CsGtkMime;
     SaGtkUri* CsGtkUri;
+    SaGtkMime* CsGtkMime;
     const char* AcAppid;
     GList* EgLoop;
     GAppInfo* EgAppinfo;
@@ -16,15 +25,11 @@ FvGtkMimeList(SaMap* CsMap)
 
     // inherit
     CsGtkTab = CsMap->GtkTab;
-    CsGtkMime = CsMap->GtkMime;
     CsGtkUri = CsMap->GtkUri;
+    CsGtkMime = CsMap->GtkMime;
 
-    // gtk.h new
-    CsGtkMime->listbox = gtk_list_box_new();
-
-    // gtk.h layout
-    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeList),
-            CsGtkMime->listbox, 0, 0, 1, 1);
+    // malloc
+    CsGtkMime->List = g_new0(SaGtkMimeList, 1);
 
     // gtk.h property
     gtk_widget_set_vexpand(CsGtkMime->listbox, TRUE);
@@ -115,5 +120,28 @@ FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo, void* PvUserdata)
     gtk_widget_set_vexpand(EgLabel, TRUE);
     gtk_widget_set_hexpand(EgLabel, TRUE);
     gtk_label_set_xalign(GTK_LABEL(EgLabel), 0.5);
+}
+
+
+    void
+FvGtkMimeListPress(GtkGestureClick* EgCtrl,
+        double DfCtrlX, double DfCtrlY, unsigned int DiButton, void* PvUserdata)
+{
+    // declaration
+    SaGtkMime* CsGtkMime;
+    GtkListBoxRow* EgListboxrow;
+
+    // inherit
+    CsGtkMime = PvUserdata;
+
+    if (! CsGtkMime) return;
+
+    // variable gtk.h
+    EgListboxrow = gtk_list_box_get_row_at_y(GTK_LIST_BOX(CsGtkMime->listbox),
+            (int)DfCtrlY);
+
+    if (! EgListboxrow) {
+        gtk_list_box_unselect_all(GTK_LIST_BOX(CsGtkMime->listbox));
+    }
 }
 

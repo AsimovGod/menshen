@@ -9,17 +9,19 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     // declaration
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
+    GtkWidget* EgFrame;
     GtkWidget* EgButtonCopy;
     GtkWidget* EgButtonPaste;
 
     // gtk.h new
     EgEntry = gtk_entry_new();
     EgLabel = gtk_label_new(AcLabel);
+    EgFrame = gtk_frame_new(NULL);
     EgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
     EgButtonPaste = gtk_button_new_from_icon_name("edit-paste-symbolic");
 
     // gtk.h layout
-    gtk_grid_attach(GTK_GRID(EgParent), EgLabel,
+    gtk_grid_attach(GTK_GRID(EgParent), EgFrame,
             0, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgEntry,
             1, DiRow, 1, 1);
@@ -27,6 +29,8 @@ FeGtkUriEntry(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
             2, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgButtonCopy,
             3, DiRow, 1, 1);
+    gtk_frame_set_child(GTK_FRAME(EgFrame),
+            EgLabel);
 
     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(EgEntry),
             GTK_ENTRY_ICON_SECONDARY, "edit-clear-symbolic");
@@ -77,20 +81,24 @@ FeGtkUriSpin(SaGtkUri* CsGtkUri, const char* AcType, GtkWidget* EgParent,
     // declaration
     GtkWidget* EgEntry;
     GtkWidget* EgLabel;
+    GtkWidget* EgFrame;
     GtkWidget* EgButtonCopy;
 
     // gtk.h new
     EgEntry = gtk_spin_button_new_with_range(-1, 65535, 1);
     EgLabel = gtk_label_new(AcLabel);
+    EgFrame = gtk_frame_new(NULL);
     EgButtonCopy = gtk_button_new_from_icon_name("edit-copy-symbolic");
 
     // gtk.h layout
-    gtk_grid_attach(GTK_GRID(EgParent), EgLabel,
+    gtk_grid_attach(GTK_GRID(EgParent), EgFrame,
             0, DiRow, 1, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgEntry,
             1, DiRow, 2, 1);
     gtk_grid_attach(GTK_GRID(EgParent), EgButtonCopy,
             3, DiRow, 1, 1);
+    gtk_frame_set_child(GTK_FRAME(EgFrame),
+            EgLabel);
 
     // gobject.h signal
     g_signal_connect(EgEntry,

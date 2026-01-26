@@ -79,16 +79,12 @@ FsGtkWindowStack(SaMap* CsMap, SaGtkWindow* CsGtkWindow)
     gtk_widget_set_valign(CsGtkWindow->Stack->tabbar, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_start(CsGtkWindow->Stack->count, 8);
     gtk_widget_set_margin_end(CsGtkWindow->Stack->count, 8);
-    gtk_widget_set_margin_top(CsGtkWindow->Stack->count, 8);
-    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->count, 8);
-    gtk_widget_set_margin_start(CsGtkWindow->Stack->tabbar, 8);
-    gtk_widget_set_margin_end(CsGtkWindow->Stack->tabbar, 8);
-    gtk_widget_set_margin_top(CsGtkWindow->Stack->tabbar, 8);
-    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->tabbar, 8);
-    gtk_widget_set_margin_start(CsGtkWindow->Stack->newtab, 8);
-    gtk_widget_set_margin_end(CsGtkWindow->Stack->newtab, 8);
-    gtk_widget_set_margin_top(CsGtkWindow->Stack->newtab, 8);
-    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->newtab, 8);
+    gtk_widget_set_margin_start(CsGtkWindow->Stack->tabbar, 12);
+    gtk_widget_set_margin_end(CsGtkWindow->Stack->tabbar, 12);
+    gtk_widget_set_margin_top(CsGtkWindow->Stack->tabbar, 12);
+    gtk_widget_set_margin_bottom(CsGtkWindow->Stack->tabbar, 12);
+    gtk_widget_set_margin_start(CsGtkWindow->Stack->newtab, 12);
+    gtk_widget_set_margin_end(CsGtkWindow->Stack->newtab, 12);
 
     gtk_button_set_has_frame(GTK_BUTTON(CsGtkWindow->Stack->newtab), FALSE);
     gtk_button_set_has_frame(GTK_BUTTON(CsGtkWindow->Stack->count), FALSE);

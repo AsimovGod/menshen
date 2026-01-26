@@ -7,21 +7,9 @@ struct SaGtkMime {
     SaGtkMimeList* List;
     SaGtkMimeButton* Button;
     // gtk.h widget listbox
+    GtkWidget* frame;
     GtkWidget* listbox;
-};
-
-
-struct SaGtkMimeList {
-    // glib.h
-    GList* http;
-    GList* https;
-    GList* all;
-};
-
-
-struct SaGtkMimeButton {
-    // gtk.h widget button
-    GtkWidget* open;
+    GtkGesture* listboxC;
 };
 
 
@@ -38,10 +26,11 @@ FvGtkMime(SaMap* CsMap)
 
     // malloc
     CsGtkMime = g_new0(SaGtkMime, 1);
-    CsGtkMime->List = g_new0(SaGtkMimeList, 1);
-    CsGtkMime->Button = g_new0(SaGtkMimeButton, 1);
 
     // gtk.h new
+    CsGtkMime->frame = gtk_frame_new(NULL);
+    CsGtkMime->listbox = gtk_list_box_new();
+    CsGtkMime->listboxC = gtk_gesture_click_new();
     CsGtkTab->Scroll->mimeList = gtk_scrolled_window_new();
     CsGtkTab->Scroll->mimeOpen = gtk_scrolled_window_new();
     CsGtkTab->Grid->mimeList = gtk_grid_new();
@@ -64,6 +53,16 @@ FvGtkMime(SaMap* CsMap)
                 CsGtkTab->Scroll->mimeList), CsGtkTab->Grid->mimeList);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(
                 CsGtkTab->Scroll->mimeOpen), CsGtkTab->Grid->mimeOpen);
+    gtk_grid_attach(GTK_GRID(CsGtkTab->Grid->mimeList),
+            CsGtkMime->frame, 0, 0, 1, 1);
+    gtk_frame_set_child(GTK_FRAME(CsGtkMime->frame),
+            CsGtkMime->listbox);
+    gtk_widget_add_controller(CsGtkMime->listbox,
+            GTK_EVENT_CONTROLLER(CsGtkMime->listboxC));
+
+    // gobject.h signal
+    g_signal_connect(CsGtkMime->listboxC,
+            "pressed", G_CALLBACK(FvGtkMimeListPress), CsGtkMime);
 
     // gtk.h property
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(
@@ -87,9 +86,9 @@ FvGtkMime(SaMap* CsMap)
     gtk_widget_set_vexpand(CsGtkTab->Grid->mimeOpen, TRUE);
     gtk_widget_set_hexpand(CsGtkTab->Grid->mimeOpen, TRUE);
 
-    gtk_widget_set_valign(CsGtkTab->Grid->mimeList, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(CsGtkTab->Grid->mimeList, GTK_ALIGN_FILL);
     gtk_widget_set_halign(CsGtkTab->Grid->mimeList, GTK_ALIGN_FILL);
-    gtk_widget_set_valign(CsGtkTab->Grid->mimeOpen, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(CsGtkTab->Grid->mimeOpen, GTK_ALIGN_FILL);
     gtk_widget_set_halign(CsGtkTab->Grid->mimeOpen, GTK_ALIGN_FILL);
 
     gtk_grid_set_row_homogeneous(GTK_GRID(CsGtkTab->Grid->mimeList), TRUE);

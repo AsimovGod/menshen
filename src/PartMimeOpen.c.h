@@ -2,17 +2,29 @@
 
 
 
+struct SaGtkMimeButton {
+    // gtk.h widget button
+    GtkWidget* open;
+};
+
+
+
     void
 FvGtkMimeOpen(SaMap* CsMap)
 {
     // declaration
     SaGtkTab* CsGtkTab;
     SaGtkUri* CsGtkUri;
+    SaGtkMime* CsGtkMime;
     GtkWidget* EgButton;
 
     // inherit
     CsGtkTab = CsMap->GtkTab;
     CsGtkUri = CsMap->GtkUri;
+    CsGtkMime = CsMap->GtkMime;
+
+    // malloc
+    CsGtkMime->Button = g_new0(SaGtkMimeButton, 1);
 
     // gtk.h new
     EgButton = gtk_button_new_with_label("OPEN");
