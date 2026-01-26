@@ -14,6 +14,9 @@ FvGtkTabNew(GtkWidget* EgButton, void* PvUserdata)
 
     // PartTab.c.h
     FvGtkTab(CsMap, NULL);
+
+    // PartTabStack.c.h
+    FvGtkWindowStackScroll(NULL, CsMap);
 }
 
 
@@ -142,14 +145,15 @@ FvGtkTabRemove(GtkWidget* EgButton, void* PvUserdata)
     if (CsMap->GtkWindow->Stack->counter < 1) {
         FvGtkTabNew(NULL, CsMap);
     }
-    else if (EgPanedDel != EgPanedNow) {
-        return;
-    }
+    else if (EgPanedDel != EgPanedNow) (void)0;
     else if (CsGtkTabPrev) {
         FvGtkTabSwitch(CsGtkTabPrev->Stack->buttonSwitch, CsMap);
     }
     else if (CsGtkTabNext) {
         FvGtkTabSwitch(CsGtkTabNext->Stack->buttonSwitch, CsMap);
     }
+
+    // PartTabStack.c.h
+    FvGtkWindowStackScroll(NULL, CsMap);
 }
 

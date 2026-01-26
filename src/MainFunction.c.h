@@ -42,6 +42,7 @@ void FvGtkWindowFree(void*);
 // PartWindowStack.c.h
 SaGtkWindowStack* FsGtkWindowStack(SaMap*, SaGtkWindow*);
 void FvGtkWindowStackCount(SaMap*, int);
+void FvGtkWindowStackScroll(GtkButton*, void*);
 
 
 // PartMenu.c.h
@@ -57,6 +58,7 @@ void FvGtkTabFree(void*);
 
 // PartTabStack.c.h
 SaGtkTabStack* FsGtkTabStack(SaMap*, SaGtkTab*);
+gboolean FgGtkTabStackScroll(void*);
 
 
 // PartTabManage.c.h

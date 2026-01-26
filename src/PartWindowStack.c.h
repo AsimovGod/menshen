@@ -7,6 +7,7 @@ struct SaGtkWindowStack {
     GtkWidget* base;
     // gtk.h widget scroll
     GtkWidget* scroll;
+    GtkAdjustment* scrollAH;
     // gtk.h widget separator
     GtkWidget* hsep;
     GtkWidget* vsepLeft;
@@ -40,6 +41,8 @@ FsGtkWindowStack(SaMap* CsMap, SaGtkWindow* CsGtkWindow)
     CsGtkWindow->Stack->count = gtk_button_new_with_label(NULL);
 
     // variable
+    CsGtkWindow->Stack->scrollAH = gtk_scrolled_window_get_hadjustment(
+            GTK_SCROLLED_WINDOW(CsGtkWindow->Stack->scroll));
     CsGtkWindow->Stack->number = 0;
     CsGtkWindow->Stack->counter = 0;
 
@@ -62,6 +65,8 @@ FsGtkWindowStack(SaMap* CsMap, SaGtkWindow* CsGtkWindow)
                 CsGtkWindow->Stack->scroll), CsGtkWindow->Stack->tabbar);
 
     // gobject.h signal
+    g_signal_connect(CsGtkWindow->Stack->count,
+            "clicked", G_CALLBACK(FvGtkWindowStackScroll), CsMap);
     g_signal_connect(CsGtkWindow->Stack->newtab,
             "clicked", G_CALLBACK(FvGtkTabNew), CsMap);
 
@@ -107,5 +112,21 @@ FvGtkWindowStackCount(SaMap* CsMap, int DiShift)
     // gtk.h property
     gtk_button_set_label(GTK_BUTTON(CsGtkWindow->Stack->count),
             g_strdup_printf("%d", CsGtkWindow->Stack->counter));
+}
+
+
+    void
+FvGtkWindowStackScroll(GtkButton* EgButton, void* PvUserdata)
+{
+    // declaration
+    SaMap* CsMap;
+
+    // inherit
+    CsMap = PvUserdata;
+
+    if (! CsMap) return;
+
+    // gobject.h idle
+    g_idle_add(FgGtkTabStackScroll, CsMap);
 }
 

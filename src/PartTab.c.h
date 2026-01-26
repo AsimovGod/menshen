@@ -106,6 +106,9 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
 
     // PartMime.c.h
     FvGtkMime(CsMap);
+
+    // PartTabStack.c.h
+    FvGtkWindowStackScroll(NULL, CsMap);
 }
 
 

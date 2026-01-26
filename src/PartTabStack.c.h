@@ -91,3 +91,53 @@ FsGtkTabStack(SaMap* CsMap, SaGtkTab* CsGtkTab)
     return CsGtkTab->Stack;
 }
 
+
+    gboolean
+FgGtkTabStackScroll(void* PvUserdata)
+{
+    // declaration
+    SaMap* CsMap;
+    SaGtkWindow* CsGtkWindow;
+    SaGtkTab* CsGtkTab;
+    int DiFrameX;
+    int DiFrameW;
+    double DfScrollW;
+    double DfScrollC;
+    bool DbFrameR;
+    graphene_rect_t EgFrameR;
+    GtkWidget* EgPaned;
+
+    // inherit
+    CsMap = PvUserdata;
+
+    if (! CsMap) return G_SOURCE_REMOVE;
+
+    CsGtkWindow = CsMap->GtkWindow;
+
+    // variable gtk.h stack
+    EgPaned = gtk_stack_get_visible_child(GTK_STACK(CsGtkWindow->Stack->base));
+
+    // gobject.h data get
+    CsGtkTab = EgPaned ? g_object_get_data(G_OBJECT(EgPaned), "CsGtkTab") : NULL;
+
+    if (! CsGtkTab) return G_SOURCE_REMOVE;
+
+    // variable pointer
+    DbFrameR = gtk_widget_compute_bounds(CsGtkTab->Stack->frameTitle,
+            CsGtkWindow->Stack->tabbar, &EgFrameR);
+
+    if (! DbFrameR) return G_SOURCE_REMOVE;
+
+    // variable
+    DiFrameW = gtk_widget_get_width(CsGtkTab->Stack->frameTitle);
+    DiFrameX = graphene_rect_get_x(&EgFrameR);
+    DfScrollW = gtk_adjustment_get_page_size(CsGtkWindow->Stack->scrollAH);
+    DfScrollC = DiFrameX + (DiFrameW / 2.0) - (DfScrollW / 2.0);
+
+    // gtk.h property
+    gtk_adjustment_set_value(CsGtkWindow->Stack->scrollAH, DfScrollC);
+
+    // return
+    return G_SOURCE_REMOVE;
+}
+
