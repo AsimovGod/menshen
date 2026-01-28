@@ -1,0 +1,13 @@
+id: com.AsimovGod.menshen
+runtime: org.gnome.Platform
+runtime-version: '49'
+sdk: org.gnome.sdk
+command: menshen
+modules:
+  - name: menshen
+    buildsystem: simple
+    build-commands:
+    sources:
+      - type:
+        des-filename:
+        commands:

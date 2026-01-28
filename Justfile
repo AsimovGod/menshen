@@ -91,11 +91,6 @@ gdb:
 	"${AsCmdGdb[@]}"
 
 
-build-gdb:
-	just build
-	just gdb
-
-
 valgrind:
 	#!/bin/bash
 	declare -a "AsCmdValgrind"
@@ -111,19 +106,9 @@ valgrind:
 	"${AsCmdValgrind[@]}"
 
 
-build-valgrind:
-	just build
-	just valgrind
-
-
 run:
 	#!/bin/bash
 	declare -x GTK_A11Y="none"
 	#
 	"./build/bin/menshen" "${@}"
-
-
-build-run:
-	just build
-	just run
 
