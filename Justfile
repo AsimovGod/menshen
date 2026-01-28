@@ -10,6 +10,7 @@ default:
 clean:
 	#!/bin/bash
 	declare -a "AsCmdGit"
+	##
 	AsCmdGit=(
 		git
 		clean
@@ -20,39 +21,23 @@ clean:
 	"${AsCmdGit[@]}"
 
 
-mkdir-build:
-	#!/bin/bash
-	declare -a "AsCmdInstall"
-	AsCmdInstall=(
-		'/usr/bin/install'
-		-v
-		-d
-		-m 0755
-		"./build/bin"
-	)
-	#
-	"${AsCmdInstall[@]}"
-
-
-mkdir-pack:
-	#!/bin/bash
-	declare -a "AsCmdInstall"
-	AsCmdInstall=(
-		'/usr/bin/install'
-		-v
-		-d
-		-m 0755
-		"./pack/deb"
-	)
-	#
-	"${AsCmdInstall[@]}"
-
-build:
+compile:
 	#!/bin/bash
 	just clean
-	just mkdir-build
-	#
+	##
+	declare -a "AsCmdMkdir"
 	declare -a "AsCmdLib"
+	declare -a "AsCmdGcc"
+	##
+	AsCmdMkdir=(
+		mkdir
+		-p -v
+		--
+		"./build/compile/bin"
+	)
+	#
+	"${AsCmdMkdir[@]}"
+	##
 	AsCmdLib=(
 		pkg-config
 		--cflags
@@ -62,14 +47,13 @@ build:
 	)
 	#
 	IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"
-	#
-	declare -a "AsCmdGcc"
+	##
 	AsCmdGcc=(
 		gcc
 		-g
 		"./src/Main.c"
 		-o
-		"./build/bin/menshen"
+		"./build/compile/bin/menshen"
 		"${AsArgLib[@]}"
 	)
 	#
@@ -79,14 +63,14 @@ build:
 gdb:
 	#!/bin/bash
 	declare -a "AsCmdGdb"
+	declare -x GTK_A11Y="none"
+	##
 	AsCmdGdb=(
 		gdb
 		-q
-		"./build/bin/menshen"
+		"./build/compile/bin/menshen"
 		"${@}"
 	)
-	#
-	declare -x GTK_A11Y="none"
 	#
 	"${AsCmdGdb[@]}"
 
@@ -94,13 +78,14 @@ gdb:
 valgrind:
 	#!/bin/bash
 	declare -a "AsCmdValgrind"
+	##
 	AsCmdValgrind=(
 		valgrind
 		--tool=memcheck
 		--leak-check=full
 		--show-leak-kinds=all
 		--num-callers=20
-		"./build/bin/menshen"
+		"./build/compile/bin/menshen"
 	)
 	#
 	"${AsCmdValgrind[@]}"
@@ -109,6 +94,115 @@ valgrind:
 run:
 	#!/bin/bash
 	declare -x GTK_A11Y="none"
+	##
+	"./build/compile/bin/menshen" "${@}"
+
+
+debian:
+	#!/bin/bash
+	declare -a "AsCmdMkdir"
+	declare -a "AsCmdCp"
+	declare -a "AsCmdFdfind"
+	declare -a "AsCmdChmod"
+	declare -a "AsCmdDpkg"
+	declare -a "AsCmdShasum"
+	##
+	AsCmdMkdir=(
+		mkdir
+		-p -v
+		--
+		"./build/package/debian/DEBIAN"
+		"./build/package/debian/usr/bin"
+		"./build/release/debian"
+	)
 	#
-	"./build/bin/menshen" "${@}"
+	"${AsCmdMkdir[@]}"
+	##
+	AsCmdCp=(
+		cp
+		-r -v
+		"./package/debian/control"
+		--
+		"./build/package/debian/DEBIAN/"
+	)
+	#
+	"${AsCmdCp[@]}"
+	##
+	AsCmdCp=(
+		cp
+		-r -v
+		"./build/compile/bin/menshen"
+		--
+		"./build/package/debian/usr/bin/"
+	)
+	#
+	"${AsCmdCp[@]}"
+	##
+	AsCmdCp=(
+		cp
+		-r -v
+		"./linux/usr/share"
+		--
+		"./build/package/debian/usr/share"
+	)
+	#
+	"${AsCmdCp[@]}"
+	##
+	AsCmdFdfind=(
+		fdfind
+		--type file
+		.
+		"./build/package/debian"
+		--exec
+		chmod
+		-v
+		0644
+	)
+	#
+	"${AsCmdFdfind[@]}"
+	##
+	AsCmdFdfind=(
+		fdfind
+		--type directory
+		.
+		"./build/package/debian"
+		--exec
+		chmod
+		-v
+		0755
+	)
+	#
+	"${AsCmdFdfind[@]}"
+	##
+	AsCmdChmod=(
+		chmod
+		-v
+		0755
+		"./build/package/debian/usr/bin/menshen"
+	)
+	#
+	"${AsCmdChmod[@]}"
+	##
+	AsCmdDpkg=(
+		dpkg-deb
+		--root-owner-group
+		--build
+		"./build/package/debian"
+		"./build/release/debian/menshen_0.4.0_amd64.deb"
+	)
+	#
+	"${AsCmdDpkg[@]}"
+	##
+	(
+		cd "./build/release/debian"
+		#
+		AsCmdShasum=(
+			shasum
+			-a 512
+			"menshen_0.4.0_amd64.deb"
+		)
+		#
+		"${AsCmdShasum[@]}" > "menshen_0.4.0_amd64.deb.sha512"
+	)
+
 

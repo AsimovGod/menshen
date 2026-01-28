@@ -42,16 +42,16 @@ FsInfoInit()
 
     // variable
     CsInfo->name = "MenShen";
-    CsInfo->id = "com.AsimovGod.menshen";
+    CsInfo->id = "io.AsimovGod.menshen";
     CsInfo->comment = "MenShen";
     CsInfo->website = "https://github.com/AsimovGod/menshen";
     CsInfo->websiteL = "Source Code";
-    CsInfo->version = "0.1.0";
+    CsInfo->version = "0.4.0";
 
     CsInfo->authors[0] = "AsimovGod";
     CsInfo->authors[1] = NULL;
 
-    CsInfo->license = GTK_LICENSE_LGPL_2_1;
+    CsInfo->license = GTK_LICENSE_GPL_3_0;
 
     // return
     return CsInfo;
