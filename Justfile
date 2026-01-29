@@ -12,6 +12,7 @@ InfoVersion := `jq -Mr ".version" "./Info.json"`
 PackagePackage := InfoPackage + "_" + InfoVersion + "_" + InfoArch
 PackageLinux := PackagePackage + "_linux.tar.gz"
 PackageDebian := PackagePackage + "_debian.deb"
+PackageFlatpak := PackagePackage + "_linux.flatpak"
 
 
 
@@ -248,8 +249,48 @@ debian:
 
 
 
+flatpak:
+	#!/bin/bash
+	set -euxo pipefail
+	##
+	declare -a "AsCmdInstall"
+	declare -a "AsCmdFlatpak"
+	##
+	AsCmdInstall=(
+		install -d -v -m 0755
+		"./build/package/flatpak/repo"
+		"./build/package/flatpak/dir"
+		"./build/release/flatpak"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdFlatpak=(
+		flatpak-builder
+		--repo="./build/package/flatpak/repo"
+		--force-clean "./build/package/flatpak/dir"
+		"./package/flatpak/io.AsimovGod.menshen.json"
+	)
+	#
+	"${AsCmdFlatpak[@]}"
+	##
+	AsCmdFlatpak=(
+		flatpak build-bundle
+		"./build/package/flatpak/repo"
+		"./build/release/flatpak/{{PackageFlatpak}}"
+		"{{InfoId}}"
+	)
+	#
+	"${AsCmdFlatpak[@]}"
+	##
+	just shasum "./build/release/flatpak/{{PackageFlatpak}}"
+
+
+
 debug: clean compile gdb
 
 test: clean compile run
 
 package: clean compile linux targz debian
+
+package-flatpak: clean compile linux flatpak

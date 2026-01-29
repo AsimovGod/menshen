@@ -1,0 +1,32 @@
+{
+    "id": "io.AsimovGod.menshen",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "49",
+    "sdk": "org.gnome.sdk",
+    "command": "menshen",
+    "finish-args": [
+        "--device=dri",
+        "--socket=wayland",
+        "--talk-name=org.freedesktop.Flatpak",
+        "--filesystem=host:ro",
+        "--filesystem=xdg-data/applications:ro",
+        "--filesystem=xdg-data/flatpak:ro",
+        "--filesystem=/var/lib/flatpak",
+        "--filesystem=/var/lib/snapd:ro"
+    ],
+    "modules": [
+        {
+            "name": "menshen",
+            "buildsystem": "simple",
+            "build-commands": [
+                "cp -a './build/package/linux/usr' '/app'"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../.."
+                }
+            ]
+        }
+    ]
+}
