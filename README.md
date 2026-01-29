@@ -50,13 +50,13 @@ just build
 
 本项目图标基于以下项目修改而来：
 - [Fluent UI Web](https://github.com/microsoft/fluentui)
-： `resource/icon/door_fluentui.svg`
+： `resource/icon/origin/door_fluentui.svg`
 
 - [Noto Emoji](https://github.com/googlefonts/noto-emoji)
-： `resource/icon/lotus_noto-emoji.svg`
+： `resource/icon/origin/lotus_noto-emoji.svg`
 
 - [FxEmojis](https://github.com/mozilla/fxemoji)
-：`resource/icon/light_fxemoji.svg`
+：`resource/icon/origin/light_fxemoji.svg`
 
 
 

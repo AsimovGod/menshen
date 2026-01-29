@@ -3,18 +3,30 @@ set shell := ["bash", "-uc"]
 
 
 
+InfoName := `jq -Mr ".name" "./Info.json"`
+InfoId := `jq -Mr ".id" "./Info.json"`
+InfoArch := `jq -Mr ".architecture" "./Info.json"`
+InfoVersion := `jq -Mr ".version" "./Info.json"`
+
+
+PackageName := InfoName + "_" + InfoVersion + "_" + InfoArch
+PackageLinux := PackageName + "_linux.tar.gz"
+PackageDebian := PackageName + "_debian.deb"
+
+
+
 default:
 	just --list
 
 
 clean:
 	#!/bin/bash
+	set -euxo pipefail
+	##
 	declare -a "AsCmdGit"
 	##
 	AsCmdGit=(
-		git
-		clean
-		-fxd
+		git clean -fxd
 		-e "./worktree"
 	)
 	#
@@ -23,25 +35,21 @@ clean:
 
 compile:
 	#!/bin/bash
-	just clean
+	set -euxo pipefail
 	##
 	declare -a "AsCmdMkdir"
 	declare -a "AsCmdLib"
 	declare -a "AsCmdGcc"
 	##
 	AsCmdMkdir=(
-		mkdir
-		-p -v
-		--
+		mkdir -p -v
 		"./build/compile/bin"
 	)
 	#
 	"${AsCmdMkdir[@]}"
 	##
 	AsCmdLib=(
-		pkg-config
-		--cflags
-		--libs
+		pkg-config --cflags --libs
 		"gtk4"
 		"libadwaita-1"
 	)
@@ -49,11 +57,9 @@ compile:
 	IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"
 	##
 	AsCmdGcc=(
-		gcc
-		-g
+		gcc -g
 		"./src/Main.c"
-		-o
-		"./build/compile/bin/menshen"
+		-o "./build/compile/bin/menshen"
 		"${AsArgLib[@]}"
 	)
 	#
@@ -62,147 +68,161 @@ compile:
 
 gdb:
 	#!/bin/bash
+	set -euxo pipefail
+	##
 	declare -a "AsCmdGdb"
 	declare -x GTK_A11Y="none"
 	##
 	AsCmdGdb=(
-		gdb
-		-q
+		gdb -q
 		"./build/compile/bin/menshen"
-		"${@}"
 	)
 	#
 	"${AsCmdGdb[@]}"
 
 
-valgrind:
-	#!/bin/bash
-	declare -a "AsCmdValgrind"
-	##
-	AsCmdValgrind=(
-		valgrind
-		--tool=memcheck
-		--leak-check=full
-		--show-leak-kinds=all
-		--num-callers=20
-		"./build/compile/bin/menshen"
-	)
-	#
-	"${AsCmdValgrind[@]}"
-
-
 run:
 	#!/bin/bash
+	set -euxo pipefail
+	##
 	declare -x GTK_A11Y="none"
 	##
-	"./build/compile/bin/menshen" "${@}"
+	"./build/compile/bin/menshen"
 
 
-debian:
+shasum arg1:
 	#!/bin/bash
+	set -euxo pipefail
+	##
+	declare -a "AsCmdShasum"
+	##
+	cd "{{parent_directory(arg1)}}"
+	##
+	AsCmdShasum=(
+		shasum -a 512
+		"{{file_name(arg1)}}"
+	)
+	#
+	"${AsCmdShasum[@]}" > "{{file_name(arg1)}}.sha512"
+
+
+linux:
+	#!/bin/bash
+	set -euxo pipefail
+	##
 	declare -a "AsCmdMkdir"
 	declare -a "AsCmdCp"
 	declare -a "AsCmdFdfind"
 	declare -a "AsCmdChmod"
-	declare -a "AsCmdDpkg"
-	declare -a "AsCmdShasum"
 	##
 	AsCmdMkdir=(
-		mkdir
-		-p -v
-		--
-		"./build/package/debian/DEBIAN"
-		"./build/package/debian/usr/bin"
-		"./build/release/debian"
+		mkdir -p -v
+		"./build/package/linux/usr/bin"
 	)
 	#
 	"${AsCmdMkdir[@]}"
 	##
 	AsCmdCp=(
-		cp
-		-r -v
-		"./package/debian/control"
-		--
-		"./build/package/debian/DEBIAN/"
-	)
-	#
-	"${AsCmdCp[@]}"
-	##
-	AsCmdCp=(
-		cp
-		-r -v
+		cp -r -v
 		"./build/compile/bin/menshen"
-		--
-		"./build/package/debian/usr/bin/"
+		"./build/package/linux/usr/bin/"
 	)
 	#
 	"${AsCmdCp[@]}"
 	##
 	AsCmdCp=(
-		cp
-		-r -v
+		cp -r -v
 		"./linux/usr/share"
-		--
-		"./build/package/debian/usr/share"
+		"./build/package/linux/usr/share"
 	)
 	#
 	"${AsCmdCp[@]}"
 	##
 	AsCmdFdfind=(
-		fdfind
-		--type file
-		.
-		"./build/package/debian"
+		fdfind --type file .
+		"./build/package/linux"
 		--exec
-		chmod
-		-v
-		0644
+		chmod -v 0644
 	)
 	#
 	"${AsCmdFdfind[@]}"
 	##
 	AsCmdFdfind=(
-		fdfind
-		--type directory
-		.
-		"./build/package/debian"
+		fdfind --type directory .
+		"./build/package/linux"
 		--exec
-		chmod
-		-v
-		0755
+		chmod -v 0755
 	)
 	#
 	"${AsCmdFdfind[@]}"
 	##
 	AsCmdChmod=(
-		chmod
-		-v
-		0755
-		"./build/package/debian/usr/bin/menshen"
+		chmod -v 0755
+		"./build/package/linux/usr/bin/menshen"
 	)
 	#
 	"${AsCmdChmod[@]}"
+
+
+targz:
+	#!/bin/bash
+	set -euxo pipefail
+	##
+	declare -a "AsCmdInstall"
+	declare -a "AsCmdTar"
+	##
+	AsCmdInstall=(
+		install -d -v -m 0755
+		"./build/release/linux"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdTar=(
+		tar -czvf
+		"./build/release/linux/{{PackageLinux}}"
+		-C "./build/package/linux" "usr"
+	)
+	#
+	"${AsCmdTar[@]}"
+	##
+	just shasum "./build/release/linux/{{PackageLinux}}"
+
+
+debian:
+	#!/bin/bash
+	set -euxo pipefail
+	##
+	declare -a "AsCmdInstall"
+	declare -a "AsCmdDpkg"
+	##
+	AsCmdInstall=(
+		install -d -v -m 0755
+		"./build/package/linux/DEBIAN"
+		"./build/release/debian"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdInstall=(
+		install -p -v -m 0644
+		-t "./build/package/linux/DEBIAN/"
+		"./package/debian/control"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	echo "Version: {{InfoVersion}}" >> "./build/package/linux/DEBIAN/control"
 	##
 	AsCmdDpkg=(
-		dpkg-deb
-		--root-owner-group
-		--build
-		"./build/package/debian"
-		"./build/release/debian/menshen_0.4.0_amd64.deb"
+		dpkg-deb --root-owner-group --build
+		"./build/package/linux"
+		"./build/release/debian/{{PackageDebian}}"
 	)
 	#
 	"${AsCmdDpkg[@]}"
 	##
-	(
-		cd "./build/release/debian"
-		#
-		AsCmdShasum=(
-			shasum
-			-a 512
-			"menshen_0.4.0_amd64.deb"
-		)
-		#
-		"${AsCmdShasum[@]}" > "menshen_0.4.0_amd64.deb.sha512"
-	)
+	just shasum "./build/release/debian/{{PackageDebian}}"
 
 
+package: clean compile linux targz debian
