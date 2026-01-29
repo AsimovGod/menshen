@@ -248,6 +248,46 @@ debian:
 	just shasum "./build/release/debian/{{PackageDebian}}"
 
 
+flatpakbuild:
+	#!/bin/bash
+	set -euxo pipefail
+	##
+	declare -a "AsCmdInstall"
+	declare -a "AsCmdFlatpak"
+	##
+	AsCmdInstall=(
+		install -d -v -m 0755
+		"/app/bin"
+		"/app/share/applications"
+		"/app/share/icons/hicolor/512x512/apps"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdInstall=(
+		install -p -v -m 0755
+		"./build/compile/bin/menshen"
+		"/app/bin/"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdInstall=(
+		install -p -v -m 0644
+		"./linux/usr/share/applications/menshen.desktop"
+		"/app/share/applications/{{InfoId}}.desktop"
+	)
+	#
+	"${AsCmdInstall[@]}"
+	##
+	AsCmdInstall=(
+		install -p -v -m 0644
+		"./resource/icon/menshen.png"
+		"/app/share/icons/hicolor/512x512/apps/{{InfoId}}.png"
+	)
+	#
+	"${AsCmdInstall[@]}"
+
 
 flatpak:
 	#!/bin/bash
@@ -260,6 +300,7 @@ flatpak:
 		install -d -v -m 0755
 		"./build/package/flatpak/repo"
 		"./build/package/flatpak/dir"
+		"./build/release/flatpak/state"
 		"./build/release/flatpak"
 	)
 	#
@@ -268,6 +309,7 @@ flatpak:
 	AsCmdFlatpak=(
 		flatpak-builder
 		--repo="./build/package/flatpak/repo"
+		--state-dir="./build/release/flatpak/state"
 		--force-clean "./build/package/flatpak/dir"
 		"./package/flatpak/io.AsimovGod.menshen.json"
 	)

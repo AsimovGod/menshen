@@ -2,7 +2,7 @@
     "id": "io.AsimovGod.menshen",
     "runtime": "org.gnome.Platform",
     "runtime-version": "49",
-    "sdk": "org.gnome.sdk",
+    "sdk": "org.gnome.Sdk",
     "command": "menshen",
     "finish-args": [
         "--device=dri",
@@ -19,7 +19,7 @@
             "name": "menshen",
             "buildsystem": "simple",
             "build-commands": [
-                "cp -a './build/package/linux/usr' '/app'"
+                "just flatpakbuild"
             ],
             "sources": [
                 {
