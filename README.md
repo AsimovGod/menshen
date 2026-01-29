@@ -1,32 +1,51 @@
-![Icon](resource/icon/menshen.png)
-
-
 # 门神（MenShen）
-拦截所有将要打开的 URL 链接，手动编辑并选择打开方式。
+由用户来决定如何打开每一个 URL 链接。  
+
+门神（MenShen）是一个 URL 拦截处理工具，基于 GTK4 和 Adwaita，使用 C 语言开发。 
 
 
 
-## 警告
-**本项目目前仍处于极早期开发阶段，只有测试版本，请谨慎使用，避免不必要的损失。**
+
+## 须知
+**本项目目前仍处于极早期开发阶段，只有测试版本。可能存在恶性 Bug，请谨慎使用，避免不必要的损失。**
+- 本项目为本人第一次独立维护项目，经验及代码能力都有不足，所以该软件可能存在未发现的恶性 Bug。
+- 本项目目前只有 Linux 版本，Windows 版本在计划中，但由于本人开发环境完全基于 Linux，无法确定是否可行。
+- 本项目大部分三方库 Api 原型及示例由 LLM 提供，虽然计划会在之后集中审查，但目前本人无法保证这些 Api 的使用是否安全可靠。
+
+
+
+## 截图
+![主窗口](screenshot/menshen_mainwindow.png)
 
 
 
 ## 特性
 - 拦截所有将要打开的 URL 链接并弹窗（需要设置为默认浏览器）
-- 自动解析 URL 为不同部分，方便编辑清理 URL
+- 自动解析 URL 为不同部分，更加灵活地编辑清理
 - 支持选择 URL 打开方式，例如不同的浏览器
 - 支持多标签页，可同时解析多个 URL
+- 完全离线，无任何联网功能
 
 
 
-## 安装
-### 基于 Debian 的发行版
+## 使用
+### 安装
+Linux 用户可从 [GitHub Release](https://github.com/AsimovGod/menshen/releases) 或 [Codeberg Release](https://codeberg.org/AsimovGod/menshen/releases) 下载对应的软件包安装使用：
+- Debian及其衍生发行版： 
+可使用 `apt` 等包管理工具安装 .deb 文件。
+- 其他发行版：
+下载 `.tar.gz` 文件后手动解压并将文件复制至对应目录。
+
+### 运行
+- 在安装软件后将本软件设置为默认浏览器，即可拦截所有 URL 打开操作。
+- 也可以直接在命令行中运行，例如 `menshen http://example.com`。
 
 
-### 从源码编译
-```shell
-just build
-```
+
+## 源码
+- [GitHub](https://github.com/AsimovGod/menshen)
+- [Codeberg](https://codeberg.org/AsimovGod/menshen)
+
 
 
 ## 致谢

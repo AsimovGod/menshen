@@ -18,11 +18,11 @@ struct SaMap {
 
 struct SaInfo {
     // declaration
-    char* name;
-    char* id;
-    char* comment;
     char* website;
     char* websiteL;
+    const char* name;
+    const char* id;
+    const char* comment;
     const char* version;
     const char* authors[2];
     // gtk.h
@@ -48,9 +48,6 @@ FsInfoInit()
     EjObject = FjInfoJson();
 
     // variable
-    CsInfo->name = "MenShen";
-    CsInfo->id = "io.AsimovGod.menshen";
-    CsInfo->comment = "MenShen";
     CsInfo->website = "https://github.com/AsimovGod/menshen";
     CsInfo->websiteL = "Source Code";
 
@@ -60,6 +57,9 @@ FsInfoInit()
     CsInfo->license = GTK_LICENSE_GPL_3_0;
 
     // variable json-glib.h
+    CsInfo->name = json_object_get_string_member(EjObject, "name");
+    CsInfo->id = json_object_get_string_member(EjObject, "id");
+    CsInfo->comment = json_object_get_string_member(EjObject, "comment");
     CsInfo->version = json_object_get_string_member(EjObject, "version");
 
     // return

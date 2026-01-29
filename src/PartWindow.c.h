@@ -7,13 +7,11 @@ struct SaGtkWindow {
     SaGtkWindowStack* Stack;
     GtkWidget* base;
     // declaration property
-    char* baseT;
     int baseH;
     int baseW;
+    const char* baseT;
     // gtk.h widget headerbar
     GtkWidget* headerbar;
-    // gtk.h widget controls
-    GtkWidget* control;
     // gtk.h widget grid
     GtkWidget* grid;
 };
@@ -37,7 +35,6 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     // gtk.h new
     CsGtkWindow->base = gtk_application_window_new(EgApplication);
     CsGtkWindow->headerbar = gtk_header_bar_new();
-    CsGtkWindow->control = gtk_window_controls_new(GTK_PACK_END);
     CsGtkWindow->grid = gtk_grid_new();
 
     // variable
@@ -58,15 +55,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     // gtk.h layout
     gtk_window_set_titlebar(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->headerbar);
-    gtk_header_bar_pack_end(GTK_HEADER_BAR(CsGtkWindow->headerbar),
-            CsGtkWindow->control);
     gtk_window_set_child(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->grid);
 
     // gtk.h property
-    gtk_window_controls_set_decoration_layout(
-            GTK_WINDOW_CONTROLS(CsGtkWindow->control),
-            "minimize,maximize");
     gtk_window_set_title(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->baseT);
     gtk_window_set_default_size(GTK_WINDOW(CsGtkWindow->base),

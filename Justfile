@@ -3,15 +3,15 @@ set shell := ["bash", "-uc"]
 
 
 
-InfoName := `jq -Mr ".name" "./Info.json"`
+InfoPackage := `jq -Mr ".package" "./Info.json"`
 InfoId := `jq -Mr ".id" "./Info.json"`
 InfoArch := `jq -Mr ".architecture" "./Info.json"`
 InfoVersion := `jq -Mr ".version" "./Info.json"`
 
 
-PackageName := InfoName + "_" + InfoVersion + "_" + InfoArch
-PackageLinux := PackageName + "_linux.tar.gz"
-PackageDebian := PackageName + "_debian.deb"
+PackagePackage := InfoPackage + "_" + InfoVersion + "_" + InfoArch
+PackageLinux := PackagePackage + "_linux.tar.gz"
+PackageDebian := PackagePackage + "_debian.deb"
 
 
 

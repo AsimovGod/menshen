@@ -1,6 +1,8 @@
 {
-    "name": "menshen",
+    "name": "MenShen",
+    "package": "menshen",
     "id": "io.AsimovGod.menshen",
     "architecture": "amd64",
-    "version": "0.3.0~beta1"
+    "comment": "MenShen",
+    "version": "0.3.1"
 }
