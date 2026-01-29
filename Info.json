@@ -2,5 +2,5 @@
     "name": "menshen",
     "id": "io.AsimovGod.menshen",
     "architecture": "amd64",
-    "version": "0.3.0"
+    "version": "0.3.0~beta1"
 }

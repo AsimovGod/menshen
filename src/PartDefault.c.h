@@ -23,7 +23,7 @@ struct SaInfo {
     char* comment;
     char* website;
     char* websiteL;
-    char* version;
+    const char* version;
     const char* authors[2];
     // gtk.h
     GtkLicense license;
@@ -36,9 +36,16 @@ FsInfoInit()
 {
     // declaration
     SaInfo* CsInfo;
+    JsonObject* EjObject;
 
     // malloc
     CsInfo = g_new0(SaInfo, 1);
+
+    // glib.h resource
+    g_resources_register(PartResource_get_resource());
+
+    // PartDefault.c.h
+    EjObject = FjInfoJson();
 
     // variable
     CsInfo->name = "MenShen";
@@ -46,15 +53,46 @@ FsInfoInit()
     CsInfo->comment = "MenShen";
     CsInfo->website = "https://github.com/AsimovGod/menshen";
     CsInfo->websiteL = "Source Code";
-    CsInfo->version = "0.4.0";
 
     CsInfo->authors[0] = "AsimovGod";
     CsInfo->authors[1] = NULL;
 
     CsInfo->license = GTK_LICENSE_GPL_3_0;
 
+    // variable json-glib.h
+    CsInfo->version = json_object_get_string_member(EjObject, "version");
+
     // return
     return CsInfo;
+}
+
+
+    JsonObject*
+FjInfoJson()
+{
+    // declaration
+    const char* TcData;
+    size_t DsSize;
+    GBytes* EgBytes;
+    JsonParser* EjParser;
+    JsonNode* EjNode;
+    JsonObject* EjObject;
+
+    // glib.h resource
+    EgBytes = g_resources_lookup_data("/io/AsimovGod/menshen/Info.json",
+            G_RESOURCE_LOOKUP_FLAGS_NONE, NULL);
+
+    TcData = g_bytes_get_data(EgBytes, &DsSize);
+
+    // json-glib.h
+    EjParser = json_parser_new();
+
+    json_parser_load_from_data(EjParser, TcData, DsSize, NULL);
+
+    EjNode = json_parser_get_root(EjParser);
+    EjObject = json_node_get_object(EjNode);
+
+    return EjObject;
 }
 
 

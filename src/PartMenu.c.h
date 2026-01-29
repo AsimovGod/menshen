@@ -106,10 +106,15 @@ FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
     // declaration
     SaMap* CsMap;
     SaGtkMenu* CsGtkMenu;
+    GdkTexture* EgLogo;
 
     // inherit
     CsMap = PvUserdata;
     CsGtkMenu = CsMap->GtkMenu;
+
+    // glib.h resource
+    EgLogo = gdk_texture_new_from_resource(
+            "/io/AsimovGod/menshen/resource/icon/menshen.png");
 
     // gtk.h new
     CsGtkMenu->about = gtk_about_dialog_new();
@@ -131,6 +136,8 @@ FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
             CsMap->Info->version);
     gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(CsGtkMenu->about),
             CsMap->Info->authors);
+    gtk_about_dialog_set_logo(GTK_ABOUT_DIALOG(CsGtkMenu->about),
+            GDK_PAINTABLE(EgLogo));
 
     // gtk.h property
     gtk_window_set_modal(GTK_WINDOW(CsGtkMenu->about), TRUE);

@@ -1,0 +1,8 @@
+<gresources>
+        <gresource prefix="/io/AsimovGod/menshen">
+                <file>Info.json</file>
+        </gresource>
+        <gresource prefix="/io/AsimovGod/menshen">
+                <file>resource/icon/menshen.png</file>
+        </gresource>
+</gresources>

@@ -8,6 +8,7 @@ int main(int, char**);
 
 // PartDefault.c.h
 SaInfo* FsInfoInit();
+JsonObject* FjInfoJson();
 void FvMapFree(void*);
 void FvInfoFree(void*);
 

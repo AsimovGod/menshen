@@ -38,20 +38,41 @@ compile:
 	set -euxo pipefail
 	##
 	declare -a "AsCmdMkdir"
+	declare -a "AsCmdGlib"
 	declare -a "AsCmdLib"
 	declare -a "AsCmdGcc"
 	##
 	AsCmdMkdir=(
 		mkdir -p -v
+		"./build/compile/src"
 		"./build/compile/bin"
 	)
 	#
 	"${AsCmdMkdir[@]}"
 	##
+	AsCmdGlib=(
+		glib-compile-resources
+		"./src/xml/PartResource.xml"
+		--generate-header --sourcedir="."
+		--target="./build/compile/src/PartResource.h"
+	)
+	#
+	"${AsCmdGlib[@]}"
+	##
+	AsCmdGlib=(
+		glib-compile-resources
+		"./src/xml/PartResource.xml"
+		--generate-source --sourcedir="."
+		--target="./build/compile/src/PartResource.c"
+	)
+	#
+	"${AsCmdGlib[@]}"
+	##
 	AsCmdLib=(
 		pkg-config --cflags --libs
 		"gtk4"
 		"libadwaita-1"
+		"json-glib-1.0"
 	)
 	#
 	IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"
@@ -59,6 +80,7 @@ compile:
 	AsCmdGcc=(
 		gcc -g
 		"./src/Main.c"
+		"./build/compile/src/PartResource.c"
 		-o "./build/compile/bin/menshen"
 		"${AsArgLib[@]}"
 	)
@@ -224,5 +246,10 @@ debian:
 	##
 	just shasum "./build/release/debian/{{PackageDebian}}"
 
+
+
+debug: clean compile gdb
+
+test: clean compile run
 
 package: clean compile linux targz debian
