@@ -19,7 +19,7 @@
             "name": "menshen",
             "buildsystem": "simple",
             "build-commands": [
-                "just flatpakbuild"
+                "rsync -a -v './build/package/flatpak/app/' '/app'"
             ],
             "sources": [
                 {

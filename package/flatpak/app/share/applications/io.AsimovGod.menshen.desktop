@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=MenShen
+Type=Application
+Icon=menshen
+Exec=menshen %U
+StartupWMClass=menshen
+StartupNotify=true
+Categories=Utility;Network;
+MimeType=x-scheme-handler/http;x-scheme-handler/https
+

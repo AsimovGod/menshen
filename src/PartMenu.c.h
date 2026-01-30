@@ -114,7 +114,7 @@ FvGtkMenuAbout(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
 
     // glib.h resource
     EgLogo = gdk_texture_new_from_resource(
-            "/io/AsimovGod/menshen/resource/icon/menshen.png");
+            "/io/AsimovGod/menshen/icon/menshen.png");
 
     // gtk.h new
     CsGtkMenu->about = gtk_about_dialog_new();

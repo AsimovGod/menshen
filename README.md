@@ -15,7 +15,7 @@
 
 
 ## 截图
-![主窗口](screenshot/menshen_mainwindow.png)
+![主窗口](readme/screenshot/menshen_mainwindow.png)
 
 
 

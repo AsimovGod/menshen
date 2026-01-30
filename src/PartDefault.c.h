@@ -79,7 +79,7 @@ FjInfoJson()
     JsonObject* EjObject;
 
     // glib.h resource
-    EgBytes = g_resources_lookup_data("/io/AsimovGod/menshen/Info.json",
+    EgBytes = g_resources_lookup_data("/io/AsimovGod/menshen/info/Info.json",
             G_RESOURCE_LOOKUP_FLAGS_NONE, NULL);
 
     TcData = g_bytes_get_data(EgBytes, &DsSize);
