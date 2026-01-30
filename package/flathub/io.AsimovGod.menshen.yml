@@ -7,7 +7,3 @@ modules:
   - name: menshen
     buildsystem: simple
     build-commands:
-    sources:
-      - type:
-        des-filename:
-        commands:
