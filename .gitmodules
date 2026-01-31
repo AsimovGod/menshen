@@ -4,6 +4,3 @@
 [submodule "module/Gtk4-tutorial"]
 	path = module/Gtk4-tutorial
 	url = https://github.com/ToshioCP/Gtk4-tutorial.git
-[submodule "package/flatpak/flathub"]
-	path = package/flatpak/flathub
-	url = https://github.com/AsimovGod/flathub.git
