@@ -4,5 +4,5 @@
     "id": "io.AsimovGod.menshen",
     "architecture": "amd64",
     "comment": "MenShen",
-    "version": "0.3.2-beta"
+    "version": "0.3.3-dev"
 }

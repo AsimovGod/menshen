@@ -8,11 +8,7 @@ InfoId := `jq -Mr ".id" "./resource/info/Info.json"`
 InfoArch := `jq -Mr ".architecture" "./resource/info/Info.json"`
 InfoVersion := `jq -Mr ".version" "./resource/info/Info.json"`
 
-
-PackagePackage := InfoPackage + "_" + InfoVersion + "_" + InfoArch
-PackageLinux := PackagePackage + "_linux.tar.gz"
-PackageDebian := PackagePackage + "_debian.deb"
-PackageFlatpak := PackagePackage + "_linux.flatpak"
+PackageName := InfoPackage + "_" + InfoVersion + "_" + InfoArch
 
 
 
@@ -97,19 +93,23 @@ shasum arg1:
         ##
         cd "{{parent_directory(arg1)}}"
         ##
-        shasum -a 512 "{{file_name(arg1)}}" > "{{file_name(arg1)}}.sha512"
+        shasum -a 256 "{{file_name(arg1)}}" > "{{file_name(arg1)}}.sha256"
 
 
-linux:
+debian:
         #!/bin/bash
         set -euxo pipefail
-        ##
+        # declaration
         declare -a "AsCmdInstall"
         declare -a "AsCmdRsync"
-        ##
+        declare -a "AsCmdTar"
+        declare -a "AsCmdDpkg"
+        # base
         AsCmdInstall=(
                 install -d -v -m 0755
-                "./build/package/linux/usr/bin"
+                "./build/package/debian/usr/bin"
+                "./build/package/debian/DEBIAN"
+                "./build/release/debian"
         )
         #
         "${AsCmdInstall[@]}"
@@ -117,91 +117,52 @@ linux:
         AsCmdRsync=(
                 rsync -a -v --chmod=D0755,F0755
                 "./build/compile/bin/menshen"
-                "./build/package/linux/usr/bin/"
+                "./build/package/debian/usr/bin/"
         )
         #
         "${AsCmdRsync[@]}"
         ##
         AsCmdRsync=(
                 rsync -a -v --chmod=D0755,F0644
-                "./package/debian/usr/share"
-                "./build/package/linux/usr/"
+                "./package/debian/usr"
+                "./package/debian/DEBIAN"
+                "./build/package/debian/"
         )
         #
         "${AsCmdRsync[@]}"
-
-
-targz:
-        #!/bin/bash
-        set -euxo pipefail
-        ##
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdRsync"
-        declare -a "AsCmdTar"
-        ##
-        AsCmdInstall=(
-                install -d -v -m 0755
-                "./build/release/linux"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        ##
+        # tar.gz
         AsCmdTar=(
                 tar -czvf
-                "./build/release/linux/{{PackageLinux}}"
-                -C "./build/package/linux" "usr"
+                "./build/release/debian/{{PackageName}}_debian.tar.gz"
+                -C "./build/package/debian" "usr"
         )
         #
         "${AsCmdTar[@]}"
         ##
-        just shasum "./build/release/linux/{{PackageLinux}}"
-
-
-debian:
-        #!/bin/bash
-        set -euxo pipefail
-        ##
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdRsync"
-        declare -a "AsCmdDpkg"
-        ##
-        AsCmdInstall=(
-                install -d -v -m 0755
-                "./build/package/linux/DEBIAN"
-                "./build/release/debian"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        ##
-        AsCmdRsync=(
-                rsync -a -v --chmod=D0755,F0644
-                "./package/debian/DEBIAN"
-                "./build/package/linux/"
-        )
-        #
-        "${AsCmdRsync[@]}"
-        ##
-        echo "Version: {{InfoVersion}}" >> "./build/package/linux/DEBIAN/control"
+        just shasum "./build/release/debian/{{PackageName}}_debian.tar.gz"
+        # deb
+        echo "Version: {{InfoVersion}}" >> "./build/package/debian/DEBIAN/control"
         ##
         AsCmdDpkg=(
                 dpkg-deb --root-owner-group --build
-                "./build/package/linux"
-                "./build/release/debian/{{PackageDebian}}"
+                "./build/package/debian"
+                "./build/release/debian/{{PackageName}}_debian.deb"
         )
         #
         "${AsCmdDpkg[@]}"
         ##
-        just shasum "./build/release/debian/{{PackageDebian}}"
+        just shasum "./build/release/debian/{{PackageName}}_debian.deb"
 
 
 flatpak:
         #!/bin/bash
         set -euxo pipefail
-        ##
+        # declaration
         declare -a "AsCmdInstall"
         declare -a "AsCmdRsync"
+        declare -a "AsCmdTar"
         declare -a "AsCmdFlatpak"
-        ##
+        # base
         AsCmdInstall=(
                 install -d -v -m 0755
                 "./build/package/flatpak/app/bin"
@@ -228,7 +189,17 @@ flatpak:
         )
         #
         "${AsCmdRsync[@]}"
+        # tar.gz
+        AsCmdTar=(
+                tar -czvf
+                "./build/release/flatpak/{{PackageName}}_flatpak.tar.gz"
+                -C "./build/package/flatpak" "app"
+        )
+        #
+        "${AsCmdTar[@]}"
         ##
+        just shasum "./build/release/flatpak/{{PackageName}}_flatpak.tar.gz"
+        # flatpak
         AsCmdFlatpak=(
                 flatpak-builder
                 --repo="./build/package/flatpak/repo"
@@ -242,13 +213,13 @@ flatpak:
         AsCmdFlatpak=(
                 flatpak build-bundle
                 "./build/package/flatpak/repo"
-                "./build/release/flatpak/{{PackageFlatpak}}"
+                "./build/release/flatpak/{{PackageName}}_flatpak.flatpak"
                 "{{InfoId}}"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
-        just shasum "./build/release/flatpak/{{PackageFlatpak}}"
+        just shasum "./build/release/flatpak/{{PackageName}}_flatpak.flatpak"
 
 
 
@@ -257,8 +228,8 @@ debug-run: clean compile run
 debug-gdb: clean compile gdb
 
 
-package-all: clean compile linux targz debian flatpak
+package-all: clean compile debian flatpak
 
-package-debian: clean compile linux targz debian
+package-debian: clean compile debian
 
-package-flatpak: clean compile linux flatpak
+package-flatpak: clean compile flatpak
