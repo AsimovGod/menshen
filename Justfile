@@ -201,10 +201,10 @@ flatpak:
         just shasum "./build/release/flatpak/{{PackageName}}_flatpak.tar.gz"
         # flatpak
         AsCmdFlatpak=(
-                flatpak-builder
+                flatpak-builder --force-clean
                 --repo="./build/package/flatpak/repo"
                 --state-dir="./build/package/flatpak/state"
-                --force-clean "./build/package/flatpak/dir"
+                "./build/package/flatpak/dir"
                 "./package/flatpak/io.AsimovGod.menshen.json"
         )
         #
