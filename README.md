@@ -58,6 +58,9 @@ Linux 用户可从 [GitHub Release](https://github.com/AsimovGod/menshen/release
 - [URLCheck](https://github.com/TrianguloY/URLCheck)
 ：本项目的灵感来源。
 
+- [Junction](https://github.com/sonnyp/Junction)
+：本项目 Flatpak 打包参考及补丁。
+
 - [GTK 4 Tutorial for beginners](https://github.com/ToshioCP/Gtk4-tutorial)
 ：本项目起步阶段参考的文档。
 
