@@ -1,3 +1,6 @@
 [submodule "package/flatpak/flathub"]
 	path = package/flatpak/flathub
 	url = https://github.com/AsimovGod/flathub.git
+[submodule "module/glib"]
+	path = module/glib
+	url = https://salsa.debian.org/gnome-team/glib.git
