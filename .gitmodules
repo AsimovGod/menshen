@@ -1,3 +1,3 @@
-[submodule "module/flathub"]
-	path = module/flathub
+[submodule "package/flatpak/flathub"]
+	path = package/flatpak/flathub
 	url = https://github.com/AsimovGod/flathub.git
