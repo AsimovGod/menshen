@@ -119,14 +119,12 @@ FdOptionGtk(GApplication* EgApplication,
 {
     // declaration
     SaMap* CsMap;
-    SaInfo* CsInfo;
     SaOption* CsOption;
     int DiArgument;
     char** TcArgument;
 
     // inherit
     CsMap = PvUserdata;
-    CsInfo = CsMap->Info;
     CsOption = CsMap->Option;
 
     // gio.h application

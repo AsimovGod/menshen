@@ -48,11 +48,7 @@ struct SaGtkTabGrid {
 FvGtkTab(SaMap* CsMap, char* AcUri)
 {
     // declaration
-    SaGtkWindow* CsGtkWindow;
     SaGtkTab* CsGtkTab;
-
-    // inherit
-    CsGtkWindow = CsMap->GtkWindow;
 
     // malloc
     CsGtkTab = g_new0(SaGtkTab, 1);

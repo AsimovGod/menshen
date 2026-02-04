@@ -24,49 +24,8 @@ compile:
         #!/bin/bash
         set -euxo pipefail
         ##
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdGlib"
-        declare -a "AsCmdLib"
-        declare -a "AsCmdGcc"
-        ##
-        AsCmdInstall=(
-                install -d -v -m 0755
-                "./build/compile/src"
-                "./build/compile/bin"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        ##
-        AsCmdGlib=(
-                glib-compile-resources --generate-header
-                "./src/xml/PartResource.xml" --sourcedir="./resource"
-                --target="./build/compile/src/PartResource.h"
-        )
-        #
-        "${AsCmdGlib[@]}"
-        ##
-        AsCmdGlib=(
-                glib-compile-resources --generate-source
-                "./src/xml/PartResource.xml" --sourcedir="./resource"
-                --target="./build/compile/src/PartResource.c"
-        )
-        #
-        "${AsCmdGlib[@]}"
-        ##
-        AsCmdLib=(
-                pkg-config --cflags --libs
-                "gtk4" "libadwaita-1" "json-glib-1.0"
-        )
-        #
-        IFS=" " read -r -a AsArgLib <<< "$("${AsCmdLib[@]}")"
-        ##
-        AsCmdGcc=(
-                gcc -g
-                "./src/Main.c" "./build/compile/src/PartResource.c"
-                -o "./build/compile/bin/menshen" "${AsArgLib[@]}"
-        )
-        #
-        "${AsCmdGcc[@]}"
+        meson setup "build"
+        ninja -C "build"
 
 
 gdb:
@@ -75,7 +34,7 @@ gdb:
         ##
         declare -x GTK_A11Y="none"
         ##
-        gdb -q "./build/compile/bin/menshen"
+        gdb -q "./build/src/menshen"
 
 
 run:
@@ -84,7 +43,7 @@ run:
         ##
         declare -x GTK_A11Y="none"
         ##
-        exec "./build/compile/bin/menshen"
+        exec "./build/src/menshen"
 
 
 shasum arg1:
@@ -116,7 +75,7 @@ debian:
         ##
         AsCmdRsync=(
                 rsync -a -v --chmod=D0755,F0755
-                "./build/compile/bin/menshen"
+                "./build/src/menshen"
                 "./build/package/debian/usr/bin/"
         )
         #
@@ -176,7 +135,7 @@ flatpak:
         ##
         AsCmdRsync=(
                 rsync -a -v --chmod=D0755,F0755
-                "./build/compile/bin/menshen"
+                "./build/src/menshen"
                 "./build/package/flatpak/app/bin/"
         )
         #

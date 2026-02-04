@@ -14,13 +14,11 @@ FvGtkMimeOpen(SaMap* CsMap)
 {
     // declaration
     SaGtkTab* CsGtkTab;
-    SaGtkUri* CsGtkUri;
     SaGtkMime* CsGtkMime;
     GtkWidget* EgButton;
 
     // inherit
     CsGtkTab = CsMap->GtkTab;
-    CsGtkUri = CsMap->GtkUri;
     CsGtkMime = CsMap->GtkMime;
 
     // malloc
@@ -51,8 +49,6 @@ FvGtkMimeListOpen(GtkWidget* EgButton, void* PvUserdata)
     // declaration
     SaGtkTab* CsGtkTab;
     SaGtkTab* CsGtkTabOld;
-    SaGtkUri* CsGtkUri;
-    SaGtkMime* CsGtkMime;
     const char* AcUri;
     GtkListBox* EgListbox;
     GtkListBoxRow* EgListrow;

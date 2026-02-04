@@ -15,8 +15,6 @@ struct SaGtkMimeList {
 FvGtkMimeList(SaMap* CsMap)
 {
     //declaration
-    SaGtkTab* CsGtkTab;
-    SaGtkUri* CsGtkUri;
     SaGtkMime* CsGtkMime;
     const char* AcAppid;
     GList* EgLoop;
@@ -24,8 +22,6 @@ FvGtkMimeList(SaMap* CsMap)
     GHashTable *EgHashtable;
 
     // inherit
-    CsGtkTab = CsMap->GtkTab;
-    CsGtkUri = CsMap->GtkUri;
     CsGtkMime = CsMap->GtkMime;
 
     // malloc
@@ -73,15 +69,11 @@ FvGtkMimeList(SaMap* CsMap)
 FvGtkMimeListAdd(GtkListBox* EgListbox, GAppInfo* EgAppinfo, void* PvUserdata)
 {
     // declaration
-    SaMap* CsMap;
     GtkWidget* EgGrid;
     GtkWidget* EgImage;
     GtkWidget* EgLabel;
     GtkWidget* EgListrow;
     GIcon* EgIcon;
-
-    // inherit
-    CsMap = PvUserdata;
 
     // gtk.h new
     EgGrid = gtk_grid_new();

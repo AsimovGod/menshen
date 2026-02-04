@@ -26,11 +26,7 @@ struct SaGtkMenuAction {
 FvGtkMenu(SaMap* CsMap)
 {
     // declaration
-    SaGtkTab* CsGtkTab;
     SaGtkMenu* CsGtkMenu;
-
-    // inherit
-    CsGtkTab = CsMap->GtkTab;
 
     // malloc
     CsGtkMenu = g_new0(SaGtkMenu, 1);
