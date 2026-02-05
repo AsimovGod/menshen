@@ -1,5 +1,6 @@
-gnome = import('gnome')
-resources = gnome.compile_resources(
+ImportGnome = import('gnome')
+
+FileResource = ImportGnome.compile_resources(
     'PartResource',
     'PartResource.xml',
     source_dir : '../../resource'

@@ -11,3 +11,8 @@ project(
 
 subdir('src')
 
+test(
+    'test',
+    ExecMenshen
+    )
+

@@ -1,4 +1,4 @@
-gtkdep = [
+DepGtk = [
     dependency('gtk4'),
     dependency('libadwaita-1'),
     dependency('json-glib-1.0')
@@ -6,14 +6,14 @@ gtkdep = [
 
 subdir('xml')
 
-sourcefiles = files(
+FileSource = files(
     'Main.c'
     )
 
-executable(
+ExecMenshen = executable(
     'menshen',
-    resources,
-    sourcefiles,
-    dependencies : gtkdep,
+    FileResource,
+    FileSource,
+    dependencies : DepGtk,
     install : false
     )
