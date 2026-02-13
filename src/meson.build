@@ -4,11 +4,14 @@ DepGtk = [
     dependency('json-glib-1.0')
     ]
 
+
 subdir('xml')
+
 
 FileSource = files(
     'Main.c'
     )
+
 
 ExecMenshen = executable(
     'menshen',

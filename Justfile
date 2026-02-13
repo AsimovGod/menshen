@@ -20,30 +20,17 @@ clean:
         git clean -fxd
 
 
-compile:
-        #!/bin/bash
-        set -euxo pipefail
-        ##
-        meson setup "build"
-        ninja -C "build"
+compile arg1:
+        meson setup "build/{{arg1}}"
+        meson compile -C "build/{{arg1}}"
 
 
-gdb:
-        #!/bin/bash
-        set -euxo pipefail
-        ##
-        declare -x GTK_A11Y="none"
-        ##
-        gdb -q "./build/src/menshen"
+run arg1:
+        meson test "run" -C "build/{{arg1}}"
 
 
-run:
-        #!/bin/bash
-        set -euxo pipefail
-        ##
-        declare -x GTK_A11Y="none"
-        ##
-        exec "./build/src/menshen"
+gdb arg1:
+        meson test "run" --setup "gdb" -C "build/{{arg1}}"
 
 
 shasum arg1:
@@ -182,13 +169,8 @@ flatpak:
 
 
 
-debug-run: clean compile run
+test arg1 arg2:
+        just clean
+        just compile "{{arg2}}"
+        just "{{arg1}}" "{{arg2}}"
 
-debug-gdb: clean compile gdb
-
-
-package-all: clean compile debian flatpak
-
-package-debian: clean compile debian
-
-package-flatpak: clean compile flatpak
