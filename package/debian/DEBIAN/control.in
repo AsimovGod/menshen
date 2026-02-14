@@ -1,4 +1,5 @@
 Package: menshen
 Architecture: amd64
+Version: @version@
 Maintainer: AsimovGod <AsimovGod@outlook.com>
 Description: MenShen

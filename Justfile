@@ -22,6 +22,7 @@ clean:
 
 compile arg1:
         meson setup "build/{{arg1}}"
+        meson configure -Dpackage="{{arg1}}" "build/{{arg1}}"
         meson compile -C "build/{{arg1}}"
 
 
@@ -31,6 +32,10 @@ run arg1:
 
 gdb arg1:
         meson test "run" --setup "gdb" -C "build/{{arg1}}"
+
+
+package arg1:
+        meson install -C "build/{{arg1}}" --destdir="package/{{arg1}}"
 
 
 shasum arg1:
@@ -47,104 +52,42 @@ debian:
         set -euxo pipefail
         # declaration
         declare -a "AsCmdInstall"
-        declare -a "AsCmdRsync"
         declare -a "AsCmdTar"
         declare -a "AsCmdDpkg"
-        # base
+        # install
         AsCmdInstall=(
-                install -d -v -m 0755
-                "./build/package/debian/usr/bin"
-                "./build/package/debian/DEBIAN"
-                "./build/release/debian"
+                install -v -d -m 0755
+                "release/debian"
         )
         #
         "${AsCmdInstall[@]}"
-        ##
-        AsCmdRsync=(
-                rsync -a -v --chmod=D0755,F0755
-                "./build/src/menshen"
-                "./build/package/debian/usr/bin/"
-        )
-        #
-        "${AsCmdRsync[@]}"
-        ##
-        AsCmdRsync=(
-                rsync -a -v --chmod=D0755,F0644
-                "./package/debian/usr"
-                "./package/debian/DEBIAN"
-                "./build/package/debian/"
-        )
-        #
-        "${AsCmdRsync[@]}"
         # tar.gz
         AsCmdTar=(
-                tar -czvf
-                "./build/release/debian/{{PackageName}}_debian.tar.gz"
-                -C "./build/package/debian" "usr"
+                tar -cvf
+                "release/debian/{{PackageName}}_debian.tar.gz"
+                -C "build/debian/package/debian" "usr"
         )
         #
         "${AsCmdTar[@]}"
         ##
-        just shasum "./build/release/debian/{{PackageName}}_debian.tar.gz"
+        just shasum "release/debian/{{PackageName}}_debian.tar.gz"
         # deb
-        echo "Version: {{InfoVersion}}" >> "./build/package/debian/DEBIAN/control"
-        ##
         AsCmdDpkg=(
                 dpkg-deb --root-owner-group --build
-                "./build/package/debian"
-                "./build/release/debian/{{PackageName}}_debian.deb"
+                "build/debian/package/debian"
+                "release/debian/{{PackageName}}_debian.deb"
         )
         #
         "${AsCmdDpkg[@]}"
         ##
-        just shasum "./build/release/debian/{{PackageName}}_debian.deb"
+        just shasum "release/debian/{{PackageName}}_debian.deb"
 
 
 flatpak:
         #!/bin/bash
         set -euxo pipefail
         # declaration
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdRsync"
-        declare -a "AsCmdTar"
         declare -a "AsCmdFlatpak"
-        # base
-        AsCmdInstall=(
-                install -d -v -m 0755
-                "./build/package/flatpak/app/bin"
-                "./build/package/flatpak/dir"
-                "./build/package/flatpak/repo"
-                "./build/package/flatpak/state"
-                "./build/release/flatpak"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        ##
-        AsCmdRsync=(
-                rsync -a -v --chmod=D0755,F0755
-                "./build/src/menshen"
-                "./build/package/flatpak/app/bin/"
-        )
-        #
-        "${AsCmdRsync[@]}"
-        ##
-        AsCmdRsync=(
-                rsync -a -v --chmod=D0755,F0644
-                "./package/flatpak/app/share"
-                "./build/package/flatpak/app/"
-        )
-        #
-        "${AsCmdRsync[@]}"
-        # tar.gz
-        AsCmdTar=(
-                tar -czvf
-                "./build/release/flatpak/{{PackageName}}_flatpak.tar.gz"
-                -C "./build/package/flatpak" "app"
-        )
-        #
-        "${AsCmdTar[@]}"
-        ##
-        just shasum "./build/release/flatpak/{{PackageName}}_flatpak.tar.gz"
         # flatpak
         AsCmdFlatpak=(
                 flatpak-builder --force-clean
@@ -167,6 +110,12 @@ flatpak:
         ##
         just shasum "./build/release/flatpak/{{PackageName}}_flatpak.flatpak"
 
+
+work arg1:
+        just clean
+        just compile "{{arg1}}"
+        just package "{{arg1}}"
+        just "{{arg1}}"
 
 
 test arg1 arg2:

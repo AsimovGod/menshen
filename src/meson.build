@@ -18,5 +18,7 @@ ExecMenshen = executable(
     FileResource,
     FileSource,
     dependencies : DepGtk,
-    install : false
+    install : BoolInstallExec,
+    install_dir : DirInstallExec,
+    install_mode : 'rwxr-xr-x'
     )

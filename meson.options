@@ -1,0 +1,10 @@
+option(
+    'package',
+    type : 'combo',
+    choices : [
+        'debian',
+        'flatpak',
+        'none'
+        ],
+    value : 'none'
+    )
