@@ -7,3 +7,6 @@
 [submodule "module/Junction"]
 	path = module/Junction
 	url = https://github.com/sonnyp/Junction.git
+[submodule "module/libportal"]
+	path = module/libportal
+	url = https://github.com/flatpak/libportal.git

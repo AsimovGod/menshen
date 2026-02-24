@@ -57,17 +57,20 @@
             "sources": [
                 {
                     "type": "dir",
-                    "patch": "../../module/libportal"
+                    "path": "../../module/libportal"
                 }
             ]
         },
 
         {
             "name": "menshen",
-            "buildsystem": "meson",
+            "buildsystem": "simpile",
 
-            "config-opts":[
-                "-Dpackage=flatpak"
+            "build-commands": [
+                "meson setup 'build/flatpak'",
+                "meson configure -Dpackage='flatpak' 'build/flatpak'",
+                "meson compile -C 'build/flatpak'",
+                "meson install -C 'build/flatpak' --destdir='/'"
             ],
 
             "sources": [
