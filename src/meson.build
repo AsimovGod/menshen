@@ -1,3 +1,4 @@
+# dependency
 DepGtk = [
     dependency('gtk4'),
     dependency('libadwaita-1'),
@@ -5,14 +6,23 @@ DepGtk = [
     ]
 
 
-subdir('xml')
+# resource
+ImportGnome = import('gnome')
+
+FileResource = ImportGnome.compile_resources(
+    'PartResource',
+    'xml/PartResource.xml',
+    source_dir : '../resource'
+    )
 
 
+# main
 FileSource = files(
     'Main.c'
     )
 
 
+# executable
 ExecMenshen = executable(
     'menshen',
     FileResource,

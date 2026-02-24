@@ -9,7 +9,7 @@
 #include <adwaita.h>
 #include <json-glib/json-glib.h>
 
-#include "xml/PartResource.h"
+#include "PartResource.h"
 
 #include "MainStruct.c.h"
 #include "MainFunction.c.h"

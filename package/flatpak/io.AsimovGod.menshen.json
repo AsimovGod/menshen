@@ -4,6 +4,7 @@
     "runtime-version": "49",
     "sdk": "org.gnome.Sdk",
     "command": "menshen",
+
     "finish-args": [
         "--device=dri",
         "--socket=wayland",
@@ -14,13 +15,61 @@
         "--filesystem=/var/lib/flatpak:ro",
         "--filesystem=/var/lib/snapd:ro"
     ],
+
+    "cleanup": [
+        "../../build"
+    ],
+
     "modules": [
         {
-            "name": "menshen",
-            "buildsystem": "simple",
-            "build-commands": [
-                "cp -a -v './build/package/flatpak/app' '/'"
+            "name": "glib",
+            "buildsystem": "meson",
+
+            "config-opts": [
+                "-Dtests=false"
             ],
+
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../../module/glib"
+                },
+
+                {
+                    "type": "patch",
+                    "path": "build-aux/flatpak/glib-appinfo.patch"
+                }
+            ]
+        },
+
+        {
+            "name": "libportal",
+            "buildsystem": "meson",
+
+            "config-opts":[
+                "-Dtests=false",
+                "-Ddocs=false",
+                "-Dbackend-gtk3=disabled",
+                "-Dbackend-gtk4=disabled",
+                "-Dbackend-qt5=disabled"
+            ],
+
+            "sources": [
+                {
+                    "type": "dir",
+                    "patch": "../../module/libportal"
+                }
+            ]
+        },
+
+        {
+            "name": "menshen",
+            "buildsystem": "meson",
+
+            "config-opts":[
+                "-Dpackage=flatpak"
+            ],
+
             "sources": [
                 {
                     "type": "dir",

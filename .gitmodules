@@ -4,3 +4,6 @@
 [submodule "module/glib"]
 	path = module/glib
 	url = https://salsa.debian.org/gnome-team/glib.git
+[submodule "module/Junction"]
+	path = module/Junction
+	url = https://github.com/sonnyp/Junction.git

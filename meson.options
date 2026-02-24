@@ -1,3 +1,4 @@
+# package
 option(
     'package',
     type : 'combo',

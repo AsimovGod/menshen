@@ -34,8 +34,8 @@ gdb arg1:
         meson test "run" --setup "gdb" -C "build/{{arg1}}"
 
 
-package arg1:
-        meson install -C "build/{{arg1}}" --destdir="package/{{arg1}}"
+install arg1:
+        meson install -C "build/{{arg1}}" --destdir="install"
 
 
 shasum arg1:
@@ -43,7 +43,6 @@ shasum arg1:
         set -euxo pipefail
         ##
         cd "{{parent_directory(arg1)}}"
-        ##
         shasum -a 256 "{{file_name(arg1)}}" > "{{file_name(arg1)}}.sha256"
 
 
@@ -65,7 +64,7 @@ debian:
         AsCmdTar=(
                 tar -cvf
                 "release/debian/{{PackageName}}_debian.tar.gz"
-                -C "build/debian/package/debian" "usr"
+                -C "build/debian/install" "usr"
         )
         #
         "${AsCmdTar[@]}"
@@ -74,7 +73,7 @@ debian:
         # deb
         AsCmdDpkg=(
                 dpkg-deb --root-owner-group --build
-                "build/debian/package/debian"
+                "build/debian/install"
                 "release/debian/{{PackageName}}_debian.deb"
         )
         #
@@ -87,34 +86,45 @@ flatpak:
         #!/bin/bash
         set -euxo pipefail
         # declaration
+        declare -a "AsCmdInstall"
         declare -a "AsCmdFlatpak"
+        # install
+        AsCmdInstall=(
+                install -v -d -m 0755
+                "build/flatpak/builder/repo"
+                "build/flatpak/builder/state"
+                "build/flatpak/builder/dir"
+                "release/flatpak"
+        )
+        #
+        "${AsCmdInstall[@]}"
         # flatpak
         AsCmdFlatpak=(
                 flatpak-builder --force-clean
-                --repo="./build/package/flatpak/repo"
-                --state-dir="./build/package/flatpak/state"
-                "./build/package/flatpak/dir"
-                "./package/flatpak/io.AsimovGod.menshen.json"
+                --repo="build/flatpak/builder/repo"
+                --state-dir="build/flatpak/builder/state"
+                "build/flatpak/builder/dir"
+                "package/flatpak/io.AsimovGod.menshen.json"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
         AsCmdFlatpak=(
                 flatpak build-bundle
-                "./build/package/flatpak/repo"
-                "./build/release/flatpak/{{PackageName}}_flatpak.flatpak"
+                "build/flatpak/builder/repo"
+                "release/flatpak/{{PackageName}}_flatpak.flatpak"
                 "{{InfoId}}"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
-        just shasum "./build/release/flatpak/{{PackageName}}_flatpak.flatpak"
+        just shasum "release/flatpak/{{PackageName}}_flatpak.flatpak"
 
 
 work arg1:
         just clean
         just compile "{{arg1}}"
-        just package "{{arg1}}"
+        just install "{{arg1}}"
         just "{{arg1}}"
 
 

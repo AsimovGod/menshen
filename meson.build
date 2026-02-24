@@ -1,3 +1,4 @@
+# project
 project(
     'menshen', 'c',
     license : 'GPL-3.0-or-later',
@@ -9,12 +10,14 @@ project(
     )
 
 
+# info
 InfoVersion = run_command(
     'jq', '-Mr', '.version', 'resource/info/Info.json',
     check : true
 ).stdout().strip()
 
 
+# package
 OptionPackage = get_option('package')
 
 
@@ -23,6 +26,7 @@ if OptionPackage != 'none'
 endif
 
 
+# install
 if is_variable('DirInstallExec')
     BoolInstallExec = true
 else
@@ -31,9 +35,11 @@ else
 endif
 
 
+# src
 subdir('src')
 
 
+# test
 test(
     'run',
     ExecMenshen,
