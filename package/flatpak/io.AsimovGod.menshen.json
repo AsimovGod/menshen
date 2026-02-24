@@ -37,7 +37,7 @@
 
                 {
                     "type": "patch",
-                    "path": "build-aux/flatpak/glib-appinfo.patch"
+                    "path": "patch/glib_appinfo.patch"
                 }
             ]
         },
@@ -64,7 +64,7 @@
 
         {
             "name": "menshen",
-            "buildsystem": "simpile",
+            "buildsystem": "simple",
 
             "build-commands": [
                 "meson setup 'build/flatpak'",

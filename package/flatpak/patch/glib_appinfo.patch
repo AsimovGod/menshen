@@ -1,11 +1,17 @@
-# In the sandbox - the programs in the Exec and Try_Exec keys do not exist
-# so GAppInfo will ignore them
+From c735f3ec303808347b3fa540882deb91c23d8469 Mon Sep 17 00:00:00 2001
+From: AsimovGod <AsimovGod@outlook.com>
+Date: Wed, 25 Feb 2026 00:01:34 +0800
+Subject: [PATCH] patch: flatpak
+
+---
+ gio/gdesktopappinfo.c | 45 -------------------------------------------
+ 1 file changed, 45 deletions(-)
 
 diff --git a/gio/gdesktopappinfo.c b/gio/gdesktopappinfo.c
-index 1f161328a..4184d40f0 100644
+index e3d6325cb..abafeab0e 100644
 --- a/gio/gdesktopappinfo.c
 +++ b/gio/gdesktopappinfo.c
-@@ -1910,56 +1910,11 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
+@@ -1903,56 +1903,11 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                      G_KEY_FILE_DESKTOP_GROUP,
                                      G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
                                      NULL);
@@ -62,3 +68,6 @@ index 1f161328a..4184d40f0 100644
  
    info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
    info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
+-- 
+2.47.3
+
