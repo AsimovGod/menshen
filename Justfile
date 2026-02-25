@@ -42,56 +42,12 @@ remove arg1:
         rm -rfv "release/{{arg1}}"
 
 
-compile arg1:
+compile-default arg1:
         meson setup -Dpackage="{{arg1}}" "build/{{arg1}}"
         meson compile -C "build/{{arg1}}"
 
 
-test arg1 arg2:
-        meson test "run" --setup "{{arg1}}" -C "build/{{arg2}}"
-
-
-install arg1:
-        meson install -C "build/{{arg1}}" --destdir="install"
-
-
-debian:
-        #!/bin/bash
-        set -euxo pipefail
-        # declaration
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdTar"
-        declare -a "AsCmdDpkg"
-        # install
-        AsCmdInstall=(
-                install -v -d -m 0755
-                "release/debian"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        # tar.gz
-        AsCmdTar=(
-                tar -cvf
-                "release/debian/{{PackageName}}_debian.tar.gz"
-                -C "build/debian/install" "usr"
-        )
-        #
-        "${AsCmdTar[@]}"
-        ##
-        just shasum "release/debian/{{PackageName}}_debian.tar.gz"
-        # deb
-        AsCmdDpkg=(
-                dpkg-deb --root-owner-group --build
-                "build/debian/install"
-                "release/debian/{{PackageName}}_debian.deb"
-        )
-        #
-        "${AsCmdDpkg[@]}"
-        ##
-        just shasum "release/debian/{{PackageName}}_debian.deb"
-
-
-flatpak arg1 arg2:
+compile-flatpak arg1 arg2:
         #!/bin/bash
         set -euxo pipefail
         # declaration
@@ -103,7 +59,6 @@ flatpak arg1 arg2:
                 "build/{{arg1}}/builder/repo"
                 "build/{{arg1}}/builder/state"
                 "build/{{arg1}}/builder/dir"
-                "release/{{arg1}}"
         )
         #
         "${AsCmdInstall[@]}"
@@ -117,6 +72,69 @@ flatpak arg1 arg2:
         )
         #
         "${AsCmdFlatpak[@]}"
+
+
+test-linux arg1 arg2:
+        meson test "run" --setup "{{arg1}}" -C "build/{{arg2}}"
+
+
+test-flatpak arg1 arg2:
+        #!/bin/bash
+        set -euxo pipefail
+        # declaration
+        declare -a "AsCmdFlatpak"
+        # flatpak
+        AsCmdFlatpak=(
+                flatpak-builder --run
+                "build/{{arg1}}/builder/dir"
+                "{{arg2}}/io.AsimovGod.menshen.json"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
+
+
+install-linux arg1:
+        meson install -C "build/{{arg1}}" --destdir="install"
+
+
+package-debian:
+        #!/bin/bash
+        set -euxo pipefail
+        # declaration
+        declare -a "AsCmdInstall"
+        declare -a "AsCmdDpkg"
+        # install
+        AsCmdInstall=(
+                install -v -d -m 0755
+                "release/debian"
+        )
+        #
+        "${AsCmdInstall[@]}"
+        # deb
+        AsCmdDpkg=(
+                dpkg-deb --root-owner-group --build
+                "build/debian/install"
+                "release/debian/{{PackageName}}_debian.deb"
+        )
+        #
+        "${AsCmdDpkg[@]}"
+        ##
+        just shasum "release/debian/{{PackageName}}_debian.deb"
+
+
+package-flatpak arg1:
+        #!/bin/bash
+        set -euxo pipefail
+        # declaration
+        declare -a "AsCmdInstall"
+        declare -a "AsCmdFlatpak"
+        # install
+        AsCmdInstall=(
+                install -v -d -m 0755
+                "release/{{arg1}}"
+        )
+        #
+        "${AsCmdInstall[@]}"
         ##
         AsCmdFlatpak=(
                 flatpak build-bundle
@@ -130,25 +148,33 @@ flatpak arg1 arg2:
         just shasum "release/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
 
 
-task-test arg1 arg2:
+debug-linux arg1 arg2:
         just remove "{{arg2}}"
-        just compile "{{arg2}}"
-        just test "{{arg1}}" "{{arg2}}"
+        just compile-default "{{arg2}}"
+        just test-linux "{{arg1}}" "{{arg2}}"
+
+
+debug-flatpak:
+        just remove "flatpak"
+        just compile-flatpak "flatpak" "package/flatpak"
+        just test-flatpak "flatpak" "package/flatpak"
 
 
 work-debian:
         just remove "debian"
-        just compile "debian"
-        just install "debian"
-        just "debian"
+        just compile-default "debian"
+        just install-linux "debian"
+        just package-debian
 
 
 work-flatpak:
         just remove "flatpak"
-        just flatpak "flatpak" "package/flatpak"
+        just compile-flatpak "flatpak" "package/flatpak"
+        just package-flatpak "flatpak"
 
 
 work-flathub:
         just remove "flathub"
-        just flatpak "flathub" "package/flatpak/flathub"
+        just compile-flatpak "flathub" "package/flatpak/flathub"
+        just package-flatpak "flathub"
 
