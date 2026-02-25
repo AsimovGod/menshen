@@ -121,6 +121,45 @@ flatpak:
         just shasum "release/flatpak/{{PackageName}}_flatpak.flatpak"
 
 
+flathub:
+        #!/bin/bash
+        set -euxo pipefail
+        # declaration
+        declare -a "AsCmdInstall"
+        declare -a "AsCmdFlatpak"
+        # install
+        AsCmdInstall=(
+                install -v -d -m 0755
+                "build/flathub/builder/repo"
+                "build/flathub/builder/state"
+                "build/flathub/builder/dir"
+                "release/flathub"
+        )
+        #
+        "${AsCmdInstall[@]}"
+        # flatpak
+        AsCmdFlatpak=(
+                flatpak-builder --force-clean
+                --repo="build/flathub/builder/repo"
+                --state-dir="build/flathub/builder/state"
+                "build/flathub/builder/dir"
+                "package/flatpak/flathub/io.AsimovGod.menshen.json"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
+        ##
+        AsCmdFlatpak=(
+                flatpak build-bundle
+                "build/flathub/builder/repo"
+                "release/flathub/{{PackageName}}_flathub.flatpak"
+                "{{InfoId}}"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
+        ##
+        just shasum "release/flathub/{{PackageName}}_flathub.flatpak"
+
+
 work arg1:
         just clean
         just compile "{{arg1}}"

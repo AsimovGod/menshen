@@ -1,6 +1,6 @@
-From c735f3ec303808347b3fa540882deb91c23d8469 Mon Sep 17 00:00:00 2001
+From dffe02ce26024bf83f76b96cb0f47eac89182bbb Mon Sep 17 00:00:00 2001
 From: AsimovGod <AsimovGod@outlook.com>
-Date: Wed, 25 Feb 2026 00:01:34 +0800
+Date: Wed, 25 Feb 2026 12:06:42 +0800
 Subject: [PATCH] patch: flatpak
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] patch: flatpak
  1 file changed, 45 deletions(-)
 
 diff --git a/gio/gdesktopappinfo.c b/gio/gdesktopappinfo.c
-index e3d6325cb..abafeab0e 100644
+index 1e5a752ac..8324681df 100644
 --- a/gio/gdesktopappinfo.c
 +++ b/gio/gdesktopappinfo.c
-@@ -1903,56 +1903,11 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
+@@ -1921,56 +1921,11 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                      G_KEY_FILE_DESKTOP_GROUP,
                                      G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
                                      NULL);
