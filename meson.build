@@ -49,6 +49,12 @@ test(
     )
 
 add_test_setup(
+    'run',
+    gdb : false
+    )
+
+add_test_setup(
     'gdb',
     gdb : true
     )
+

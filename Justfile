@@ -20,22 +20,13 @@ clean:
         git clean -fxd
 
 
-compile arg1:
-        meson setup "build/{{arg1}}"
-        meson configure -Dpackage="{{arg1}}" "build/{{arg1}}"
-        meson compile -C "build/{{arg1}}"
-
-
-run arg1:
-        meson test "run" -C "build/{{arg1}}"
-
-
-gdb arg1:
-        meson test "run" --setup "gdb" -C "build/{{arg1}}"
-
-
-install arg1:
-        meson install -C "build/{{arg1}}" --destdir="install"
+module arg1:
+        #!/bin/bash
+        set -euxo pipefail
+        ##
+        cd "{{arg1}}"
+        git submodule init
+        git submodule update --recursive
 
 
 shasum arg1:
@@ -44,6 +35,24 @@ shasum arg1:
         ##
         cd "{{parent_directory(arg1)}}"
         shasum -a 256 "{{file_name(arg1)}}" > "{{file_name(arg1)}}.sha256"
+
+
+remove arg1:
+        rm -rfv "build/{{arg1}}"
+        rm -rfv "release/{{arg1}}"
+
+
+compile arg1:
+        meson setup -Dpackage="{{arg1}}" "build/{{arg1}}"
+        meson compile -C "build/{{arg1}}"
+
+
+test arg1 arg2:
+        meson test "run" --setup "{{arg1}}" -C "build/{{arg2}}"
+
+
+install arg1:
+        meson install -C "build/{{arg1}}" --destdir="install"
 
 
 debian:
@@ -82,7 +91,7 @@ debian:
         just shasum "release/debian/{{PackageName}}_debian.deb"
 
 
-flatpak:
+flatpak arg1 arg2:
         #!/bin/bash
         set -euxo pipefail
         # declaration
@@ -91,84 +100,55 @@ flatpak:
         # install
         AsCmdInstall=(
                 install -v -d -m 0755
-                "build/flatpak/builder/repo"
-                "build/flatpak/builder/state"
-                "build/flatpak/builder/dir"
-                "release/flatpak"
+                "build/{{arg1}}/builder/repo"
+                "build/{{arg1}}/builder/state"
+                "build/{{arg1}}/builder/dir"
+                "release/{{arg1}}"
         )
         #
         "${AsCmdInstall[@]}"
         # flatpak
         AsCmdFlatpak=(
                 flatpak-builder --force-clean
-                --repo="build/flatpak/builder/repo"
-                --state-dir="build/flatpak/builder/state"
-                "build/flatpak/builder/dir"
-                "package/flatpak/io.AsimovGod.menshen.json"
+                --repo="build/{{arg1}}/builder/repo"
+                --state-dir="build/{{arg1}}/builder/state"
+                "build/{{arg1}}/builder/dir"
+                "{{arg2}}/io.AsimovGod.menshen.json"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
         AsCmdFlatpak=(
                 flatpak build-bundle
-                "build/flatpak/builder/repo"
-                "release/flatpak/{{PackageName}}_flatpak.flatpak"
+                "build/{{arg1}}/builder/repo"
+                "release/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
                 "{{InfoId}}"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
-        just shasum "release/flatpak/{{PackageName}}_flatpak.flatpak"
+        just shasum "release/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
 
 
-flathub:
-        #!/bin/bash
-        set -euxo pipefail
-        # declaration
-        declare -a "AsCmdInstall"
-        declare -a "AsCmdFlatpak"
-        # install
-        AsCmdInstall=(
-                install -v -d -m 0755
-                "build/flathub/builder/repo"
-                "build/flathub/builder/state"
-                "build/flathub/builder/dir"
-                "release/flathub"
-        )
-        #
-        "${AsCmdInstall[@]}"
-        # flatpak
-        AsCmdFlatpak=(
-                flatpak-builder --force-clean
-                --repo="build/flathub/builder/repo"
-                --state-dir="build/flathub/builder/state"
-                "build/flathub/builder/dir"
-                "package/flatpak/flathub/io.AsimovGod.menshen.json"
-        )
-        #
-        "${AsCmdFlatpak[@]}"
-        ##
-        AsCmdFlatpak=(
-                flatpak build-bundle
-                "build/flathub/builder/repo"
-                "release/flathub/{{PackageName}}_flathub.flatpak"
-                "{{InfoId}}"
-        )
-        #
-        "${AsCmdFlatpak[@]}"
-        ##
-        just shasum "release/flathub/{{PackageName}}_flathub.flatpak"
-
-
-work arg1:
-        just clean
-        just compile "{{arg1}}"
-        just install "{{arg1}}"
-        just "{{arg1}}"
-
-
-test arg1 arg2:
-        just clean
+task-test arg1 arg2:
+        just remove "{{arg2}}"
         just compile "{{arg2}}"
-        just "{{arg1}}" "{{arg2}}"
+        just test "{{arg1}}" "{{arg2}}"
+
+
+work-debian:
+        just remove "debian"
+        just compile "debian"
+        just install "debian"
+        just "debian"
+
+
+work-flatpak:
+        just remove "flatpak"
+        just flatpak "flatpak" "package/flatpak"
+
+
+work-flathub:
+        just remove "flathub"
+        just flatpak "flathub" "package/flatpak/flathub"
 
