@@ -71,6 +71,12 @@ compile-flatpak arg1 arg2:
                 "{{arg2}}/io.AsimovGod.menshen.json"
         )
         #
+        if [[ ! -e "/dev/fuse" ]] ; then
+        AsCmdFlatpak+=(
+                --disable-rofiles-fuse
+        )
+        fi
+        #
         "${AsCmdFlatpak[@]}"
 
 
