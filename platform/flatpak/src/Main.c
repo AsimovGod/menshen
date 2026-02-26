@@ -8,6 +8,7 @@
 #include <gtk/gtk.h>
 #include <adwaita.h>
 #include <json-glib/json-glib.h>
+#include <libportal/portal.h>
 
 #include "PartResource.h"
 
@@ -38,28 +39,12 @@
 main(int DiArgs, char** TcArgs)
 {
     // declaration
-    SaMap* CsMap;
-    SaInfo* CsInfo;
-    SaOption* CsOption;
     int DiExit;
 
-    // malloc
-    CsMap = g_new0(SaMap, 1);
-
-    // variable
-    CsInfo = FsInfoInit();
-    CsOption = FsOptionInit();
-
-    // bequeath
-    CsMap->Info = CsInfo;
-    CsMap->Option = CsOption;
-
-    // PartOption.c.h
-    DiExit = FdOptionGlib(CsMap, DiArgs, TcArgs);
-
-    // PartInstance.c.h
-    DiExit = FdGtkInstance(CsMap, DiArgs, TcArgs);
+    // PartDefault.c.h
+    DiExit = FiMain(DiArgs, TcArgs);
 
     // return
     return DiExit;
 }
+

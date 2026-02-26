@@ -39,11 +39,11 @@ shasum arg1:
 
 remove arg1:
         rm -rfv "build/{{arg1}}"
-        rm -rfv "release/{{arg1}}"
+        rm -rfv "package/{{arg1}}"
 
 
 compile-default arg1:
-        meson setup -Dpackage="{{arg1}}" "build/{{arg1}}"
+        meson setup -Dplatform="{{arg1}}" "build/{{arg1}}"
         meson compile -C "build/{{arg1}}"
 
 
@@ -64,7 +64,7 @@ compile-flatpak arg1 arg2:
         "${AsCmdInstall[@]}"
         # flatpak
         AsCmdFlatpak=(
-                flatpak-builder --force-clean
+                flatpak-builder
                 --repo="build/{{arg1}}/builder/repo"
                 --state-dir="build/{{arg1}}/builder/state"
                 "build/{{arg1}}/builder/dir"
@@ -72,7 +72,8 @@ compile-flatpak arg1 arg2:
         )
         #
         if [[ ! -e "/dev/fuse" ]] ; then
-        AsCmdFlatpak+=(
+        AsCmdFlatpak=(
+                "${AsCmdFlatpak[@]}"
                 --disable-rofiles-fuse
         )
         fi
@@ -81,22 +82,7 @@ compile-flatpak arg1 arg2:
 
 
 test-linux arg1 arg2:
-        meson test "run" --setup "{{arg1}}" -C "build/{{arg2}}"
-
-
-test-flatpak arg1 arg2:
-        #!/bin/bash
-        set -euxo pipefail
-        # declaration
-        declare -a "AsCmdFlatpak"
-        # flatpak
-        AsCmdFlatpak=(
-                flatpak-builder --run
-                "build/{{arg1}}/builder/dir"
-                "{{arg2}}/io.AsimovGod.menshen.json"
-        )
-        #
-        "${AsCmdFlatpak[@]}"
+        meson test "exec" --setup "{{arg1}}" -C "build/{{arg2}}"
 
 
 install-linux arg1:
@@ -112,7 +98,7 @@ package-debian:
         # install
         AsCmdInstall=(
                 install -v -d -m 0755
-                "release/debian"
+                "package/debian"
         )
         #
         "${AsCmdInstall[@]}"
@@ -120,12 +106,12 @@ package-debian:
         AsCmdDpkg=(
                 dpkg-deb --root-owner-group --build
                 "build/debian/install"
-                "release/debian/{{PackageName}}_debian.deb"
+                "package/debian/{{PackageName}}_debian.deb"
         )
         #
         "${AsCmdDpkg[@]}"
         ##
-        just shasum "release/debian/{{PackageName}}_debian.deb"
+        just shasum "package/debian/{{PackageName}}_debian.deb"
 
 
 package-flatpak arg1:
@@ -137,7 +123,7 @@ package-flatpak arg1:
         # install
         AsCmdInstall=(
                 install -v -d -m 0755
-                "release/{{arg1}}"
+                "package/{{arg1}}"
         )
         #
         "${AsCmdInstall[@]}"
@@ -145,25 +131,18 @@ package-flatpak arg1:
         AsCmdFlatpak=(
                 flatpak build-bundle
                 "build/{{arg1}}/builder/repo"
-                "release/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
+                "package/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
                 "{{InfoId}}"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
-        just shasum "release/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
+        just shasum "package/{{arg1}}/{{PackageName}}_{{arg1}}.flatpak"
 
 
 debug-linux arg1 arg2:
-        just remove "{{arg2}}"
         just compile-default "{{arg2}}"
         just test-linux "{{arg1}}" "{{arg2}}"
-
-
-debug-flatpak:
-        just remove "flatpak"
-        just compile-flatpak "flatpak" "package/flatpak"
-        just test-flatpak "flatpak" "package/flatpak"
 
 
 work-debian:
@@ -175,12 +154,12 @@ work-debian:
 
 work-flatpak:
         just remove "flatpak"
-        just compile-flatpak "flatpak" "package/flatpak"
+        just compile-flatpak "flatpak" "platform/flatpak"
         just package-flatpak "flatpak"
 
 
 work-flathub:
         just remove "flathub"
-        just compile-flatpak "flathub" "package/flatpak/flathub"
+        just compile-flatpak "flathub" "platform/flatpak/flathub"
         just package-flatpak "flathub"
 

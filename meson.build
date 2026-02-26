@@ -11,28 +11,26 @@ project(
 
 
 # info
+InfoPackage = run_command(
+    'jq', '-Mr', '.package', 'resource/info/Info.json',
+    check : true
+    ).stdout().strip()
+
+InfoId = run_command(
+    'jq', '-Mr', '.id', 'resource/info/Info.json',
+    check : true
+    ).stdout().strip()
+
 InfoVersion = run_command(
     'jq', '-Mr', '.version', 'resource/info/Info.json',
     check : true
-).stdout().strip()
+    ).stdout().strip()
 
 
-# package
-OptionPackage = get_option('package')
+# platform
+OptionPlatform = get_option('platform')
 
-
-if OptionPackage != 'none'
-    subdir('package' / OptionPackage)
-endif
-
-
-# install
-if is_variable('DirInstallExec')
-    BoolInstallExec = true
-else
-    BoolInstallExec = false
-    DirInstallExec = ''
-endif
+subdir('platform' / OptionPlatform)
 
 
 # src
@@ -41,7 +39,7 @@ subdir('src')
 
 # test
 test(
-    'run',
+    'exec',
     ExecMenshen,
     env : [
         'GTK_A11Y=none'

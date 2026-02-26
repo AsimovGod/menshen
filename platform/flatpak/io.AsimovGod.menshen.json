@@ -67,7 +67,7 @@
             "buildsystem": "simple",
 
             "build-commands": [
-                "meson setup -Dpackage='flatpak' 'build/flatpak'",
+                "meson setup -Dplatform='flatpak' 'build/flatpak'",
                 "meson compile -C 'build/flatpak'",
                 "meson install -C 'build/flatpak' --destdir='/'"
             ],

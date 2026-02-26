@@ -1,3 +1,18 @@
+# dependency
+DepPlatform = [
+    dependency('gtk4'),
+    dependency('libadwaita-1'),
+    dependency('json-glib-1.0'),
+    dependency('libportal')
+    ]
+
+
+# src
+FileSource = files(
+    'src' / 'Main.c'
+    )
+
+
 # app
 install_emptydir(
     'app',
@@ -22,13 +37,18 @@ install_emptydir(
 
 
 # applications
+ConfigDesktop = configuration_data()
+ConfigDesktop.set('icon', InfoId)
+
 install_emptydir(
     'app/share/applications',
     install_mode : 'rwxr-xr-x'
     )
 
-install_data(
-    'app/share/applications/io.AsimovGod.menshen.desktop',
+configure_file(
+    input : '../../resource/desktop/menshen.desktop.in',
+    output : 'menshen.desktop',
+    configuration : ConfigDesktop,
     install_dir : 'app/share/applications',
     install_mode : 'rw-r--r--'
     )

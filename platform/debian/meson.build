@@ -1,3 +1,17 @@
+# dependency
+DepPlatform = [
+    dependency('gtk4'),
+    dependency('libadwaita-1'),
+    dependency('json-glib-1.0')
+    ]
+
+
+# src
+FileSource = files(
+    'src' / 'Main.c'
+    )
+
+
 # debian
 ConfigDebian = configuration_data()
 ConfigDebian.set('version', InfoVersion)
@@ -40,13 +54,18 @@ install_emptydir(
 
 
 # applications
+ConfigDesktop = configuration_data()
+ConfigDesktop.set('icon', InfoPackage)
+
 install_emptydir(
     'usr/share/applications',
     install_mode : 'rwxr-xr-x'
     )
 
-install_data(
-    'usr/share/applications/menshen.desktop',
+configure_file(
+    input : '../../resource/desktop/menshen.desktop.in',
+    output : 'menshen.desktop',
+    configuration : ConfigDesktop,
     install_dir : 'usr/share/applications',
     install_mode : 'rw-r--r--'
     )

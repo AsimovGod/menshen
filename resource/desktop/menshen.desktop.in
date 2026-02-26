@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=MenShen
 Type=Application
-Icon=menshen
+Icon=@icon@
 Exec=menshen %U
 StartupWMClass=menshen
 StartupNotify=true

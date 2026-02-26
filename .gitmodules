@@ -1,5 +1,5 @@
 [submodule "package/flatpak/flathub"]
-	path = package/flatpak/flathub
+	path = platform/flatpak/flathub
 	url = https://github.com/AsimovGod/flathub.git
 [submodule "module/Junction"]
 	path = module/Junction

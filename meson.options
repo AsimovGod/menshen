@@ -1,11 +1,9 @@
-# package
+# platform
 option(
-    'package',
+    'platform',
     type : 'combo',
     choices : [
         'debian',
-        'flatpak',
-        'none'
-        ],
-    value : 'none'
+        'flatpak'
+        ]
     )
