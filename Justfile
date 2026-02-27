@@ -64,7 +64,7 @@ compile-flatpak arg1 arg2:
         "${AsCmdInstall[@]}"
         # flatpak
         AsCmdFlatpak=(
-                flatpak-builder
+                flatpak-builder --force-clean
                 --repo="build/{{arg1}}/builder/repo"
                 --state-dir="build/{{arg1}}/builder/state"
                 "build/{{arg1}}/builder/dir"
@@ -83,6 +83,38 @@ compile-flatpak arg1 arg2:
 
 test-linux arg1 arg2:
         meson test "exec" --setup "{{arg1}}" -C "build/{{arg2}}"
+
+
+test-flatpak arg1:
+        #!/bin/bash
+        set -euxo pipefail
+        # declaration
+        declare -a "AsCmdFlatpak"
+        ##
+        AsCmdFlatpak=(
+                flatpak --user remote-add
+                --no-gpg-verify --if-not-exists
+                "AsimovGod" "build/{{arg1}}/builder/repo"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
+        ##
+        if [[ "$(stat --printf="%u" "/var/tmp")" != "0" ]] ; then
+        AsCmdFlatpak=(
+                fakeroot --
+        )
+        fi
+        #
+        AsCmdFlatpak=(
+                "${AsCmdFlatpak[@]}"
+                flatpak --user install
+                --reinstall --assumeyes
+                "AsimovGod" "{{InfoId}}"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
+        ##
+        flatpak run --user "{{InfoId}}"
 
 
 install-linux arg1:
@@ -143,6 +175,16 @@ package-flatpak arg1:
 debug-linux arg1 arg2:
         just compile-default "{{arg2}}"
         just test-linux "{{arg1}}" "{{arg2}}"
+
+
+debug-flatpak:
+        just compile-flatpak "flatpak" "platform/flatpak"
+        just test-flatpak "flatpak"
+
+
+debug-flathub:
+        just compile-flatpak "flathub" "platform/flatpak/flathub"
+        just test-flatpak "flathub"
 
 
 work-debian:
