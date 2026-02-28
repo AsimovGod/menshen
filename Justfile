@@ -64,7 +64,7 @@ compile-flatpak arg1 arg2:
         "${AsCmdInstall[@]}"
         # flatpak
         AsCmdFlatpak=(
-                flatpak-builder --force-clean
+                flatpak-builder --force-clean --ccache
                 --repo="build/{{arg1}}/builder/repo"
                 --state-dir="build/{{arg1}}/builder/state"
                 "build/{{arg1}}/builder/dir"
@@ -82,10 +82,10 @@ compile-flatpak arg1 arg2:
 
 
 test-linux arg1 arg2:
-        meson test "exec" --setup "{{arg1}}" -C "build/{{arg2}}"
+        meson test "exec" --setup "{{arg2}}" -C "build/{{arg1}}"
 
 
-test-flatpak arg1:
+test-flatpak arg1 arg2:
         #!/bin/bash
         set -euxo pipefail
         # declaration
@@ -107,14 +107,18 @@ test-flatpak arg1:
         #
         AsCmdFlatpak=(
                 "${AsCmdFlatpak[@]}"
-                flatpak --user install
-                --reinstall --assumeyes
+                flatpak --user install --reinstall -y
                 "AsimovGod" "{{InfoId}}"
         )
         #
         "${AsCmdFlatpak[@]}"
         ##
-        flatpak run --user "{{InfoId}}"
+        AsCmdFlatpak=(
+                flatpak --user run --devel
+                --command="{{arg2}}" "{{InfoId}}"
+        )
+        #
+        "${AsCmdFlatpak[@]}"
 
 
 install-linux arg1:
@@ -179,12 +183,12 @@ debug-linux arg1 arg2:
 
 debug-flatpak:
         just compile-flatpak "flatpak" "platform/flatpak"
-        just test-flatpak "flatpak"
+        just test-flatpak "flatpak" "bash"
 
 
 debug-flathub:
         just compile-flatpak "flathub" "platform/flatpak/flathub"
-        just test-flatpak "flathub"
+        just test-flatpak "flathub" "bash"
 
 
 work-debian:

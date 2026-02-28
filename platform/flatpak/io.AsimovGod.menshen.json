@@ -9,7 +9,6 @@
         "--device=dri",
         "--socket=wayland",
         "--talk-name=org.freedesktop.Flatpak",
-        "--filesystem=host:ro",
         "--filesystem=xdg-data/applications:ro",
         "--filesystem=xdg-data/flatpak:ro",
         "--filesystem=/var/lib/flatpak:ro",
