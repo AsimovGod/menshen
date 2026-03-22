@@ -8,8 +8,8 @@ DepPlatform = [
 
 
 # src
-FileSource = files(
-    'src' / 'Main.c'
+FileMain = files(
+    'src' / 'Main.cpp'
     )
 
 

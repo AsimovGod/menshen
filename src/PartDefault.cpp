@@ -1,4 +1,8 @@
-// PartDefault.c.h
+// PartDefault.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -51,10 +55,10 @@ FiMain(int DiArgs, char** TcArgs)
     CsMap->Info = CsInfo;
     CsMap->Option = CsOption;
 
-    // PartOption.c.h
+    // PartOption.cpp
     DiExit = FdOptionGlib(CsMap, DiArgs, TcArgs);
 
-    // PartInstance.c.h
+    // PartInstance.cpp
     DiExit = FdGtkInstance(CsMap, DiArgs, TcArgs);
 
     // return
@@ -75,7 +79,7 @@ FsInfoInit()
     // glib.h resource
     g_resources_register(PartResource_get_resource());
 
-    // PartDefault.c.h
+    // PartDefault.cpp
     EjObject = FjInfoJson();
 
     // variable

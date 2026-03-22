@@ -1,4 +1,8 @@
-// PartTab.c.h
+// PartTab.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -66,7 +70,7 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     CsGtkTab->Paned->baseLeftR = 0.2;
     CsGtkTab->Paned->baseRightR = 0.6;
 
-    // PartTabStack.c.h
+    // PartTabStack.cpp
     CsGtkTab->Stack = FsGtkTabStack(CsMap, CsGtkTab);
 
     // bequeath
@@ -97,13 +101,13 @@ FvGtkTab(SaMap* CsMap, char* AcUri)
     gtk_widget_set_valign(CsGtkTab->Paned->baseRight, GTK_ALIGN_FILL);
     gtk_widget_set_halign(CsGtkTab->Paned->baseRight, GTK_ALIGN_FILL);
 
-    // PartUri.c.h
+    // PartUri.cpp
     FvGtkUri(CsMap, AcUri);
 
-    // PartMime.c.h
+    // PartMime.cpp
     FvGtkMime(CsMap);
 
-    // PartTabStack.c.h
+    // PartTabStack.cpp
     FvGtkWindowStackScroll(NULL, CsMap);
 }
 

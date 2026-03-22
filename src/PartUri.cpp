@@ -1,4 +1,8 @@
-// PartUri.c.h
+// PartUri.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -100,14 +104,14 @@ FvGtkUri(SaMap* CsMap, char* AcUri)
     gtk_grid_set_row_spacing(GTK_GRID(CsGtkTab->Grid->uriParse), 4);
     gtk_grid_set_column_spacing(GTK_GRID(CsGtkTab->Grid->uriParse), 4);
 
-    // PartUri.c.h
+    // PartUri.cpp
     FvGtkUriWidget(CsMap);
 
     // gtk.h widget
     gtk_editable_set_text(GTK_EDITABLE(CsGtkUri->Entry->uri),
             AcUri ? AcUri : "");
 
-    // PartUriChabge.c.h
+    // PartUriChabge.cpp
     FvGtkUriEntryParse(GTK_EDITABLE(CsGtkUri->Entry->uri), CsGtkUri);
 }
 
@@ -123,7 +127,7 @@ FvGtkUriWidget(SaMap* CsMap)
     CsGtkTab = CsMap->GtkTab;
     CsGtkUri = CsMap->GtkUri;
 
-    // PartUriEdit.c.h
+    // PartUriEdit.cpp
     CsGtkUri->Entry->uri = FeGtkUriEntry(CsGtkUri, "build",
             CsGtkTab->Grid->uriBuild, 0, "URI");
     CsGtkUri->Entry->scheme = FeGtkUriEntry(CsGtkUri, "parse",

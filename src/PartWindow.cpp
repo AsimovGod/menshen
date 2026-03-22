@@ -1,4 +1,8 @@
-// PartWindow.c.h
+// PartWindow.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -42,7 +46,7 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     CsGtkWindow->baseW = 960;
     CsGtkWindow->baseH = 540;
 
-    // PartWindowStack.c.h
+    // PartWindowStack.cpp
     CsGtkWindow->Stack = FsGtkWindowStack(CsMap, CsGtkWindow);
 
     // bequeath
@@ -64,10 +68,10 @@ FvGtkWindow(SaMap* CsMap, int DiArgument, char** TcArgument)
     gtk_window_set_default_size(GTK_WINDOW(CsGtkWindow->base),
             CsGtkWindow->baseW, CsGtkWindow->baseH);
 
-    // PartMenu.c.h
+    // PartMenu.cpp
     FvGtkMenu(CsMap);
 
-    // PartTab.c.h
+    // PartTab.cpp
     if ((! TcArgument) || (DiArgument < 2)) {
         FvGtkTab(CsMap, NULL);
     }

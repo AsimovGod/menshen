@@ -1,4 +1,8 @@
-// PartUriClipboard.c.h
+// PartUriClipboard.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 

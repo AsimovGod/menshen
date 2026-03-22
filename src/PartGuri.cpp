@@ -1,4 +1,8 @@
-// PartGuri.c.h
+// PartGuri.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -58,7 +62,7 @@ FsGuriParse(const char* AcBuild)
     AcParse = g_uri_get_fragment(EgGuri);
     CsParse->fragment = AcParse ? g_strdup(AcParse) : NULL;
 
-    // PartGuri.c.h
+    // PartGuri.cpp
     AcParse = FaGuriBuild(CsParse);
 
     // variable glib.h
@@ -128,7 +132,7 @@ FvUriPrint(int DiArgument, char** TcArgument)
 
     // loop argument
     for (DiLoop = 1; DiLoop < DiArgument; DiLoop++) {
-        // block PartGuri.c.h
+        // block PartGuri.cpp
         CsUri = FsGuriParse(TcArgument[DiLoop]);
         if (! CsUri) continue;
         // block stdio.h printf

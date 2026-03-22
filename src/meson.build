@@ -1,3 +1,9 @@
+# src
+FilePart = files(
+    'PartDefault.cpp'
+)
+
+
 # resource
 ImportGnome = import('gnome')
 
@@ -11,7 +17,8 @@ FileResource = ImportGnome.compile_resources(
 # executable
 ExecMenshen = executable(
     'menshen',
-    FileSource,
+    FilePart,
+    FileMain,
     FileResource,
     dependencies : [
         DepPlatform

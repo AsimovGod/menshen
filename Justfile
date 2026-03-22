@@ -42,6 +42,10 @@ remove arg1:
         rm -rfv "package/{{arg1}}"
 
 
+setup arg1:
+        meson setup -Dplatform="{{arg1}}" "build/{{arg1}}"
+
+
 compile-default arg1:
         meson setup -Dplatform="{{arg1}}" "build/{{arg1}}"
         meson compile -C "build/{{arg1}}"

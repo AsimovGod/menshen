@@ -1,12 +1,11 @@
-// Main_function.c.h
+// MainFunction.hpp
 
 
-
-// Main.c
+// Main.cpp
 int main(int, char**);
 
 
-// PartDefault.c.h
+// PartDefault.cpp
 SaInfo* FsInfoInit();
 JsonObject* FjInfoJson();
 int FiMain(int, char**);
@@ -14,98 +13,98 @@ void FvMapFree(void*);
 void FvInfoFree(void*);
 
 
-// PartOption.c.h
+// PartOption.cpp
 SaOption* FsOptionInit();
 int FdOptionGlib(SaMap*, int, char**);
 int FdOptionGtk(GApplication*, GApplicationCommandLine*, void*);
 void FvOptionFree(void*);
 
 
-// PartFile.c.h
+// PartFile.cpp
 void FvFileRead(char*);
 
 
-// PartGuri.c.h
+// PartGuri.cpp
 SaGuriParse* FsGuriParse(const char*);
 char* FaGuriBuild(SaGuriParse*);
 void FvUriPrint(int, char**);
 void FvGuriFree(void*);
 
 
-// PartInstance.c.h
+// PartInstance.cpp
 int FdGtkInstance(SaMap*, int, char**);
 
 
-// PartWindow.c.h
+// PartWindow.cpp
 void FvGtkWindow(SaMap*, int, char**);
 void FvGtkWindowFree(void*);
 
 
-// PartWindowStack.c.h
+// PartWindowStack.cpp
 SaGtkWindowStack* FsGtkWindowStack(SaMap*, SaGtkWindow*);
 void FvGtkWindowStackCount(SaMap*, int);
 void FvGtkWindowStackScroll(GtkButton*, void*);
 
 
-// PartMenu.c.h
+// PartMenu.cpp
 void FvGtkMenu(SaMap*);
 void FvGtkMenuNewwindow(GSimpleAction*, GVariant*, void*);
 void FvGtkMenuAbout(GSimpleAction*, GVariant*, void*);
 
 
-// PartTab.c.h
+// PartTab.cpp
 void FvGtkTab(SaMap*, char*);
 void FvGtkTabFree(void*);
 
 
-// PartTabStack.c.h
+// PartTabStack.cpp
 SaGtkTabStack* FsGtkTabStack(SaMap*, SaGtkTab*);
 gboolean FgGtkTabStackScroll(void*);
 
 
-// PartTabManage.c.h
+// PartTabManage.cpp
 void FvGtkTabNew(GtkWidget*, void*);
 void FvGtkTabSwitch(GtkWidget*, void*);
 void FvGtkTabRemove(GtkWidget*, void*);
 
 
-// PartUri.c.h
+// PartUri.cpp
 void FvGtkUri(SaMap*, char*);
 void FvGtkUriWidget(SaMap*);
 void FvGtkUriFree(void*);
 
 
-// PartUriEdit.c.h
+// PartUriEdit.cpp
 GtkWidget* FeGtkUriEntry(SaGtkUri*, const char*, GtkWidget*, int, char*);
 GtkWidget* FeGtkUriSpin(SaGtkUri*, const char*, GtkWidget*, int, char*);
 void FvGtkUriEntryClear(GtkWidget*, GtkEntryIconPosition, GdkEvent*, void*);
 
 
-// PartUriChange.c.h
+// PartUriChange.cpp
 void FvGtkUriEntryBuild(GtkEditable*, void*);
 void FvGtkUriEntryParse(GtkEditable*, void*);
 char* FaGtkUriEntryGet(GtkWidget*);
 void FvGtkUriEntrySet(GtkWidget*, char*);
 
 
-// PartUriClipboard.c.h
+// PartUriClipboard.cpp
 void FvGtkUriEntryCopy(GtkWidget*, void*);
 void FvGtkUriEntryPaste(GtkWidget*, void*);
 void FvGtkUriEntryPasteReceived(GObject*, GAsyncResult*, void*);
 
 
-// PartMime.c.h
+// PartMime.cpp
 void FvGtkMime(SaMap*);
 void FvGtkMimeFree(void*);
 
 
-// PartMimeList.c.h
+// PartMimeList.cpp
 void FvGtkMimeList(SaMap*);
 void FvGtkMimeListAdd(GtkListBox*, GAppInfo*, void*);
 void FvGtkMimeListPress(GtkGestureClick*, double, double, unsigned int, void*);
 
 
-// PartMimeOpen.c.h
+// PartMimeOpen.cpp
 void FvGtkMimeOpen(SaMap*);
 void FvGtkMimeListOpen(GtkWidget*, void*);
 

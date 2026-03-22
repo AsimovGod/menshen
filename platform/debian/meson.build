@@ -1,14 +1,14 @@
 # dependency
 DepPlatform = [
-    dependency('gtk4'),
+    dependency('gtkmm-4.0'),
     dependency('libadwaita-1'),
     dependency('json-glib-1.0')
     ]
 
 
 # src
-FileSource = files(
-    'src' / 'Main.c'
+FileMain = files(
+    'src' / 'Main.cpp'
     )
 
 

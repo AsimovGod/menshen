@@ -1,4 +1,8 @@
-// PartUriChange.c.h
+// PartUriChange.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -26,7 +30,7 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
     if (CsGtkUri->Parse->query) g_free(CsGtkUri->Parse->query);
     if (CsGtkUri->Parse->fragment) g_free(CsGtkUri->Parse->fragment);
 
-    // PartUriChange.c.h
+    // PartUriChange.cpp
     CsGtkUri->Parse->scheme = FaGtkUriEntryGet(CsGtkUri->Entry->scheme);
     CsGtkUri->Parse->userinfo = FaGtkUriEntryGet(CsGtkUri->Entry->userinfo);
     CsGtkUri->Parse->host = FaGtkUriEntryGet(CsGtkUri->Entry->host);
@@ -41,7 +45,7 @@ FvGtkUriEntryBuild(GtkEditable* EgEditable, void* PvUserdata)
     // variable
     CsGtkUri->Parse->port = DiPort ? DiPort : -1;
 
-    // PartGuri.c.h
+    // PartGuri.cpp
     AcText = FaGuriBuild(CsGtkUri->Parse);
 
     // gtk.h widget
@@ -77,13 +81,13 @@ FvGtkUriEntryParse(GtkEditable* EgEditable, void* PvUserdata)
     // variable gtk.h
     AcText = gtk_editable_get_text(EgEditable);
 
-    // PartGuri.c.h
+    // PartGuri.cpp
     CsUriParse = FsGuriParse(AcText ? AcText : NULL);
 
     // variable glib.h
     CsGtkUri->Parse = CsUriParse ? CsUriParse : g_new0(SaGuriParse, 1);
 
-    // PartUriChange.c.h
+    // PartUriChange.cpp
     FvGtkUriEntrySet(CsGtkUri->Entry->scheme, CsGtkUri->Parse->scheme);
     FvGtkUriEntrySet(CsGtkUri->Entry->userinfo, CsGtkUri->Parse->userinfo);
     FvGtkUriEntrySet(CsGtkUri->Entry->host, CsGtkUri->Parse->host);

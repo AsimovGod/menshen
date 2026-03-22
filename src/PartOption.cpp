@@ -1,4 +1,8 @@
-// PartOption.c.h
+// PartOption.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -88,7 +92,7 @@ FdOptionGlib(SaMap* CsMap, int DiArgs, char** TcArgs)
     }
 
     if (CsOption->mode && g_strcmp0(CsOption->mode, "0") == 0) {
-        // block PartGuri.c.h
+        // block PartGuri.cpp
         FvUriPrint(DiArgument, TcArgument);
         DbExit = TRUE;
     }
@@ -133,7 +137,7 @@ FdOptionGtk(GApplication* EgApplication,
 
     // if glib.h option
     if (CsOption->mode && g_strcmp0(CsOption->mode, "1") == 0) {
-        // block PartWindow.c.h
+        // block PartWindow.cpp
         FvGtkWindow(CsMap, DiArgument, TcArgument);
     }
 

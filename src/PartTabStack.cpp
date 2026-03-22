@@ -1,4 +1,8 @@
-// PartTabStack.c.h
+// PartTabStack.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -84,7 +88,7 @@ FsGtkTabStack(SaMap* CsMap, SaGtkTab* CsGtkTab)
     gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(CsGtkTab->Stack->buttonSwitch), TRUE);
 
-    // PartWindowStack.c.h
+    // PartWindowStack.cpp
     FvGtkWindowStackCount(CsMap, 1);
 
     // return

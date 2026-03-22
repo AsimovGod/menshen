@@ -1,4 +1,8 @@
-// PartTabManage.c.h
+// PartTabManage.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -12,10 +16,10 @@ FvGtkTabNew(GtkWidget* EgButton, void* PvUserdata)
     // inherit
     CsMap = PvUserdata;
 
-    // PartTab.c.h
+    // PartTab.cpp
     FvGtkTab(CsMap, NULL);
 
-    // PartTabStack.c.h
+    // PartTabStack.cpp
     FvGtkWindowStackScroll(NULL, CsMap);
 }
 
@@ -138,10 +142,10 @@ FvGtkTabRemove(GtkWidget* EgButton, void* PvUserdata)
     gtk_box_remove(GTK_BOX(CsGtkWindow->Stack->tabbar),
             CsGtkTab->Stack->frameTitle);
 
-    // PartWindowStack.c.h
+    // PartWindowStack.cpp
     FvGtkWindowStackCount(CsMap, -1);
 
-    // PartTabPage.c.h
+    // PartTabPage.cpp
     if (CsMap->GtkWindow->Stack->counter < 1) {
         FvGtkTabNew(NULL, CsMap);
     }
@@ -153,7 +157,7 @@ FvGtkTabRemove(GtkWidget* EgButton, void* PvUserdata)
         FvGtkTabSwitch(CsGtkTabNext->Stack->buttonSwitch, CsMap);
     }
 
-    // PartTabStack.c.h
+    // PartTabStack.cpp
     FvGtkWindowStackScroll(NULL, CsMap);
 }
 

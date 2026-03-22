@@ -1,4 +1,8 @@
-// PartMenu.c.h
+// PartMenu.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -90,7 +94,7 @@ FvGtkMenuNewwindow(GSimpleAction* EgSimpleaction, GVariant* EgVariant,
     CsMap->Option = CsMapOld->Option;
     CsMap->application = CsMapOld->application;
 
-    // PartWindow.c.h
+    // PartWindow.cpp
     FvGtkWindow(CsMap, 0, NULL);
 }
 

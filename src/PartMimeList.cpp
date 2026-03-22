@@ -1,4 +1,8 @@
-// PartMimeList.c.h
+// PartMimeList.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -55,7 +59,7 @@ FvGtkMimeList(SaMap* CsMap)
         if (g_hash_table_contains(EgHashtable, AcAppid)) continue;
         g_hash_table_add(EgHashtable, g_strdup(AcAppid));
         if (! g_app_info_supports_uris(EgAppinfo)) continue;
-        // block PartMiMeList.c.h
+        // block PartMiMeList.cpp
         FvGtkMimeListAdd(GTK_LIST_BOX(CsGtkMime->listbox), EgAppinfo, CsMap);
     }
 

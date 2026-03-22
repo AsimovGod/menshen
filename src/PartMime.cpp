@@ -1,4 +1,8 @@
-// PartMime.c.h
+// PartMime.cpp
+
+
+// MainInclude.hpp
+#include "MainInclude.hpp"
 
 
 
@@ -101,10 +105,10 @@ FvGtkMime(SaMap* CsMap)
     gtk_grid_set_row_spacing(GTK_GRID(CsGtkTab->Grid->mimeOpen), 4);
     gtk_grid_set_column_spacing(GTK_GRID(CsGtkTab->Grid->mimeOpen), 4);
 
-    // PartMimeList.c.h
+    // PartMimeList.cpp
     FvGtkMimeList(CsMap);
 
-    // PartMimeOpen.c.h
+    // PartMimeOpen.cpp
     FvGtkMimeOpen(CsMap);
 }
 

@@ -1,10 +1,11 @@
 # project
 project(
-    'menshen', 'c',
+    'menshen', 'cpp',
     license : 'GPL-3.0-or-later',
     license_files : 'LICENSE',
     meson_version : '>=1.7.0',
     default_options : [
+        'cpp_std=c++17',
         'prefix=/'
         ]
     )
