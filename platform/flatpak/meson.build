@@ -36,6 +36,19 @@ install_emptydir(
     )
 
 
+# metainfo
+install_emptydir(
+    'app/share/metainfo',
+    install_mode : 'rwxr-xr-x'
+    )
+
+install_data(
+    'io.AsimovGod.menshen.metainfo.xml',
+    install_dir : 'app/share/metainfo',
+    install_mode : 'rw-r--r--'
+    )
+
+
 # applications
 ConfigDesktop = configuration_data()
 ConfigDesktop.set('icon', InfoId)
@@ -47,7 +60,7 @@ install_emptydir(
 
 configure_file(
     input : '../../resource/desktop/menshen.desktop.in',
-    output : 'menshen.desktop',
+    output : 'io.AsimovGod.menshen.desktop',
     configuration : ConfigDesktop,
     install_dir : 'app/share/applications',
     install_mode : 'rw-r--r--'

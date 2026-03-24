@@ -7,4 +7,5 @@ StartupWMClass=menshen
 StartupNotify=true
 Categories=Utility;Network;
 MimeType=x-scheme-handler/http;x-scheme-handler/https
+X-Flatpak=io.AsimovGod.menshen
 
